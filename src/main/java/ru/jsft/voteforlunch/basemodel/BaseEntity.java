@@ -1,10 +1,8 @@
 package ru.jsft.voteforlunch.basemodel;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -17,10 +15,8 @@ import javax.persistence.*;
 public class BaseEntity implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     protected Long id;
 
-    @Schema(hidden = true)
     @Override
     public boolean isNew() {
         return id == null;
