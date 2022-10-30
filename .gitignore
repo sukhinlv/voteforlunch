@@ -10,3 +10,6 @@ target/
 
 # JPA Buddy settings
 .jpb
+
+# Log files
+log
