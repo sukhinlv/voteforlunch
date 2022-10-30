@@ -18,13 +18,7 @@ public class BaseEntity implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
-    protected Integer id;
-
-    // doesn't work for hibernate lazy proxy
-    public int id() {
-        Assert.notNull(id, "Entity must have id");
-        return id;
-    }
+    protected Long id;
 
     @Schema(hidden = true)
     @Override
@@ -47,7 +41,9 @@ public class BaseEntity implements Persistable<Long> {
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id;
+        int hashCode = 17;
+        hashCode += null == this.getId() ? 0 : this.getId().hashCode() * 31;
+        return hashCode;
     }
 
     @Override
