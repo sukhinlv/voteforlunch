@@ -78,13 +78,13 @@ public class PopulateVotes {
             menuRepository.save(menuForAisha1);
             menuRepository.save(menuForAisha2);
 
-            voteRepository.save(new Vote(admin, menuForCherry1, LocalDate.of(2022, 10, 25),
+            voteRepository.save(new Vote(admin, cherryRestaurant, LocalDate.of(2022, 10, 25),
                     LocalTime.of(9, 30)));
-            voteRepository.save(new Vote(admin, menuForCherry2, LocalDate.of(2022, 10, 26),
+            voteRepository.save(new Vote(admin, cherryRestaurant, LocalDate.of(2022, 10, 26),
                     LocalTime.of(10, 15)));
-            voteRepository.save(new Vote(user, menuForCherry1, LocalDate.of(2022, 10, 25),
+            voteRepository.save(new Vote(user, cherryRestaurant, LocalDate.of(2022, 10, 25),
                     LocalTime.of(10, 45)));
-            voteRepository.save(new Vote(user, menuForAisha2, LocalDate.of(2022, 10, 26),
+            voteRepository.save(new Vote(user, aishaRestaurant, LocalDate.of(2022, 10, 26),
                     LocalTime.of(10, 0)));
         };
     }

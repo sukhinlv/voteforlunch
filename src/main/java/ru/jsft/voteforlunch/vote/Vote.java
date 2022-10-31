@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.jsft.voteforlunch.basemodel.BaseEntity;
-import ru.jsft.voteforlunch.menu.Menu;
+import ru.jsft.voteforlunch.restaurant.Restaurant;
 import ru.jsft.voteforlunch.user.User;
 
 import javax.persistence.*;
@@ -27,8 +27,8 @@ public class Vote extends BaseEntity<Long> {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
-    @JoinColumn(name = "menu_id", nullable = false)
-    private Menu menu;
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
     @NotNull
     @Column(name = "vote_date", nullable = false)
