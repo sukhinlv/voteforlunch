@@ -17,7 +17,7 @@ public class VoteController {
     }
 
     @GetMapping
-    public List<Vote> getVotes() {
-        return voteService.getAllVotes();
+    public List<Vote> findAllVotes() {
+        return voteService.findAllVotes();
     }
 }

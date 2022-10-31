@@ -13,7 +13,7 @@ public class VoteService {
         this.voteRepository = voteRepository;
     }
 
-    public List<Vote> getAllVotes() {
-        return voteRepository.findAll();
+    public List<Vote> findAllVotes() {
+        return voteRepository.findAllVotes();
     }
 }
