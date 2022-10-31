@@ -4,7 +4,7 @@ GRANT ALL ON SCHEMA public TO "user";
 
 CREATE TABLE "users"
 (
-    "id"         INTEGER                        NULL,
+    "id"         BIGINT                        NULL,
     "name"       VARCHAR(255)                   NOT NULL,
     "email"      VARCHAR(255)                   NOT NULL,
     "password"   VARCHAR(255)                   NOT NULL,
@@ -19,7 +19,7 @@ ALTER TABLE
     ADD CONSTRAINT "users_email_unique" UNIQUE ("email");
 CREATE TABLE "user_roles"
 (
-    "user_id" INTEGER      NOT NULL,
+    "user_id" BIGINT      NOT NULL,
     "role"    VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -27,7 +27,7 @@ ALTER TABLE
     ADD CONSTRAINT "user_roles_user_id_role_unique" UNIQUE ("user_id", "role");
 CREATE TABLE "meal"
 (
-    "id"   INTEGER      NOT NULL,
+    "id"   BIGINT      NOT NULL,
     "name" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -38,7 +38,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "restaurant"
 (
-    "id"   INTEGER      NOT NULL,
+    "id"   BIGINT      NOT NULL,
     "name" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -49,8 +49,8 @@ ALTER TABLE
     ADD CONSTRAINT "restaurant_name_unique" UNIQUE ("name");
 CREATE TABLE "menu"
 (
-    "id"            INTEGER NOT NULL,
-    "restaurant_id" INTEGER NOT NULL,
+    "id"            BIGINT NOT NULL,
+    "restaurant_id" BIGINT NOT NULL,
     "date_of_menu"  DATE    NOT NULL
 );
 ALTER TABLE
@@ -61,9 +61,9 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "menu_set"
 (
-    "id"      INTEGER          NOT NULL,
-    "menu_id" INTEGER          NOT NULL,
-    "meal_id" INTEGER          NOT NULL,
+    "id"      BIGINT          NOT NULL,
+    "menu_id" BIGINT          NOT NULL,
+    "meal_id" BIGINT          NOT NULL,
     "price"   DOUBLE PRECISION NOT NULL
 );
 ALTER TABLE
@@ -74,9 +74,9 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "vote"
 (
-    "id"             INTEGER                        NOT NULL,
-    "user_id"        INTEGER                        NOT NULL,
-    "menu_id"        INTEGER                        NOT NULL,
+    "id"             BIGINT                        NOT NULL,
+    "user_id"        BIGINT                        NOT NULL,
+    "menu_id"        BIGINT                        NOT NULL,
     "vote_date_time" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
 );
 ALTER TABLE
