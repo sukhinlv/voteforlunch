@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @MappedSuperclass
+@Access(AccessType.FIELD) // https://stackoverflow.com/a/6084701/548473
 public abstract class BaseEntity<Id extends Serializable> extends AbstractPersistable<Id> {
 
     @Version
