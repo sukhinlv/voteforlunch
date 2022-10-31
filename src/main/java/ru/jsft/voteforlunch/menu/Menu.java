@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.menu;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,24 +14,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "menu", uniqueConstraints = {
-        @UniqueConstraint(name = "uc_menu_date_of_menu_id", columnNames = {"date_of_menu", "id"})
-})
+@Table(name = "menu")
 public class Menu extends BaseEntity<Long> {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
     private LocalDate dateOfMenu;
 
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "menu_id", nullable = false)
-    private Set<MealWithPrice> mealWithPrices = new LinkedHashSet<>();
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+
+    @ElementCollection
+    @CollectionTable(name = "menu_meal_price", joinColumns = @JoinColumn(name = "menu_id"))
+    private Set<MealPrice> mealPrice = new LinkedHashSet<>();
 }

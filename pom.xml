@@ -19,6 +19,7 @@
     <properties>
         <java.version>17</java.version>
 <!--        <springdoc.version>1.6.12</springdoc.version>-->
+        <jackson-datatype-hibernate5.version>2.13.4</jackson-datatype-hibernate5.version>
     </properties>
 
     <dependencies>
@@ -35,6 +36,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Add-on module for Jackson to support Hibernate version 5.x data types -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson-datatype-hibernate5.version}</version>
         </dependency>
 
         <!-- Db -->

@@ -1,20 +1,19 @@
 package ru.jsft.voteforlunch.user;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import ru.jsft.voteforlunch.basemodel.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,6 +25,7 @@ public class User extends BaseEntity<Long> {
 
     @NotBlank(message = "Password must not be empty")
     @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Email(message = "Please enter valid e-mail")
@@ -37,9 +37,8 @@ public class User extends BaseEntity<Long> {
     private boolean enabled;
 
     @Setter(AccessLevel.NONE)
-    @Temporal(TemporalType.DATE)
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
-    private Date registered;
+    private LocalDate registered;
 
     @NotNull
     @ElementCollection

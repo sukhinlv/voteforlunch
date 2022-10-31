@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.meal;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
