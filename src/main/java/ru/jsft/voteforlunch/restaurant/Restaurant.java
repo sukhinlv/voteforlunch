@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.meal;
+package ru.jsft.voteforlunch.restaurant;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +14,9 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Entity
-@Table(name = "meal")
-public class Meal extends BaseEntity<Long> {
-    @NotBlank(message = "The meal must have a name")
+@Table(name = "restaurant")
+public class Restaurant extends BaseEntity<Long> {
+    @NotBlank(message = "The restaurant must have a name")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 }

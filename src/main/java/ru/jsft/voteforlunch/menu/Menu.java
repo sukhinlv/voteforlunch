@@ -1,29 +1,36 @@
 package ru.jsft.voteforlunch.menu;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.jsft.voteforlunch.basemodel.BaseEntity;
-import ru.jsft.voteforlunch.mealwithprice.MealWithPrice;
+import ru.jsft.voteforlunch.restaurant.Restaurant;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "menu")
-public class Menu extends BaseEntity {
+@Table(name = "menu", uniqueConstraints = {
+        @UniqueConstraint(name = "uc_menu_date_of_menu_id", columnNames = {"date_of_menu", "id"})
+})
+public class Menu extends BaseEntity<Long> {
+    @NotNull
     @Column(name = "date_of_menu", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dateOfMenu;
+    private LocalDate dateOfMenu;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "menu_id")
-    private List<MealWithPrice> mealWithPrices = new ArrayList<>();
+    @NotNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Set<MealWithPrice> mealWithPrices = new LinkedHashSet<>();
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 }

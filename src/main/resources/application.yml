@@ -14,13 +14,8 @@ spring:
 
   # JPA properties
   jpa:
-    # ???
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: true
-
     hibernate:
-      ddl-auto: create-drop # When you launch the application for the first time - switch "none" at "create"
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
     properties:
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
@@ -28,6 +23,7 @@ spring:
         default_batch_fetch_size: 20
         # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
         jdbc.batch_size: 20
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     open-in-view: false
     # https://stackoverflow.com/a/67678945/548473
@@ -50,7 +46,7 @@ logging:
     ru.jsft.voteforlunch: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
     org.springframework: ERROR
-    org.hibernate: DEBUG
+    org.hibernate: WARN
   # https://www.codejava.net/frameworks/spring-boot/logback-rolling-files-example
   file:
     name: ${VOTEFORLUNCH_ROOT}/log/voteforlunch.log
