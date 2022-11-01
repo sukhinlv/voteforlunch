@@ -19,7 +19,7 @@ import java.time.LocalTime;
 @Setter
 @Entity
 @Table(name = "vote")
-public class Vote extends BaseEntity<Long> {
+public class Vote extends BaseEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

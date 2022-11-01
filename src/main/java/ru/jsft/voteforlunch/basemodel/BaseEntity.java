@@ -1,30 +1,45 @@
 package ru.jsft.voteforlunch.basemodel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-import org.springframework.lang.Nullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.util.ProxyUtils;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Optional;
+import javax.persistence.*;
+import java.util.Objects;
 
 @MappedSuperclass
 @Access(AccessType.FIELD) // https://stackoverflow.com/a/6084701/548473
-public abstract class BaseEntity<Id extends Serializable> extends AbstractPersistable<Id> {
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+public abstract class BaseEntity implements Persistable<Long> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
 
     @Version
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private Long version;
 
-    public @NotNull Optional<Long> getVersion() {
-        return Optional.ofNullable(version);
+    @Override
+    public boolean isNew() {
+        return null == this.getId();
     }
 
-    protected void setVersion(@Nullable Long version) {
-        this.version = version;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) return false;
+        BaseEntity that = (BaseEntity) o;
+        return id != null && Objects.equals(id, that.id) && version.equals(that.version);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version);
     }
 }

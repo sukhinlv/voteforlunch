@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "menu")
-public class Menu extends BaseEntity<Long> {
+public class Menu extends BaseEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
     private LocalDate dateOfMenu;

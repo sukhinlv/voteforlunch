@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.jsft.voteforlunch.basemodel.BaseEntity;
+import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +18,9 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Entity
 @Table(name = "restaurant")
-public class Restaurant extends BaseEntity<Long> {
+public class Restaurant extends BaseEntity {
     @NotBlank(message = "The restaurant must have a name")
     @Column(name = "name", nullable = false, unique = true)
+    @NoHtml
     private String name;
 }

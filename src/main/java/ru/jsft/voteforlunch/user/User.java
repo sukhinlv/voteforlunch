@@ -3,6 +3,7 @@ package ru.jsft.voteforlunch.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ru.jsft.voteforlunch.basemodel.BaseEntity;
+import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,19 +19,22 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity<Long> {
+public class User extends BaseEntity {
     @NotBlank(message = "User name must not be empty")
     @Column(name = "name", nullable = false)
+    @NoHtml
     private String name;
 
     @NotBlank(message = "Password must not be empty")
     @Column(name = "password", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NoHtml
     private String password;
 
     @Email(message = "Please enter valid e-mail")
     @NotBlank(message = "Email must not be empty")
     @Column(name = "email", nullable = false, unique = true)
+    @NoHtml
     private String email;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
