@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.vote;
+package ru.jsft.voteforlunch.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +13,8 @@ import ru.jsft.voteforlunch.restaurant.RestaurantRepository;
 import ru.jsft.voteforlunch.user.Role;
 import ru.jsft.voteforlunch.user.User;
 import ru.jsft.voteforlunch.user.UserRepository;
+import ru.jsft.voteforlunch.vote.Vote;
+import ru.jsft.voteforlunch.vote.VoteRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
