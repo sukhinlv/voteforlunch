@@ -39,7 +39,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Add-on module for Jackson to support Hibernate version 5.x data types -->
+        <!-- Jackson support Hibernate version 5.x data types -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>

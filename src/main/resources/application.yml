@@ -2,15 +2,15 @@ spring:
   # Database
   datasource:
     # inmemory db
-#    url: jdbc:h2:mem:voteforlunch
-#    username: sa
-#    password:
+    url: jdbc:h2:mem:voteforlunch
+    username: sa
+    password:
 
   # postgresql db
-      driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://localhost:5434/voteforlunch
-      username: user
-      password: password
+#      driver-class-name: org.postgresql.Driver
+#      url: jdbc:postgresql://localhost:5434/voteforlunch
+#      username: user
+#      password: password
 
   # JPA properties
   jpa:
