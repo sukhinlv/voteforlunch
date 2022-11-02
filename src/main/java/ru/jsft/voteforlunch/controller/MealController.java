@@ -1,6 +1,5 @@
 package ru.jsft.voteforlunch.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.model.Meal;
 import ru.jsft.voteforlunch.repository.MealRepository;
@@ -24,24 +23,23 @@ public class MealController {
 
     @GetMapping("/{mealId}")
     public Meal getMealById(@PathVariable Long mealId) {
-        return repository.findMealById(mealId);
+        return repository.findById(mealId).orElse(null);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Meal createNewMeal(@RequestBody Meal meal) {
         return repository.save(meal);
     }
 
     @DeleteMapping(path = "/{mealId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMeal(@PathVariable Long mealId) {
         repository.deleteById(mealId);
     }
 
     @PutMapping(path = "/{mealId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateMeal(@PathVariable Long mealId, @RequestParam String name) {
-        repository.updateById(mealId, name);
+    public Meal updateMeal(@PathVariable Long mealId, @RequestParam String name) {
+        Meal meal = new Meal();
+        meal.setId(mealId);
+        return repository.save(meal);
     }
 }
