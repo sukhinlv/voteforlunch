@@ -16,7 +16,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "menu")
+@Table(name = "menu", uniqueConstraints = {
+        @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
+})
 public class Menu extends BaseEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
