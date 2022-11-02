@@ -1,8 +1,9 @@
-package ru.jsft.voteforlunch.vote;
+package ru.jsft.voteforlunch.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.jsft.voteforlunch.model.Vote;
 
 import java.util.List;
 

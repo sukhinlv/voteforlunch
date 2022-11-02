@@ -1,6 +1,8 @@
-package ru.jsft.voteforlunch.vote;
+package ru.jsft.voteforlunch.service;
 
 import org.springframework.stereotype.Service;
+import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.repository.VoteRepository;
 
 import java.util.List;
 

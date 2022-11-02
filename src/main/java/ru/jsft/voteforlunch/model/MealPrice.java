@@ -1,10 +1,9 @@
-package ru.jsft.voteforlunch.menu;
+package ru.jsft.voteforlunch.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.jsft.voteforlunch.meal.Meal;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

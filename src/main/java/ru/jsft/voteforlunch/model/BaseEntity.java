@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.basemodel;
+package ru.jsft.voteforlunch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

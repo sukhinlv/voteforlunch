@@ -1,8 +1,10 @@
-package ru.jsft.voteforlunch.meal;
+package ru.jsft.voteforlunch.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.jsft.voteforlunch.model.Meal;
+import ru.jsft.voteforlunch.service.MealService;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package ru.jsft.voteforlunch.user;
+package ru.jsft.voteforlunch.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ru.jsft.voteforlunch.basemodel.BaseEntity;
 import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.persistence.*;
