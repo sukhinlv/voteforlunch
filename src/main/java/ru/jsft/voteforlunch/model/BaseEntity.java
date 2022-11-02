@@ -1,6 +1,5 @@
 package ru.jsft.voteforlunch.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
@@ -21,10 +20,6 @@ public abstract class BaseEntity implements Persistable<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Version
-    @JsonIgnore
-    private Long version;
-
     @Override
     public boolean isNew() {
         return null == this.getId();
@@ -35,11 +30,11 @@ public abstract class BaseEntity implements Persistable<Long> {
         if (this == o) return true;
         if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) return false;
         BaseEntity that = (BaseEntity) o;
-        return id != null && Objects.equals(id, that.id) && version.equals(that.version);
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version);
+        return Objects.hash(id);
     }
 }
