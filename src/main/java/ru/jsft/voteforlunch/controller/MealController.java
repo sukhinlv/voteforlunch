@@ -22,6 +22,11 @@ public class MealController {
         return repository.findAll();
     }
 
+    @GetMapping("/{mealId}")
+    public Meal getMealById(@PathVariable Long mealId) {
+        return repository.findMealById(mealId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Meal createNewMeal(@RequestBody Meal meal) {

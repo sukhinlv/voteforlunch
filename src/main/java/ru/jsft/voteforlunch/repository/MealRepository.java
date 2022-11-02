@@ -12,6 +12,9 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Meal m SET m.name = :name  WHERE m.id = :id")
+    @Query("update Meal m set m.name = :name where m.id = :id")
     void updateById(Long id, String name);
+
+    @Query("select m from Meal m where m.id = :id")
+    Meal findMealById(Long id);
 }
