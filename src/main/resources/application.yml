@@ -6,12 +6,10 @@ spring:
     url: jdbc:h2:mem:voteforlunch
     username: sa
     password:
-
-  # postgresql db
-#      driver-class-name: org.postgresql.Driver
-#      url: jdbc:postgresql://localhost:5434/voteforlunch
-#      username: user
-#      password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   # JPA properties
   jpa:
@@ -22,12 +20,10 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 20
-        # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
-        jdbc.batch_size: 20
+        jdbc.batch_size: 20  # https://stackoverflow.com/questions/21257819/what-is-the-difference-between-hibernate-jdbc-fetch-size-and-hibernate-jdbc-batc
     show-sql: true
     open-in-view: false
-    # https://stackoverflow.com/a/67678945/548473
-    defer-datasource-initialization: true
+    defer-datasource-initialization: true  # https://stackoverflow.com/a/67678945/548473
 
   # Jackson Serialization Issue Resolver
   jackson.visibility:
@@ -38,24 +34,12 @@ spring:
 
 # Logger configuration
 logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   level:
     root: WARN # set to DEBUG if too many warnings
     ru.jsft.voteforlunch: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
     org.springframework: ERROR
     org.hibernate: WARN
-  # https://www.codejava.net/frameworks/spring-boot/logback-rolling-files-example
-  file:
-    name: ${VOTEFORLUNCH_ROOT}/log/voteforlunch.log
-  # https://stackoverflow.com/questions/29918323/how-to-configure-rolling-file-appender-within-spring-boots-application-yml
-  # https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging.custom-log-configuration
-  logback:
-    rollingpolicy:
-      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
-      max-history: 30
 
 # Server configuration
 server:
