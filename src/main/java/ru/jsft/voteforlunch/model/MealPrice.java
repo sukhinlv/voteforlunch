@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +22,5 @@ public class MealPrice {
     @NotNull
     @Positive
     @Column(name = "price", nullable = false, precision = 19, scale = 2)
-    private BigDecimal price;
+    private Integer price;
 }
