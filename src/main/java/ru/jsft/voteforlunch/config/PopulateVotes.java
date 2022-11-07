@@ -1,8 +1,7 @@
 package ru.jsft.voteforlunch.config;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.*;
 import ru.jsft.voteforlunch.repository.*;
 
@@ -11,10 +10,9 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-@Configuration
+@Component
 public class PopulateVotes {
 
-    @Bean
     CommandLineRunner commandLineRunner(VoteRepository voteRepository,
                                         UserRepository userRepository,
                                         MenuRepository menuRepository,
