@@ -36,9 +36,4 @@ public class Vote extends BaseEntity {
     @NotNull
     @Column(name = "vote_time", nullable = false)
     private LocalTime voteTime;
-
-    @PreUpdate
-    public void preUpdate() {
-        // TODO: implement time check
-    }
 }

@@ -18,6 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
+@ToString(callSuper = true, exclude = "password")
 public class User extends BaseEntity {
     @NotBlank(message = "User name must not be empty")
     @Column(name = "name", nullable = false)

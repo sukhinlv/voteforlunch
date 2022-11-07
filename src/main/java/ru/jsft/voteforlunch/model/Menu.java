@@ -1,9 +1,6 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Table(name = "menu", uniqueConstraints = {
         @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
 })
+@ToString(callSuper = true)
 public class Menu extends BaseEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)

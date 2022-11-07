@@ -1,9 +1,6 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.persistence.Column;
@@ -17,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Entity
 @Table(name = "meal")
+@ToString(callSuper = true)
 public class Meal extends BaseEntity {
     @NotBlank(message = "The meal must have a name")
     @Column(name = "name", nullable = false, unique = true)
