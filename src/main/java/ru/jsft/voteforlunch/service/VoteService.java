@@ -2,7 +2,6 @@ package ru.jsft.voteforlunch.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import ru.jsft.voteforlunch.error.NotFoundException;
@@ -36,7 +35,7 @@ public class VoteService {
 
     public List<Vote> getAll() {
         log.info("Get all votes");
-        return repository.findAll(Sort.by("name"));
+        return repository.findAllSorted();
     }
 
     public Vote create(@NotNull Vote vote) {

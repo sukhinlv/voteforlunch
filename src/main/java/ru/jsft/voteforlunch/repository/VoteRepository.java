@@ -12,7 +12,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-    @Query("select v from Vote v left join fetch v.restaurant left join fetch v.user")
-    List<Vote> findAllVotes();
-
+    @Query("SELECT v FROM Vote v ORDER BY v.voteDate DESC, v.voteTime DESC")
+    List<Vote> findAllSorted();
 }
