@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public abstract class BaseEntity implements Persistable<Long> {
+public abstract class AbstractEntity implements Persistable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public abstract class BaseEntity implements Persistable<Long> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !getClass().equals(ProxyUtils.getUserClass(o))) return false;
-        BaseEntity that = (BaseEntity) o;
+        AbstractEntity that = (AbstractEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 

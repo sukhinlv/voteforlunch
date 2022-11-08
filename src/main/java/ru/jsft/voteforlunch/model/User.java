@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @ToString(callSuper = true, exclude = "password")
-public class User extends BaseEntity {
+public class User extends AbstractEntity {
     @NotBlank(message = "User name must not be empty")
     @Column(name = "name", nullable = false)
     @NoHtml

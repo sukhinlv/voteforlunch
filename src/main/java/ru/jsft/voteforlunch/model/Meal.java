@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "meal")
 @ToString(callSuper = true)
-public class Meal extends BaseEntity {
+public class Meal extends AbstractEntity {
     @NotBlank(message = "The meal must have a name")
     @Column(name = "name", nullable = false, unique = true)
     @NoHtml

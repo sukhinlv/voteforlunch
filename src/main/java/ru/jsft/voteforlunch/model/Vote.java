@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @Table(name = "vote", uniqueConstraints = {
         @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"user_id", "vote_date"})
 })
-public class Vote extends BaseEntity {
+public class Vote extends AbstractEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

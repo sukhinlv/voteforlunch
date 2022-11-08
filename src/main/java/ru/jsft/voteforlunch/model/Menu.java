@@ -17,7 +17,7 @@ import java.util.Set;
         @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
 })
 @ToString(callSuper = true)
-public class Menu extends BaseEntity {
+public class Menu extends AbstractEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
     private LocalDate dateOfMenu;
