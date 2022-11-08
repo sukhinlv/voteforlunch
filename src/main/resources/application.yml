@@ -58,3 +58,6 @@ server:
 #    user:
 #      name: user
 #      password: user
+
+vote:
+  time.constraint: 11:00:00  # the time after which the user can not change his vote
