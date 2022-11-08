@@ -3,6 +3,7 @@ package ru.jsft.voteforlunch.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.repository.RestaurantRepository;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@Validated
 public class RestaurantService {
 
     private final RestaurantRepository repository;

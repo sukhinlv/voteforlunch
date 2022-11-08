@@ -7,6 +7,7 @@ import ru.jsft.voteforlunch.controller.mapper.impl.RestaurantMapper;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.service.RestaurantService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<RestaurantDto> create(@RequestBody RestaurantDto restaurantDto) {
+    public ResponseEntity<RestaurantDto> create(@Valid @RequestBody RestaurantDto restaurantDto) {
         return ResponseEntity.ok(mapper.toDto(service.create(mapper.toEntity(restaurantDto))));
     }
 
@@ -43,7 +44,7 @@ public class RestaurantController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<RestaurantDto> update(@PathVariable Long id, @RequestBody RestaurantDto restaurantDto) {
+    public ResponseEntity<RestaurantDto> update(@PathVariable Long id, @Valid @RequestBody RestaurantDto restaurantDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(restaurantDto))));
     }
 }
