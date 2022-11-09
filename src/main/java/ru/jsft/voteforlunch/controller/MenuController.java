@@ -1,5 +1,7 @@
-package ru.jsft.voteforlunch.controller.mapper;
+package ru.jsft.voteforlunch.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +11,12 @@ import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/menus")
+@Slf4j
 public class MenuController {
 
     private final MenuService service;
@@ -24,10 +28,17 @@ public class MenuController {
         this.mapper = mapper;
     }
 
+    @GetMapping("/date")
+    public LocalDate getDate() {
+        return LocalDate.now();
+    }
+
     @GetMapping
-    public List<Menu> getAll() {
-        // TODO results not converted to DTO
-        return service.getAll();
+    public List<MenuDto> getAll(
+            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        List<Menu> resultList = (date == null) ? service.getAll() : service.getByDate(date);
+        return resultList.stream().map(mapper::toDto).toList();
     }
 
     @GetMapping("/{id}")

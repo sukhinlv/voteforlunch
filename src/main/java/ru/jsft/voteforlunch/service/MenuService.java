@@ -7,6 +7,7 @@ import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.repository.MenuRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,10 @@ public class MenuService {
         return repository.findMenuByIdWithMealPrices(id);
 //        return repository.findById(id)
 //                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id=%d not found", id))));
+    }
+
+    public List<Menu> getByDate(LocalDate date) {
+        return repository.findMenusByDate(date);
     }
 
     public List<Menu> getAll() {
