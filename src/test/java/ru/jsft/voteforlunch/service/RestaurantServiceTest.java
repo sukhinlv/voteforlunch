@@ -1,10 +1,10 @@
 package ru.jsft.voteforlunch.service;
 
+import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Restaurant;
@@ -14,15 +14,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SuppressWarnings("ConstantConditions")
 @Slf4j
-@Transactional
 class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Autowired
     private RestaurantService serviceUnderTest;
 
+    private final Faker faker = new Faker();
+
     @Test
     void shouldGet() {
-        Restaurant restaurant = new Restaurant("dummy");
+        Restaurant restaurant = new Restaurant(faker.name().name());
 
         Restaurant getRestaurant = serviceUnderTest.get(serviceUnderTest.create(restaurant).getId());
 
@@ -33,7 +34,7 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldThrowWhenGetNotExisted() {
-        Long id = serviceUnderTest.create(new Restaurant("dummy")).getId();
+        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
 
         serviceUnderTest.delete(id);
 
@@ -44,7 +45,7 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldCreate() {
-        Restaurant restaurant = new Restaurant("dummy");
+        Restaurant restaurant = new Restaurant(faker.name().name());
 
         Restaurant created = serviceUnderTest.create(restaurant);
 
@@ -55,7 +56,7 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldThrowWhenCreateExisted() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant("dummy"));
+        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
 
         assertThatThrownBy(() -> serviceUnderTest.create(restaurant))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -64,13 +65,13 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldDelete() {
-        Long id = serviceUnderTest.create(new Restaurant("dummy")).getId();
+        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
         serviceUnderTest.delete(id);
     }
 
     @Test
     void shouldThrowWhenDeleteNotExisted() {
-        Long id = serviceUnderTest.create(new Restaurant("dummy")).getId();
+        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
         serviceUnderTest.delete(id);
 
         assertThatThrownBy(() -> serviceUnderTest.delete(id))
@@ -80,7 +81,7 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldUpdate() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant("dummy"));
+        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
 
         restaurant.setName("updated");
         serviceUnderTest.update(restaurant.getId(), restaurant);
@@ -91,7 +92,7 @@ class RestaurantServiceTest extends AbstractSpringBootTest {
 
     @Test
     void shouldThrowWhenUpdateWrongId() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant("dummy"));
+        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
         Long id = restaurant.getId();
         serviceUnderTest.delete(id);
 

@@ -13,7 +13,7 @@ spring:
   # JPA properties
   jpa:
     hibernate:
-      ddl-auto: create-drop # When you launch the application for the first time - switch "none" at "create"
+      ddl-auto: create-drop
     properties:
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
@@ -32,26 +32,24 @@ spring:
       setter: none
       is-getter: none
 
-# Logger configuration
+  output.ansi.enabled: always
+
+# Logging
 logging:
   level:
-    root: WARN # set to DEBUG if too many warnings
+    root: WARN
     ru.jsft.voteforlunch: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
-    org.springframework: ERROR
-    org.hibernate: WARN
+    org.springframework.orm.jpa: DEBUG
 
 # Server configuration
 server:
-  port: 8095 #set your port
+  port: 8095
   servlet:
     encoding:
       charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
       enabled: true # Enable http encoding support
       force: true
-
-#  profiles:
-#    active: development
 
 #  # Security configuration
 #  security:
@@ -59,6 +57,6 @@ server:
 #      name: user
 #      password: user
 
-# application-specific settings
+# Application-specific settings
 vote:
   time.constraint: "11:00"  # the time after which the user can not change his vote
