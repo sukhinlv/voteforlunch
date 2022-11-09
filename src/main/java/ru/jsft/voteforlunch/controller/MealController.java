@@ -31,7 +31,7 @@ public class MealController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MealDto> get(@PathVariable Long id) {
+    public ResponseEntity<MealDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.get(id)));
     }
 
@@ -41,12 +41,12 @@ public class MealController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable long id) {
         service.delete(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<MealDto> update(@PathVariable Long id, @Valid @RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> update(@PathVariable long id, @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(mealDto))));
     }
 }

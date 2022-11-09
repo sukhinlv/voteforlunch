@@ -3,19 +3,16 @@ package ru.jsft.voteforlunch.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.repository.VoteRepository;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
-@Validated
 public class VoteService {
 
     private final VoteRepository repository;
@@ -38,7 +35,7 @@ public class VoteService {
         return repository.findAllSorted();
     }
 
-    public Vote create(@NotNull Vote vote) {
+    public Vote create(Vote vote) {
         if (!vote.isNew()) {
             throw new IllegalArgumentException("Vote must be new");
         }
@@ -52,7 +49,7 @@ public class VoteService {
         repository.deleteById(id);
     }
 
-    public Vote update(Long id, @NotNull Vote vote) {
+    public Vote update(long id, Vote vote) {
         Optional<Vote> voteOptional = repository.findById(id);
 
         if (voteOptional.isEmpty()) {

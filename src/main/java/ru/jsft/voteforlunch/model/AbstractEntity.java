@@ -22,7 +22,7 @@ public abstract class AbstractEntity implements Persistable<Long> {
 
     @Override
     public boolean isNew() {
-        return null == this.getId();
+        return id == null;
     }
 
     @Override

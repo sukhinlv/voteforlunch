@@ -31,7 +31,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDto> get(@PathVariable Long id) {
+    public ResponseEntity<RestaurantDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.get(id)));
     }
 
@@ -41,12 +41,12 @@ public class RestaurantController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable long id) {
         service.delete(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<RestaurantDto> update(@PathVariable Long id, @Valid @RequestBody RestaurantDto restaurantDto) {
+    public ResponseEntity<RestaurantDto> update(@PathVariable long id, @Valid @RequestBody RestaurantDto restaurantDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(restaurantDto))));
     }
 }

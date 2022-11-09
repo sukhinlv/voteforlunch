@@ -31,7 +31,7 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteDto> get(@PathVariable Long id) {
+    public ResponseEntity<VoteDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.get(id)));
     }
 
@@ -41,12 +41,12 @@ public class VoteController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable long id) {
         service.delete(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<VoteDto> update(@PathVariable Long id, @Valid @RequestBody VoteDto voteDto) {
+    public ResponseEntity<VoteDto> update(@PathVariable long id, @Valid @RequestBody VoteDto voteDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(voteDto))));
     }
 }

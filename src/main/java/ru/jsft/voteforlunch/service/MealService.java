@@ -3,18 +3,15 @@ package ru.jsft.voteforlunch.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Meal;
 import ru.jsft.voteforlunch.repository.MealRepository;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
-@Validated
 public class MealService {
 
     private final MealRepository repository;
@@ -34,7 +31,7 @@ public class MealService {
         return repository.findAll(Sort.by("name"));
     }
 
-    public Meal create(@NotNull Meal meal) {
+    public Meal create(Meal meal) {
         if (!meal.isNew()) {
             throw new IllegalArgumentException("Meal must be new");
         }
@@ -48,7 +45,7 @@ public class MealService {
         repository.deleteById(id);
     }
 
-    public Meal update(Long id, @NotNull Meal meal) {
+    public Meal update(long id, Meal meal) {
         Optional<Meal> mealOptional = repository.findById(id);
 
         if (mealOptional.isEmpty()) {
