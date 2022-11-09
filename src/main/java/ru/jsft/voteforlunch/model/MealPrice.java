@@ -6,12 +6,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Embeddable
 @ToString(callSuper = true)
+@Embeddable
 public class MealPrice {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "meal_id", nullable = false)

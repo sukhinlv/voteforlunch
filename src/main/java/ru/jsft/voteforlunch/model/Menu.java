@@ -1,11 +1,14 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -16,7 +19,6 @@ import java.util.Set;
 @Table(name = "menu", uniqueConstraints = {
         @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
 })
-@ToString(callSuper = true)
 public class Menu extends AbstractEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
@@ -29,5 +31,6 @@ public class Menu extends AbstractEntity {
 
     @ElementCollection
     @CollectionTable(name = "menu_meal_price", joinColumns = @JoinColumn(name = "menu_id"))
-    private Set<MealPrice> mealPrice = new LinkedHashSet<>();
+//    @OrderBy("meal.name")
+    private Set<MealPrice> mealPrice = new HashSet<>();
 }
