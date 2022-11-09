@@ -19,7 +19,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     Menu findMenuByIdWithMealPrices(@Param("id") long id);
 
     @Query("select m from Menu m " +
-            "   join fetch m.restaurant left join fetch m.mealPrice" +
+            "   join fetch m.restaurant" +
             "   where m.dateOfMenu = :date" +
             "   order by m.dateOfMenu desc ")
     List<Menu> findMenusByDate(@Param("date") LocalDate date);

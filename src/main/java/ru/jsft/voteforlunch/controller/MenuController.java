@@ -34,22 +34,17 @@ public class MenuController {
         this.listMapper = listMapper;
     }
 
-    @GetMapping("/date")
-    public LocalDate getDate() {
-        return LocalDate.now();
-    }
-
     @GetMapping
-    public List<MenuListDto> getAll(
+    public ResponseEntity<List<MenuListDto>> getAll(
             @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         List<Menu> resultList = (date == null) ? service.getAll() : service.getByDate(date);
-        return resultList.stream()
+        return ResponseEntity.ok(resultList.stream()
                 .map(listMapper::toDto)
                 .sorted(Comparator.comparing(MenuListDto::getDateOfMenu)
                         .reversed()
                         .thenComparing(MenuListDto::getRestaurantName))
-                .toList();
+                .toList());
     }
 
     @GetMapping("/{id}")
