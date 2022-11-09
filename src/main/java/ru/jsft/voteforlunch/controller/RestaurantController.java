@@ -26,6 +26,7 @@ public class RestaurantController {
 
     @GetMapping
     public List<Restaurant> getAll() {
+        // TODO results not converted to DTO
         return service.getAll();
     }
 

@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.VoteDto;
@@ -36,7 +37,7 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity<VoteDto> create(@Valid @RequestBody VoteDto voteDto) {
-        return ResponseEntity.ok(mapper.toDto(service.create(mapper.toEntity(voteDto))));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.toEntity(voteDto))));
     }
 
     @DeleteMapping(path = "/{id}")

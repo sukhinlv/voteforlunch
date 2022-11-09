@@ -1,45 +1,52 @@
 package ru.jsft.voteforlunch.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.jsft.voteforlunch.controller.dto.MealDto;
+import ru.jsft.voteforlunch.controller.mapper.impl.MealMapper;
 import ru.jsft.voteforlunch.model.Meal;
-import ru.jsft.voteforlunch.repository.MealRepository;
+import ru.jsft.voteforlunch.service.MealService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/meals")
 public class MealController {
 
-    private final MealRepository repository;
+    private final MealService service;
 
-    public MealController(MealRepository repository) {
-        this.repository = repository;
+    private final MealMapper mapper;
+
+    public MealController(MealService service, MealMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public List<Meal> getMeals() {
-        return repository.findAll();
+    public List<Meal> getAll() {
+        // TODO results not converted to DTO
+        return service.getAll();
     }
 
-    @GetMapping("/{mealId}")
-    public Meal getMealById(@PathVariable Long mealId) {
-        return repository.findById(mealId).orElse(null);
+    @GetMapping("/{id}")
+    public ResponseEntity<MealDto> get(@PathVariable Long id) {
+        return ResponseEntity.ok(mapper.toDto(service.get(id)));
     }
 
     @PostMapping
-    public Meal createNewMeal(@RequestBody Meal meal) {
-        return repository.save(meal);
+    public ResponseEntity<MealDto> create(@Valid @RequestBody MealDto mealDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.toEntity(mealDto))));
     }
 
-    @DeleteMapping(path = "/{mealId}")
-    public void deleteMeal(@PathVariable Long mealId) {
-        repository.deleteById(mealId);
+    @DeleteMapping(path = "/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 
-    @PutMapping(path = "/{mealId}")
-    public Meal updateMeal(@PathVariable Long mealId, @RequestParam String name) {
-        Meal meal = new Meal();
-        meal.setId(mealId);
-        return repository.save(meal);
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<MealDto> update(@PathVariable Long id, @Valid @RequestBody MealDto mealDto) {
+        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(mealDto))));
     }
 }
