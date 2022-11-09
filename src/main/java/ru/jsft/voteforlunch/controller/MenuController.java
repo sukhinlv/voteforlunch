@@ -6,12 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.MenuDto;
+import ru.jsft.voteforlunch.controller.dto.MenuListDto;
+import ru.jsft.voteforlunch.controller.mapper.impl.MenuListMapper;
 import ru.jsft.voteforlunch.controller.mapper.impl.MenuMapper;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -23,9 +26,12 @@ public class MenuController {
 
     private final MenuMapper mapper;
 
-    public MenuController(MenuService service, MenuMapper mapper) {
+    private final MenuListMapper listMapper;
+
+    public MenuController(MenuService service, MenuMapper mapper, MenuListMapper listMapper) {
         this.service = service;
         this.mapper = mapper;
+        this.listMapper = listMapper;
     }
 
     @GetMapping("/date")
@@ -34,11 +40,16 @@ public class MenuController {
     }
 
     @GetMapping
-    public List<MenuDto> getAll(
+    public List<MenuListDto> getAll(
             @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
         List<Menu> resultList = (date == null) ? service.getAll() : service.getByDate(date);
-        return resultList.stream().map(mapper::toDto).toList();
+        return resultList.stream()
+                .map(listMapper::toDto)
+                .sorted(Comparator.comparing(MenuListDto::getDateOfMenu)
+                        .reversed()
+                        .thenComparing(MenuListDto::getRestaurantName))
+                .toList();
     }
 
     @GetMapping("/{id}")

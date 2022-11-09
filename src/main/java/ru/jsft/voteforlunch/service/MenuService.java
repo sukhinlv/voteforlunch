@@ -1,7 +1,6 @@
 package ru.jsft.voteforlunch.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Menu;
@@ -34,7 +33,7 @@ public class MenuService {
 
     public List<Menu> getAll() {
         log.info("Get all menus");
-        return repository.findAll(Sort.by("name"));
+        return repository.findAllWithRestaurants();
     }
 
     public Menu create(Menu menu) {
