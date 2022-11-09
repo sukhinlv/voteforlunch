@@ -11,10 +11,11 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table
 @ToString(callSuper = true)
-@Embeddable
-public class MealPrice {
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+public class MealPrice extends AbstractEntity {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "meal_id", nullable = false)
     private Meal meal;
 

@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "vote", uniqueConstraints = {
+@Table(uniqueConstraints = {
         @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"user_id", "vote_date"})
 })
 public class Vote extends AbstractEntity {

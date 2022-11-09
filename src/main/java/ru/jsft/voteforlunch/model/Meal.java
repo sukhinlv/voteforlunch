@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Entity
-@Table(name = "meal")
+@Table
 @ToString(callSuper = true)
 public class Meal extends AbstractEntity {
     @NotBlank(message = "The meal must have a name")

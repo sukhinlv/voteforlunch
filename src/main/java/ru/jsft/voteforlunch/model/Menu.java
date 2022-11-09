@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "menu", uniqueConstraints = {
+@Table(uniqueConstraints = {
         @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
 })
 public class Menu extends AbstractEntity {
@@ -29,8 +29,7 @@ public class Menu extends AbstractEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @ElementCollection
-    @CollectionTable(name = "menu_meal_price", joinColumns = @JoinColumn(name = "menu_id"))
-//    @OrderBy("meal.name")
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "mealPriceId")
     private Set<MealPrice> mealPrice = new HashSet<>();
 }
