@@ -12,16 +12,22 @@
 
     <groupId>ru.jsft</groupId>
     <artifactId>voteforlunch</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>voteforlunch</name>
-    <description>voteforlunch</description>
+    <version>1.0</version>
+    <name>Vote for lunch</name>
+    <description>Voting system for deciding where to have lunch</description>
 
     <properties>
         <java.version>17</java.version>
-        <!--        <springdoc.version>1.6.12</springdoc.version>-->
+
+        <!-- Swagger -->
+        <springdoc.version>1.6.12</springdoc.version>
+
+        <!-- Object mapping -->
         <jackson-datatype-hibernate5.version>2.13.4</jackson-datatype-hibernate5.version>
-        <jsoup.version>1.15.3</jsoup.version>
         <modelmapper.version>3.1.0</modelmapper.version>
+
+        <!-- Util -->
+        <jsoup.version>1.15.3</jsoup.version>
     </properties>
 
     <dependencies>

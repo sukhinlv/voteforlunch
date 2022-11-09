@@ -1,9 +1,6 @@
 package ru.jsft.voteforlunch.controller.mapper;
 
-import ru.jsft.voteforlunch.controller.dto.AbstractDto;
-import ru.jsft.voteforlunch.model.AbstractEntity;
-
-public interface Mapper<E extends AbstractEntity, D extends AbstractDto> {
+public interface Mapper<E, D> {
 
     E toEntity(D dto);
 
