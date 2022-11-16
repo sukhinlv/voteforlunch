@@ -5,7 +5,6 @@ import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
@@ -13,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Entity
-@Table
 @ToString(callSuper = true)
 public class Restaurant extends AbstractEntity {
     @NotBlank(message = "The restaurant must have a name")

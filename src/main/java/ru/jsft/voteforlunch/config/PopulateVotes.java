@@ -48,23 +48,23 @@ public class PopulateVotes {
             Menu menuForCherry1 = new Menu();
             menuForCherry1.setDateOfMenu(nowMinusTwoDays);
             menuForCherry1.setRestaurant(cherryRestaurant);
-            menuForCherry1.getMealPrice().add(mealPriceRepository.save(new MealPrice(tea, 10)));
-            menuForCherry1.getMealPrice().add(mealPriceRepository.save(new MealPrice(bread, 15)));
+            menuForCherry1.getMealPrice().add(new MealPrice(tea, 10));
+            menuForCherry1.getMealPrice().add(new MealPrice(bread, 15));
             Menu menuForCherry2 = new Menu();
             menuForCherry2.setDateOfMenu(nowMinusOneDay);
             menuForCherry2.setRestaurant(cherryRestaurant);
-            menuForCherry2.getMealPrice().add(mealPriceRepository.save(new MealPrice(soup, 25)));
-            menuForCherry2.getMealPrice().add(mealPriceRepository.save(new MealPrice(bread, 15)));
+            menuForCherry2.getMealPrice().add(new MealPrice(soup, 25));
+            menuForCherry2.getMealPrice().add(new MealPrice(bread, 15));
             Menu menuForAisha1 = new Menu();
             menuForAisha1.setDateOfMenu(nowMinusTwoDays);
             menuForAisha1.setRestaurant(aishaRestaurant);
-            menuForAisha1.getMealPrice().add(mealPriceRepository.save(new MealPrice(tea, 10)));
-            menuForAisha1.getMealPrice().add(mealPriceRepository.save(new MealPrice(pasta, 30)));
+            menuForAisha1.getMealPrice().add(new MealPrice(tea, 10));
+            menuForAisha1.getMealPrice().add(new MealPrice(pasta, 30));
             Menu menuForAisha2 = new Menu();
             menuForAisha2.setDateOfMenu(nowMinusOneDay);
             menuForAisha2.setRestaurant(aishaRestaurant);
-            menuForAisha2.getMealPrice().add(mealPriceRepository.save(new MealPrice(tea, 10)));
-            menuForAisha2.getMealPrice().add(mealPriceRepository.save(new MealPrice(omelet, 20)));
+            menuForAisha2.getMealPrice().add(new MealPrice(tea, 10));
+            menuForAisha2.getMealPrice().add(new MealPrice(omelet, 20));
             menuRepository.saveAll(List.of(menuForCherry1, menuForCherry2, menuForAisha1, menuForAisha2));
 
             voteRepository.saveAll(List.of(

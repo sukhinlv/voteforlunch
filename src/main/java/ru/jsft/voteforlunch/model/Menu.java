@@ -29,7 +29,7 @@ public class Menu extends AbstractEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "mealPriceId")
     private Set<MealPrice> mealPrice = new HashSet<>();
 }

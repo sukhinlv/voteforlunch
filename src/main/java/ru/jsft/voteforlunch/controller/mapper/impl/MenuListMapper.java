@@ -10,7 +10,7 @@ public class MenuListMapper implements Mapper<Menu, MenuListDto> {
 
     @Override
     public Menu toEntity(MenuListDto dto) {
-        throw new UnsupportedOperationException("Convert MenuListDto to Menu ia not supported");
+        throw new UnsupportedOperationException("Convert MenuListDto to Menu is not supported");
     }
 
     @Override

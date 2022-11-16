@@ -12,7 +12,6 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @Entity
-@Table
 @ToString(callSuper = true)
 public class MealPrice extends AbstractEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

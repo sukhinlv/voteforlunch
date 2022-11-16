@@ -28,4 +28,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "   join fetch m.restaurant" +
             "   order by m.dateOfMenu desc ")
     List<Menu> findAllWithRestaurants();
+
+    List<Menu> findAllByRestaurantId(long id);
 }

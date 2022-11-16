@@ -1,7 +1,6 @@
 package ru.jsft.voteforlunch.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,17 +25,13 @@ class MealControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @Disabled
     void itShouldCreateMeal() throws Exception {
-        // Given
         Meal meal = new Meal("Some test meal");
 
-        // When 
         ResultActions performCreateNewMeal = mockMvc.perform(post("/api/v1/meals")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(objectToJson(meal))));
 
-        // Then
         performCreateNewMeal.andExpect(status().isCreated());
 
         String jsonResponse = performCreateNewMeal.andReturn().getResponse().getContentAsString();
