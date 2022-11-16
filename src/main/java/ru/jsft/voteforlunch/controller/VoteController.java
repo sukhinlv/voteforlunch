@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.controller.mapper.impl.VoteMapper;
-import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.service.VoteService;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -25,9 +25,14 @@ public class VoteController {
     }
 
     @GetMapping
-    public List<Vote> getAll() {
-        // TODO results not converted to DTO
-        return service.getAll();
+    public ResponseEntity<List<VoteDto>> getAll() {
+        return ResponseEntity.ok(service.getAll().stream()
+                .map(mapper::toDto)
+                .sorted(Comparator.comparing(VoteDto::getVoteDate)
+                        .thenComparing(VoteDto::getVoteTime)
+                        .reversed())
+                .toList()
+        );
     }
 
     @GetMapping("/{id}")
@@ -41,6 +46,7 @@ public class VoteController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         service.delete(id);
     }
