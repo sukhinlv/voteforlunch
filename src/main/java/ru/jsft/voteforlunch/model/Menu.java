@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -25,11 +26,23 @@ public class Menu extends AbstractEntity {
     private LocalDate dateOfMenu;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, optional = false)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "mealPriceId")
-    private Set<MealPrice> mealPrice = new HashSet<>();
+    @NotNull
+    @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<MealPrice> mealPrice = new java.util.LinkedHashSet<>();
+
+    public MealPrice addMealPrice(MealPrice mealPrice) {
+        this.mealPrice.add(mealPrice);
+        mealPrice.setMenu(this);
+        return mealPrice;
+    }
+
+    public void removeMealPrice(MealPrice mealPrice) {
+        this.mealPrice.remove(mealPrice);
+        mealPrice.setMenu(null);
+    }
 }

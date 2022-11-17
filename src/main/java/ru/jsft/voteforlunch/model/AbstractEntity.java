@@ -13,7 +13,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public abstract class AbstractEntity implements Persistable<Long> {
 
     @Id
@@ -35,6 +34,6 @@ public abstract class AbstractEntity implements Persistable<Long> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return 31;
     }
 }
