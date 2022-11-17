@@ -75,9 +75,9 @@ public class PopulateVotes {
             ));
             menuRepository.saveAll(List.of(menuForCherry1, menuForCherry2, menuForAisha1, menuForAisha2));
 
-            cherryRestaurant.setMenus(List.of(menuForCherry1, menuForCherry2));
-            aishaRestaurant.setMenus(List.of(menuForAisha1, menuForAisha2));
-            restaurantRepository.saveAll(List.of(cherryRestaurant, aishaRestaurant));
+//            cherryRestaurant.setMenus(List.of(menuForCherry1, menuForCherry2));
+//            aishaRestaurant.setMenus(List.of(menuForAisha1, menuForAisha2));
+//            restaurantRepository.saveAll(List.of(cherryRestaurant, aishaRestaurant));
 
             voteRepository.saveAll(List.of(
                     new Vote(admin, cherryRestaurant, nowMinusTwoDays, LocalTime.of(9, 30)),
