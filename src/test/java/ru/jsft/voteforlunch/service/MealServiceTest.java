@@ -11,7 +11,6 @@ import ru.jsft.voteforlunch.model.Meal;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SuppressWarnings("ConstantConditions")
 class MealServiceTest extends AbstractSpringBootTest {
 
     @Autowired
