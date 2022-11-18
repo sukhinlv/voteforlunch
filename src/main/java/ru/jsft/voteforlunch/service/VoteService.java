@@ -28,7 +28,7 @@ public class VoteService {
     private final Clock clock;
 
     @Value("${vote.time.constraint}")
-    LocalTime timeConstraint;
+    private final LocalTime timeConstraint;
 
     public List<Vote> getAll() {
         log.info("Get all votes");
@@ -60,14 +60,14 @@ public class VoteService {
             vote.setVoteDate(LocalDate.now(clock));
             vote.setVoteTime(LocalTime.now(clock));
             vote = repository.save(vote);
-            log.info("Vote saved. RestaurantID = {}, UserId = {}", vote.getRestaurant().getId(), userId);
+            log.info("Vote saved. RestaurantID = {}, UserId = {}", restaurantId, userId);
         } else {
             vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
             vote.setVoteTime(LocalTime.now(clock));
             vote = repository.save(vote);
-            log.info("Vote updated. RestaurantID = {}, UserId = {}", vote.getRestaurant().getId(), userId);
+            log.info("Vote updated. RestaurantID = {}, UserId = {}", restaurantId, userId);
         }
-        return get(vote.getId(), userId);
+        return vote;
     }
 
     @Transactional

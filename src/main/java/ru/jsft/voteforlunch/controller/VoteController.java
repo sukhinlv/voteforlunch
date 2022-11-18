@@ -55,6 +55,7 @@ public class VoteController {
     @PostMapping(path = "/{restaurantId}")
     public ResponseEntity<VoteDto> save(@PathVariable long restaurantId) {
         Vote entity = service.save(restaurantId, SecurityUtil.authenticatedUser.getId());
+        entity = service.get(entity.getId(), SecurityUtil.authenticatedUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(entity));
     }
 
