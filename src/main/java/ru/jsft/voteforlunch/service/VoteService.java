@@ -1,63 +1,86 @@
 package ru.jsft.voteforlunch.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.repository.RestaurantRepository;
+import ru.jsft.voteforlunch.repository.UserRepository;
 import ru.jsft.voteforlunch.repository.VoteRepository;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class VoteService {
 
     private final VoteRepository repository;
+    private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final Clock clock;
 
     @Value("${vote.time.constraint}")
     LocalTime timeConstraint;
 
-    public VoteService(VoteRepository repository) {
-        this.repository = repository;
-    }
-
-    public Vote get(long id) {
-        log.info("Get vote with id={}", id);
-        return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Vote with id=%d not found", id))));
-    }
-
     public List<Vote> getAll() {
         log.info("Get all votes");
-        return repository.findAllSorted();
+        return repository.findAll();
     }
 
-    public Vote create(Vote vote) {
-        if (!vote.isNew()) {
-            throw new IllegalArgumentException("Vote must be new");
+    public Vote get(long id, long userId) {
+        log.info("Get vote with id = {}, userId = {}", id, userId);
+        return repository.findByIdAndUserId(id, userId);
+    }
+
+    public List<Vote> getAllForUser(long userId) {
+        log.info("Get all votes for userId = {}", userId);
+        return repository.findAllForUser(userId);
+    }
+
+    @Transactional
+    public Vote save(long restaurantId, long userId) {
+        log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
+        if (LocalTime.now(clock).isAfter(timeConstraint)) {
+            throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
         }
 
-        log.info("Create vote: {}", vote);
-        return repository.save(vote);
-    }
-
-    public void delete(long id) {
-        log.info("Delete vote with id={}", id);
-        repository.deleteById(id);
-    }
-
-    public Vote update(long id, Vote vote) {
-        Optional<Vote> voteOptional = repository.findById(id);
-
-        if (voteOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Vote with id=%d not found", id));
+        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
+        if (vote == null) {
+            vote = new Vote();
+            vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
+            vote.setUser(userRepository.getReferenceById(userId));
+            vote.setVoteDate(LocalDate.now(clock));
+            vote.setVoteTime(LocalTime.now(clock));
+            vote = repository.save(vote);
+            log.info("Vote saved. RestaurantID = {}, UserId = {}", vote.getRestaurant().getId(), userId);
+        } else {
+            vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
+            vote.setVoteTime(LocalTime.now(clock));
+            vote = repository.save(vote);
+            log.info("Vote updated. RestaurantID = {}, UserId = {}", vote.getRestaurant().getId(), userId);
         }
+        return get(vote.getId(), userId);
+    }
 
-        log.info("Update vote with id={}", vote.getId());
-        vote.setId(id);
-        return repository.save(vote);
+    @Transactional
+    public void delete(long userId) {
+        log.info("Try to delete vote of userId={}", userId);
+        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
+        if (vote == null) {
+            throw new NotFoundException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock)));
+        }
+        if (!vote.getVoteDate().isEqual(LocalDate.now(clock)) || LocalTime.now(clock).isAfter(timeConstraint)) {
+            throw new VoteTimeConstraintException(String.format("You can only delete today's vote and only up to %s", timeConstraint));
+        }
+        repository.deleteById(vote.getId());
+        log.info("Vote deleted. userId={}", userId);
     }
 }

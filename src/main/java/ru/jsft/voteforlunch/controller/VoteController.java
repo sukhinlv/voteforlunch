@@ -4,10 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.VoteDto;
-import ru.jsft.voteforlunch.controller.mapper.impl.VoteMapper;
+import ru.jsft.voteforlunch.controller.mapper.VoteMapper;
+import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.service.VoteService;
+import ru.jsft.voteforlunch.web.security.SecurityUtil;
 
-import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class VoteController {
         this.mapper = mapper;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<VoteDto>> getAll() {
         return ResponseEntity.ok(service.getAll().stream()
                 .map(mapper::toDto)
@@ -35,24 +36,31 @@ public class VoteController {
         );
     }
 
+    @GetMapping
+    public ResponseEntity<List<VoteDto>> getAllForUser() {
+        return ResponseEntity.ok(service.getAllForUser(SecurityUtil.authenticatedUser.getId()).stream()
+                .map(mapper::toDto)
+                .sorted(Comparator.comparing(VoteDto::getVoteDate)
+                        .thenComparing(VoteDto::getVoteTime)
+                        .reversed())
+                .toList()
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> get(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.get(id)));
+        return ResponseEntity.ok(mapper.toDto(service.get(id, SecurityUtil.authenticatedUser.getId())));
     }
 
-    @PostMapping
-    public ResponseEntity<VoteDto> create(@Valid @RequestBody VoteDto voteDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.toEntity(voteDto))));
+    @PostMapping(path = "/{restaurantId}")
+    public ResponseEntity<VoteDto> save(@PathVariable long restaurantId) {
+        Vote entity = service.save(restaurantId, SecurityUtil.authenticatedUser.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(entity));
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
-        service.delete(id);
-    }
-
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<VoteDto> update(@PathVariable long id, @Valid @RequestBody VoteDto voteDto) {
-        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(voteDto))));
+    public void delete() {
+        service.delete(SecurityUtil.authenticatedUser.getId());
     }
 }

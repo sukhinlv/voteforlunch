@@ -19,11 +19,11 @@ import java.time.LocalTime;
 public class VoteDto extends AbstractDto {
 
     @NotNull
-    private Long userId;
-    @NotNull
-    private Long restaurantId;
+    private RestaurantDto restaurant;
+
     @NotNull
     private LocalDate voteDate;
+
     @NotNull
     private LocalTime voteTime;
 }
