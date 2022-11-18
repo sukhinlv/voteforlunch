@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.MealDto;
-import ru.jsft.voteforlunch.controller.mapper.impl.MealMapper;
+import ru.jsft.voteforlunch.controller.mapper.MealMapper;
 import ru.jsft.voteforlunch.service.MealService;
 
 import javax.validation.Valid;

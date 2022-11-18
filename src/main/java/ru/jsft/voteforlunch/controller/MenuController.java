@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.MenuDto;
 import ru.jsft.voteforlunch.controller.dto.MenuListDto;
-import ru.jsft.voteforlunch.controller.mapper.impl.MenuListMapper;
-import ru.jsft.voteforlunch.controller.mapper.impl.MenuMapper;
+import ru.jsft.voteforlunch.controller.mapper.MenuListMapper;
+import ru.jsft.voteforlunch.controller.mapper.MenuMapper;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
 

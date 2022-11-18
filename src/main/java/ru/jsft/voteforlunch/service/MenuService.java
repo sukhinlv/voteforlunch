@@ -22,18 +22,17 @@ public class MenuService {
 
     public Menu get(long id) {
         log.info("Get menu with id={}", id);
-        return repository.findMenuByIdWithMealPrices(id);
-//        return repository.findById(id)
-//                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id=%d not found", id))));
+        return repository.findById(id)
+                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id=%d not found", id))));
     }
 
     public List<Menu> getByDate(LocalDate date) {
-        return repository.findMenusByDate(date);
+        return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
 
     public List<Menu> getAll() {
         log.info("Get all menus");
-        return repository.findAllWithRestaurants();
+        return repository.findAll();
     }
 
     public Menu create(Menu menu) {

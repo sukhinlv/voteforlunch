@@ -4,26 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ru.jsft.voteforlunch.model.Menu;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.Set;
+import javax.validation.constraints.Positive;
 
 /**
- * A DTO for the {@link Menu} entity
+ * A DTO for the {@link ru.jsft.voteforlunch.model.MealPrice} entity
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MenuDto extends AbstractDto {
+public class MealPriceDto extends AbstractDto {
+
+    private MealDto meal;
 
     @NotNull
-    private LocalDate dateOfMenu;
+    @Positive
+    private Integer price;
 
     @NotNull
-    private RestaurantDto restaurant;
-
-    private Set<MealPriceDto> mealPrice;
+    private MenuDto menu;
 }

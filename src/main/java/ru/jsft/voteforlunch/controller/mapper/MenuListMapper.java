@@ -1,8 +1,7 @@
-package ru.jsft.voteforlunch.controller.mapper.impl;
+package ru.jsft.voteforlunch.controller.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.controller.dto.MenuListDto;
-import ru.jsft.voteforlunch.controller.mapper.Mapper;
 import ru.jsft.voteforlunch.model.Menu;
 
 @Component

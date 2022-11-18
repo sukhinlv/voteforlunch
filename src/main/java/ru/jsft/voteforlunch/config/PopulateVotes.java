@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.*;
 import ru.jsft.voteforlunch.repository.*;
+import ru.jsft.voteforlunch.web.security.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -37,9 +38,9 @@ public class PopulateVotes {
             restaurantRepository.saveAll(List.of(cherryRestaurant, aishaRestaurant));
 
             User admin = new User("admin", "admin", "admin@ya.ru", true,
-                    LocalDate.of(2022, 10, 15), Collections.singleton(Role.ADMIN), List.of());
+                    LocalDate.of(2022, 10, 15), Collections.singleton(Role.ADMIN));
             User user = new User("user", "user", "user@gmail.com", true,
-                    LocalDate.of(2022, 10, 20), Collections.singleton(Role.USER), List.of());
+                    LocalDate.of(2022, 10, 20), Collections.singleton(Role.USER));
             userRepository.saveAll(List.of(admin, user));
 
             LocalDate nowMinusTwoDays = LocalDate.now().minusDays(2);
@@ -75,16 +76,14 @@ public class PopulateVotes {
             ));
             menuRepository.saveAll(List.of(menuForCherry1, menuForCherry2, menuForAisha1, menuForAisha2));
 
-//            cherryRestaurant.setMenus(List.of(menuForCherry1, menuForCherry2));
-//            aishaRestaurant.setMenus(List.of(menuForAisha1, menuForAisha2));
-//            restaurantRepository.saveAll(List.of(cherryRestaurant, aishaRestaurant));
-
             voteRepository.saveAll(List.of(
                     new Vote(admin, cherryRestaurant, nowMinusTwoDays, LocalTime.of(9, 30)),
                     new Vote(admin, cherryRestaurant, nowMinusOneDay, LocalTime.of(10, 15)),
                     new Vote(user, cherryRestaurant, nowMinusTwoDays, LocalTime.of(10, 45)),
                     new Vote(user, aishaRestaurant, nowMinusOneDay, LocalTime.of(10, 0))
             ));
+
+            SecurityUtil.authenticatedUser = admin;
         };
     }
 }
