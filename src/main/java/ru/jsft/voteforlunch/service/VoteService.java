@@ -1,6 +1,5 @@
 package ru.jsft.voteforlunch.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,16 +18,26 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class VoteService {
 
     private final VoteRepository repository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final Clock clock;
+    private final LocalTime timeConstraint;
 
-    @Value("${vote.time.constraint}")
-    private LocalTime timeConstraint;
+    public VoteService(VoteRepository repository,
+                       UserRepository userRepository,
+                       RestaurantRepository restaurantRepository,
+                       Clock clock,
+                       @Value("${vote.time.constraint}") LocalTime timeConstraint) {
+
+        this.repository = repository;
+        this.userRepository = userRepository;
+        this.restaurantRepository = restaurantRepository;
+        this.clock = clock;
+        this.timeConstraint = timeConstraint;
+    }
 
     public List<Vote> getAll() {
         log.info("Get all votes");

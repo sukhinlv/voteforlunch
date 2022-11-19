@@ -18,6 +18,6 @@ public class AppConfig {
 
     @Bean
     public Clock clock() {
-        return Clock.systemUTC();
+        return Clock.systemDefaultZone();
     }
 }
