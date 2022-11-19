@@ -73,12 +73,12 @@ public class VoteService {
     @Transactional
     public void delete(long userId) {
         log.info("Try to delete vote of userId={}", userId);
+        if (LocalTime.now(clock).isAfter(timeConstraint)) {
+            throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
+        }
         Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
         if (vote == null) {
             throw new NotFoundException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock)));
-        }
-        if (!vote.getVoteDate().isEqual(LocalDate.now(clock)) || LocalTime.now(clock).isAfter(timeConstraint)) {
-            throw new VoteTimeConstraintException(String.format("You can only delete today's vote and only up to %s", timeConstraint));
         }
         repository.deleteById(vote.getId());
         log.info("Vote deleted. userId={}", userId);
