@@ -28,7 +28,7 @@ public class VoteService {
     private final Clock clock;
 
     @Value("${vote.time.constraint}")
-    private final LocalTime timeConstraint;
+    private LocalTime timeConstraint;
 
     public List<Vote> getAll() {
         log.info("Get all votes");

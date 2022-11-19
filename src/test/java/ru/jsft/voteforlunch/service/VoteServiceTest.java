@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Restaurant;
@@ -30,7 +31,8 @@ class VoteServiceTest {
             2022, 11, 15, 9, 30, 0, 0,
             ZoneId.of("GMT"));
 
-    private static final LocalTime timeConstraint = LocalTime.of(11, 0);
+    @Value("${vote.time.constraint}")
+    private LocalTime timeConstraint;
 
     private VoteService underTest;
 
@@ -54,7 +56,7 @@ class VoteServiceTest {
         MockitoAnnotations.openMocks(this);
         when(clock.getZone()).thenReturn(NOW.getZone());
         when(clock.instant()).thenReturn(NOW.toInstant());
-        underTest = new VoteService(voteRepository, userRepository, restaurantRepository, clock, timeConstraint);
+        underTest = new VoteService(voteRepository, userRepository, restaurantRepository, clock);
     }
 
     @Nested
