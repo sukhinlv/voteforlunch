@@ -21,9 +21,9 @@ public class RestaurantService {
     }
 
     public Restaurant get(long id) {
-        log.info("Get restaurant with id={}", id);
+        log.info("Get restaurant with id = {}", id);
         return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Restaurant with id=%d not found", id))));
+                .orElseThrow(() -> (new NotFoundException(String.format("Restaurant with id = %d not found", id))));
     }
 
     public List<Restaurant> getAll() {
@@ -41,7 +41,7 @@ public class RestaurantService {
     }
 
     public void delete(long id) {
-        log.info("Delete restaurant with id={}", id);
+        log.info("Delete restaurant with id = {}", id);
         repository.deleteById(id);
     }
 
@@ -49,10 +49,10 @@ public class RestaurantService {
         Optional<Restaurant> restaurantOptional = repository.findById(id);
 
         if (restaurantOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Restaurant with id=%d not found", id));
+            throw new NotFoundException(String.format("Restaurant with id = %d not found", id));
         }
 
-        log.info("Update restaurant with id={}", restaurant.getId());
+        log.info("Update restaurant with id = {}", restaurant.getId());
         restaurant.setId(id);
         return repository.save(restaurant);
     }

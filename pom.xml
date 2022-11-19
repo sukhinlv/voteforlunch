@@ -30,7 +30,6 @@
         <jsoup.version>1.15.3</jsoup.version>
 
         <!-- Tests -->
-        <javafaker.version>1.0.2</javafaker.version>
         <instancio.version>1.5.4</instancio.version>
     </properties>
 
@@ -133,12 +132,6 @@
             <groupId>org.instancio</groupId>
             <artifactId>instancio-junit</artifactId>
             <version>${instancio.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${javafaker.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

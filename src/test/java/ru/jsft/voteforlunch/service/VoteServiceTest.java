@@ -47,7 +47,7 @@ class VoteServiceTest {
     ArgumentCaptor<Vote> voteCaptor;
 
     @Captor
-    ArgumentCaptor<Long> voteIdCaptor;
+    ArgumentCaptor<Long> idCaptor;
 
     @BeforeEach
     void setUp() {
@@ -179,8 +179,8 @@ class VoteServiceTest {
 
             underTest.delete(userId);
 
-            then(voteRepository).should().deleteById(voteIdCaptor.capture());
-            assertThat(voteIdCaptor.getValue()).isEqualTo(vote.getId());
+            then(voteRepository).should().deleteById(idCaptor.capture());
+            assertThat(idCaptor.getValue()).isEqualTo(vote.getId());
         }
 
         @Test

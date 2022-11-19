@@ -1,101 +1,138 @@
 package ru.jsft.voteforlunch.service;
 
-import com.github.javafaker.Faker;
+import org.instancio.Instancio;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import ru.jsft.voteforlunch.AbstractSpringBootTest;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Restaurant;
+import ru.jsft.voteforlunch.repository.RestaurantRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.when;
 
-@SuppressWarnings("ConstantConditions")
-class RestaurantServiceTest extends AbstractSpringBootTest {
+class RestaurantServiceTest {
 
-    @Autowired
-    private RestaurantService serviceUnderTest;
+    private RestaurantService underTest;
 
-    private final Faker faker = new Faker();
+    @Mock
+    private RestaurantRepository repository;
 
-    @Test
-    void shouldGet() {
-        Restaurant restaurant = new Restaurant(faker.name().name());
+    @Captor
+    ArgumentCaptor<Restaurant> restaurantCaptor;
 
-        Restaurant getRestaurant = serviceUnderTest.get(serviceUnderTest.create(restaurant).getId());
+    @Captor
+    ArgumentCaptor<Long> idCaptor;
 
-        assertThat(getRestaurant)
-                .isNotNull()
-                .usingRecursiveComparison().ignoringFields("id").isEqualTo(restaurant);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        underTest = new RestaurantService(repository);
     }
 
-    @Test
-    void shouldThrowWhenGetNotExisted() {
-        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
+    @Nested
+    class GetRestaurants {
+        @Test
+        void shouldGet() {
+            Restaurant expectedRestaurant = Instancio.create(Restaurant.class);
+            when(repository.findById(expectedRestaurant.getId())).thenReturn(Optional.of(expectedRestaurant));
 
-        serviceUnderTest.delete(id);
+            Restaurant actualRestaurant = underTest.get(expectedRestaurant.getId());
 
-        assertThatThrownBy(() -> serviceUnderTest.get(id))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining(String.format("Restaurant with id=%d not found", id));
+            assertThat(actualRestaurant)
+                    .isNotNull()
+                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedRestaurant);
+        }
+
+        @Test
+        void shouldThrowWhenGetNotExisted() {
+            when(repository.findById(1L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> underTest.get(1L))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessageContaining(String.format("Restaurant with id = %d not found", 1L));
+        }
+
+        @Test
+        void shouldGetAll() {
+            Restaurant restaurant1 = Instancio.create(Restaurant.class);
+            restaurant1.setName("Zara");
+            Restaurant restaurant2 = Instancio.create(Restaurant.class);
+            restaurant2.setName("Aisha");
+            when(repository.findAll(Sort.by("name"))).thenReturn(List.of(restaurant2, restaurant1));
+
+            assertThat(underTest.getAll()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(restaurant2, restaurant1));
+        }
     }
 
-    @Test
-    void shouldCreate() {
-        Restaurant restaurant = new Restaurant(faker.name().name());
+    @Nested
+    class CreateRestaurant {
+        @Test
+        void shouldCreate() {
+            Restaurant restaurant = Instancio.create(Restaurant.class);
+            restaurant.setId(null);
 
-        Restaurant created = serviceUnderTest.create(restaurant);
+            underTest.create(restaurant);
+            then(repository).should().save(restaurantCaptor.capture());
 
-        assertThat(created)
-                .isNotNull()
-                .usingRecursiveComparison().ignoringFields("id").isEqualTo(restaurant);
+            assertThat(restaurantCaptor.getValue())
+                    .isNotNull()
+                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(restaurant);
+        }
+
+        @Test
+        void shouldThrowWhenCreateNotNew() {
+            Restaurant restaurant = Instancio.create(Restaurant.class);
+
+            assertThatThrownBy(() -> underTest.create(restaurant))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Restaurant must be new");
+        }
     }
 
-    @Test
-    void shouldThrowWhenCreateExisted() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
+    @Nested
+    class DeleteRestaurant {
+        @Test
+        void shouldDelete() {
+            underTest.delete(1L);
+            then(repository).should().deleteById(idCaptor.capture());
 
-        assertThatThrownBy(() -> serviceUnderTest.create(restaurant))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Restaurant must be new");
+            assertThat(idCaptor.getValue()).isEqualTo(1L);
+        }
     }
 
-    @Test
-    void shouldDelete() {
-        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
-        serviceUnderTest.delete(id);
-    }
+    @Nested
+    class UpdateRestaurant {
+        @Test
+        void shouldUpdate() {
+            Restaurant restaurant = Instancio.create(Restaurant.class);
+            when(repository.findById(restaurant.getId())).thenReturn(Optional.of(restaurant));
 
-    @Test
-    void shouldThrowWhenDeleteNotExisted() {
-        Long id = serviceUnderTest.create(new Restaurant(faker.name().name())).getId();
-        serviceUnderTest.delete(id);
+            Restaurant updatedRestaurant = Instancio.create(Restaurant.class);
+            underTest.update(restaurant.getId(), updatedRestaurant);
+            then(repository).should().save(restaurantCaptor.capture());
 
-        assertThatThrownBy(() -> serviceUnderTest.delete(id))
-                .isInstanceOf(EmptyResultDataAccessException.class);
-    }
+            updatedRestaurant.setId(restaurant.getId());
+            assertThat(restaurantCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedRestaurant);
+        }
 
+        @Test
+        void shouldThrowWhenUpdateWrongId() {
+            when(repository.findById(1L)).thenReturn(Optional.empty());
 
-    @Test
-    void shouldUpdate() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
-
-        restaurant.setName("updated");
-        serviceUnderTest.update(restaurant.getId(), restaurant);
-        Restaurant updated = serviceUnderTest.get(restaurant.getId());
-
-        assertThat(updated).isNotNull().usingRecursiveComparison().isEqualTo(restaurant);
-    }
-
-    @Test
-    void shouldThrowWhenUpdateWrongId() {
-        Restaurant restaurant = serviceUnderTest.create(new Restaurant(faker.name().name()));
-        Long id = restaurant.getId();
-        serviceUnderTest.delete(id);
-
-        assertThatThrownBy(() -> serviceUnderTest.update(id, restaurant))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining(String.format("Restaurant with id=%d not found", id));
+            assertThatThrownBy(() -> underTest.update(1L, new Restaurant()))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessageContaining(String.format("Restaurant with id = %d not found", 1L));
+        }
     }
 }
