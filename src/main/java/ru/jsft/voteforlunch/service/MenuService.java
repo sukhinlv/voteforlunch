@@ -21,9 +21,9 @@ public class MenuService {
     }
 
     public Menu get(long id) {
-        log.info("Get menu with id={}", id);
+        log.info("Get menu with id = {}", id);
         return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id=%d not found", id))));
+                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
     }
 
     public List<Menu> getByDate(LocalDate date) {
@@ -45,7 +45,7 @@ public class MenuService {
     }
 
     public void delete(long id) {
-        log.info("Delete menu with id={}", id);
+        log.info("Delete menu with id = {}", id);
         repository.deleteById(id);
     }
 
@@ -53,10 +53,10 @@ public class MenuService {
         Optional<Menu> menuOptional = repository.findById(id);
 
         if (menuOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Menu with id=%d not found", id));
+            throw new NotFoundException(String.format("Menu with id = %d not found", id));
         }
 
-        log.info("Update menu with id={}", menu.getId());
+        log.info("Update menu with id = {}", menu.getId());
         menu.setId(id);
         return repository.save(menu);
     }
