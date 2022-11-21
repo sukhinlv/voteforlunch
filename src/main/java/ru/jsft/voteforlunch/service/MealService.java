@@ -21,9 +21,9 @@ public class MealService {
     }
 
     public Meal get(long id) {
-        log.info("Get meal with id={}", id);
+        log.info("Get meal with id = {}", id);
         return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Meal with id=%d not found", id))));
+                .orElseThrow(() -> (new NotFoundException(String.format("Meal with id = %d not found", id))));
     }
 
     public List<Meal> getAll() {
@@ -41,7 +41,7 @@ public class MealService {
     }
 
     public void delete(long id) {
-        log.info("Delete meal with id={}", id);
+        log.info("Delete meal with id = {}", id);
         repository.deleteById(id);
     }
 
@@ -49,10 +49,10 @@ public class MealService {
         Optional<Meal> mealOptional = repository.findById(id);
 
         if (mealOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Meal with id=%d not found", id));
+            throw new NotFoundException(String.format("Meal with id = %d not found", id));
         }
 
-        log.info("Update meal with id={}", meal.getId());
+        log.info("Update meal with id = {}", meal.getId());
         meal.setId(id);
         return repository.save(meal);
     }
