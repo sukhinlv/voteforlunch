@@ -3,6 +3,7 @@ package ru.jsft.voteforlunch.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Meal;
 import ru.jsft.voteforlunch.repository.MealRepository;
@@ -20,14 +21,14 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal get(long id) {
-        log.info("Get meal with id = {}", id);
+    public Meal findById(long id) {
+        log.info("Find meal with id = {}", id);
         return repository.findById(id)
                 .orElseThrow(() -> (new NotFoundException(String.format("Meal with id = %d not found", id))));
     }
 
-    public List<Meal> getAll() {
-        log.info("Get all meals");
+    public List<Meal> findAllSorted() {
+        log.info("Find all meals");
         return repository.findAll(Sort.by("name"));
     }
 
@@ -45,6 +46,7 @@ public class MealService {
         repository.deleteById(id);
     }
 
+    @Transactional
     public Meal update(long id, Meal meal) {
         Optional<Meal> mealOptional = repository.findById(id);
 

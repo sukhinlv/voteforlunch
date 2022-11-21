@@ -30,7 +30,7 @@ public class PopulateVotes {
             Meal bread = new Meal("Bread");
             Meal soup = new Meal("Soup");
             Meal pasta = new Meal("Pasta");
-            Meal omelet = new Meal("omelet");
+            Meal omelet = new Meal("Omelet");
             mealRepository.saveAll(List.of(tea, bread, soup, pasta, omelet));
 
             Restaurant cherryRestaurant = new Restaurant("Cherry");

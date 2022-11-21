@@ -47,14 +47,14 @@ class MenuServiceTest {
             Menu menu = Instancio.create(Menu.class);
             when(repository.findById(1L)).thenReturn(Optional.of(menu));
 
-            assertThat(underTest.get(1L)).isNotNull().usingRecursiveComparison().isEqualTo(menu);
+            assertThat(underTest.findByIdWithProps(1L)).isNotNull().usingRecursiveComparison().isEqualTo(menu);
         }
 
         @Test
         void shouldThrowWhenGetNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> underTest.get(1L))
+            assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
         }
@@ -71,7 +71,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu3);
             when(repository.findAllByDateOfMenuOrderByDateOfMenuDesc(dateOfMenu)).thenReturn(menuList);
 
-            assertThat(underTest.getByDate(dateOfMenu))
+            assertThat(underTest.findByDateWithProps(dateOfMenu))
                     .isNotNull()
                     .usingRecursiveComparison()
                     .isEqualTo(menuList);
@@ -85,7 +85,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu2, menu3);
             when(repository.findAll()).thenReturn(menuList);
 
-            assertThat(underTest.getAll())
+            assertThat(underTest.findAll())
                     .isNotNull()
                     .usingRecursiveComparison()
                     .isEqualTo(menuList);

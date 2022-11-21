@@ -38,7 +38,7 @@ public class MenuController {
     public ResponseEntity<List<MenuListDto>> getAll(
             @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
-        List<Menu> resultList = (date == null) ? service.getAll() : service.getByDate(date);
+        List<Menu> resultList = (date == null) ? service.findAllWithRestaurants() : service.findByDateWithProps(date);
         return ResponseEntity.ok(resultList.stream()
                 .map(listMapper::toDto)
                 .sorted(Comparator.comparing(MenuListDto::getDateOfMenu)
@@ -49,7 +49,7 @@ public class MenuController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MenuDto> get(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.get(id)));
+        return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(id)));
     }
 
     @PostMapping

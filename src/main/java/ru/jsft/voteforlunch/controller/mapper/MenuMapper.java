@@ -1,8 +1,10 @@
 package ru.jsft.voteforlunch.controller.mapper;
 
 import org.springframework.stereotype.Component;
+import ru.jsft.voteforlunch.controller.dto.MealPriceDto;
 import ru.jsft.voteforlunch.controller.dto.MenuDto;
 import ru.jsft.voteforlunch.model.Menu;
+import ru.jsft.voteforlunch.service.RestaurantService;
 
 import java.util.stream.Collectors;
 
@@ -11,10 +13,12 @@ public class MenuMapper implements Mapper<Menu, MenuDto> {
 
     private final RestaurantMapper restaurantMapper;
     private final MealPriceMapper mealPriceMapper;
+    private final RestaurantService restaurantService;
 
-    public MenuMapper(RestaurantMapper restaurantMapper, MealPriceMapper mealPriceMapper) {
+    public MenuMapper(RestaurantMapper restaurantMapper, MealPriceMapper mealPriceMapper, RestaurantService restaurantService) {
         this.restaurantMapper = restaurantMapper;
         this.mealPriceMapper = mealPriceMapper;
+        this.restaurantService = restaurantService;
     }
 
     @Override
@@ -22,8 +26,10 @@ public class MenuMapper implements Mapper<Menu, MenuDto> {
         Menu menu = new Menu();
         menu.setId(dto.getId());
         menu.setDateOfMenu(dto.getDateOfMenu());
-        menu.setRestaurant(restaurantMapper.toEntity(dto.getRestaurant()));
-        menu.setMealPrice(dto.getMealPrice().stream().map(mealPriceMapper::toEntity).collect(Collectors.toSet()));
+        menu.setRestaurant(restaurantService.findById(dto.getRestaurant().getId()));
+        for (MealPriceDto mealPriceDto : dto.getMealPrice()) {
+            menu.addMealPrice(mealPriceMapper.toEntity(mealPriceDto));
+        }
         return menu;
     }
 

@@ -26,7 +26,7 @@ public class RestaurantController {
 
     @GetMapping
     public ResponseEntity<List<RestaurantDto>> getAll() {
-        return ResponseEntity.ok(service.getAll().stream()
+        return ResponseEntity.ok(service.findAll().stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(RestaurantDto::getName))
                 .toList()
@@ -35,7 +35,7 @@ public class RestaurantController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RestaurantDto> get(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.get(id)));
+        return ResponseEntity.ok(mapper.toDto(service.findById(id)));
     }
 
     @PostMapping

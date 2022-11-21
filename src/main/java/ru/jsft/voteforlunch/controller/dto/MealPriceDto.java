@@ -17,12 +17,9 @@ import javax.validation.constraints.Positive;
 @EqualsAndHashCode(callSuper = true)
 public class MealPriceDto extends AbstractDto {
 
+    @NotNull
     private MealDto meal;
 
-    @NotNull
     @Positive
-    private Integer price;
-
-    @NotNull
-    private MenuDto menu;
+    private int price;
 }

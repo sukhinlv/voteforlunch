@@ -47,7 +47,7 @@ class RestaurantServiceTest {
             Restaurant expectedRestaurant = Instancio.create(Restaurant.class);
             when(repository.findById(expectedRestaurant.getId())).thenReturn(Optional.of(expectedRestaurant));
 
-            Restaurant actualRestaurant = underTest.get(expectedRestaurant.getId());
+            Restaurant actualRestaurant = underTest.findById(expectedRestaurant.getId());
 
             assertThat(actualRestaurant)
                     .isNotNull()
@@ -58,7 +58,7 @@ class RestaurantServiceTest {
         void shouldThrowWhenGetNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> underTest.get(1L))
+            assertThatThrownBy(() -> underTest.findById(1L))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("Restaurant with id = %d not found", 1L));
         }
@@ -71,7 +71,7 @@ class RestaurantServiceTest {
             restaurant2.setName("Aisha");
             when(repository.findAll(Sort.by("name"))).thenReturn(List.of(restaurant2, restaurant1));
 
-            assertThat(underTest.getAll()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(restaurant2, restaurant1));
+            assertThat(underTest.findAll()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(restaurant2, restaurant1));
         }
     }
 

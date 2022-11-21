@@ -2,6 +2,7 @@ package ru.jsft.voteforlunch.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.repository.MenuRepository;
@@ -20,19 +21,30 @@ public class MenuService {
         this.repository = repository;
     }
 
-    public Menu get(long id) {
-        log.info("Get menu with id = {}", id);
+    public Menu findById(long id) {
+        log.info("Find menu with id = {}", id);
         return repository.findById(id)
                 .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
     }
 
-    public List<Menu> getByDate(LocalDate date) {
+    public Menu findByIdWithProps(long id) {
+        log.info("Find menu (include properties) with id = {}", id);
+        return repository.findByIdWithProps(id)
+                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
+    }
+
+    public List<Menu> findByDateWithProps(LocalDate date) {
         return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
 
-    public List<Menu> getAll() {
-        log.info("Get all menus");
+    public List<Menu> findAll() {
+        log.info("Find all menus");
         return repository.findAll();
+    }
+
+    public List<Menu> findAllWithRestaurants() {
+        log.info("Find all menus with restaurants");
+        return repository.findAllWithRestaurants();
     }
 
     public Menu create(Menu menu) {
@@ -49,6 +61,7 @@ public class MenuService {
         repository.deleteById(id);
     }
 
+    @Transactional
     public Menu update(long id, Menu menu) {
         Optional<Menu> menuOptional = repository.findById(id);
 
