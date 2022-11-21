@@ -9,7 +9,7 @@ import ru.jsft.voteforlunch.repository.MenuRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -19,12 +19,6 @@ public class MenuService {
 
     public MenuService(MenuRepository repository) {
         this.repository = repository;
-    }
-
-    public Menu findById(long id) {
-        log.info("Find menu with id = {}", id);
-        return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
     }
 
     public Menu findByIdWithProps(long id) {
@@ -62,15 +56,16 @@ public class MenuService {
     }
 
     @Transactional
-    public Menu update(long id, Menu menu) {
-        Optional<Menu> menuOptional = repository.findById(id);
+    public Menu update(Menu menu) {
+        if (menu.isNew()) {
+            throw new IllegalArgumentException("Menu must have id");
+        }
 
-        if (menuOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Menu with id = %d not found", id));
+        if (!repository.existsById(Objects.requireNonNull(menu.getId()))) {
+            throw new NotFoundException(String.format("Menu with id = %d not found", menu.getId()));
         }
 
         log.info("Update menu with id = {}", menu.getId());
-        menu.setId(id);
         return repository.save(menu);
     }
 }

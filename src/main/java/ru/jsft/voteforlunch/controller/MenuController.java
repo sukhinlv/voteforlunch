@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/v1/menus")
@@ -63,8 +64,10 @@ public class MenuController {
         service.delete(id);
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<MenuDto> update(@PathVariable long id, @Valid @RequestBody MenuDto menuDto) {
-        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(menuDto))));
+    @PutMapping
+    public ResponseEntity<MenuDto> update(@Valid @RequestBody MenuDto menuDto) {
+        Menu updatedEntity = service.update(mapper.toEntity(menuDto));
+        Long entityId = Objects.requireNonNull(updatedEntity.getId());
+        return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(entityId)));
     }
 }

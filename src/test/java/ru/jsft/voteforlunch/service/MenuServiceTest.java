@@ -45,7 +45,7 @@ class MenuServiceTest {
         @Test
         void shouldGet() {
             Menu menu = Instancio.create(Menu.class);
-            when(repository.findById(1L)).thenReturn(Optional.of(menu));
+            when(repository.findByIdWithProps(1L)).thenReturn(Optional.of(menu));
 
             assertThat(underTest.findByIdWithProps(1L)).isNotNull().usingRecursiveComparison().isEqualTo(menu);
         }
@@ -135,10 +135,11 @@ class MenuServiceTest {
         @Test
         void shouldUpdate() {
             Menu Menu = Instancio.create(Menu.class);
-            when(repository.findById(Menu.getId())).thenReturn(Optional.of(Menu));
+            when(repository.existsById(Menu.getId())).thenReturn(true);
 
             Menu updatedMenu = Instancio.create(Menu.class);
-            underTest.update(Menu.getId(), updatedMenu);
+            updatedMenu.setId(Menu.getId());
+            underTest.update(updatedMenu);
             then(repository).should().save(MenuCaptor.capture());
 
             updatedMenu.setId(Menu.getId());
@@ -149,7 +150,9 @@ class MenuServiceTest {
         void shouldThrowWhenUpdateWrongId() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> underTest.update(1L, new Menu()))
+            Menu menu = new Menu();
+            menu.setId(1L);
+            assertThatThrownBy(() -> underTest.update(menu))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
         }
