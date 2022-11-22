@@ -65,7 +65,7 @@ class VoteServiceTest {
             Vote vote2 = Instancio.create(Vote.class);
             when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
 
-            assertThat(underTest.getAll()).usingRecursiveComparison().isEqualTo(List.of(vote1, vote2));
+            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(List.of(vote1, vote2));
         }
 
         @Test

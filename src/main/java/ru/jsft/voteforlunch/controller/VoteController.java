@@ -27,7 +27,7 @@ public class VoteController {
 
     @GetMapping("/all")
     public ResponseEntity<List<VoteDto>> getAll() {
-        return ResponseEntity.ok(service.getAll().stream()
+        return ResponseEntity.ok(service.findAll().stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(VoteDto::getVoteDate)
                         .thenComparing(VoteDto::getVoteTime)
