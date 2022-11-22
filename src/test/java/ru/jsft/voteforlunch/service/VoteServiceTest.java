@@ -75,7 +75,7 @@ class VoteServiceTest {
             Long userId = vote.getUser().getId();
             when(voteRepository.findByIdAndUserId(id, userId)).thenReturn(vote);
 
-            assertThat(underTest.get(id, userId)).usingRecursiveComparison().isEqualTo(vote);
+            assertThat(underTest.find(id, userId)).usingRecursiveComparison().isEqualTo(vote);
         }
 
         @Test
@@ -90,7 +90,7 @@ class VoteServiceTest {
             vote3.setUser(user1);
             when(voteRepository.findAllForUser(user1.getId())).thenReturn(List.of(vote1, vote3));
 
-            assertThat(underTest.getAllForUser(user1.getId())).usingRecursiveComparison().isEqualTo(List.of(vote1, vote3));
+            assertThat(underTest.findAllForUser(user1.getId())).usingRecursiveComparison().isEqualTo(List.of(vote1, vote3));
         }
     }
 

@@ -39,18 +39,18 @@ public class VoteService {
         this.timeConstraint = timeConstraint;
     }
 
-    public List<Vote> getAll() {
-        log.info("Get all votes");
+    public List<Vote>findAll() {
+        log.info("Find all votes");
         return repository.findAll();
     }
 
-    public Vote get(long id, long userId) {
-        log.info("Get vote with id = {}, userId = {}", id, userId);
+    public Vote find(long id, long userId) {
+        log.info("Find vote with id = {}, userId = {}", id, userId);
         return repository.findByIdAndUserId(id, userId);
     }
 
-    public List<Vote> getAllForUser(long userId) {
-        log.info("Get all votes for userId = {}", userId);
+    public List<Vote> findAllForUser(long userId) {
+        log.info("Find all votes for userId = {}", userId);
         return repository.findAllForUser(userId);
     }
 

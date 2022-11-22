@@ -38,7 +38,7 @@ public class VoteController {
 
     @GetMapping
     public ResponseEntity<List<VoteDto>> getAllForUser() {
-        return ResponseEntity.ok(service.getAllForUser(SecurityUtil.authenticatedUser.getId()).stream()
+        return ResponseEntity.ok(service.findAllForUser(SecurityUtil.authenticatedUser.getId()).stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(VoteDto::getVoteDate)
                         .thenComparing(VoteDto::getVoteTime)
@@ -49,13 +49,13 @@ public class VoteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> get(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.get(id, SecurityUtil.authenticatedUser.getId())));
+        return ResponseEntity.ok(mapper.toDto(service.find(id, SecurityUtil.authenticatedUser.getId())));
     }
 
     @PostMapping(path = "/{restaurantId}")
     public ResponseEntity<VoteDto> save(@PathVariable long restaurantId) {
         Vote entity = service.save(restaurantId, SecurityUtil.authenticatedUser.getId());
-        entity = service.get(entity.getId(), SecurityUtil.authenticatedUser.getId());
+        entity = service.find(entity.getId(), SecurityUtil.authenticatedUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(entity));
     }
 
