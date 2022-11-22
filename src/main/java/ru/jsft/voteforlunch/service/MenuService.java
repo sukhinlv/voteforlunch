@@ -1,6 +1,8 @@
 package ru.jsft.voteforlunch.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.NotFoundException;
@@ -21,12 +23,14 @@ public class MenuService {
         this.repository = repository;
     }
 
+    @Cacheable("menu")
     public Menu findByIdWithProps(long id) {
         log.info("Find menu (include properties) with id = {}", id);
         return repository.findByIdWithProps(id)
                 .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
     }
 
+    @Cacheable("menus")
     public List<Menu> findByDateWithProps(LocalDate date) {
         return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
@@ -41,6 +45,7 @@ public class MenuService {
         return repository.findAllWithRestaurants();
     }
 
+    @CacheEvict({"menu", "menus"})
     public Menu create(Menu menu) {
         if (!menu.isNew()) {
             throw new IllegalArgumentException("Menu must be new");
@@ -50,12 +55,14 @@ public class MenuService {
         return repository.save(menu);
     }
 
+    @CacheEvict({"menu", "menus"})
     public void delete(long id) {
         log.info("Delete menu with id = {}", id);
         repository.deleteById(id);
     }
 
     @Transactional
+    @CacheEvict({"menu", "menus"})
     public Menu updateAndReturnWithProps(Menu menu) {
         if (menu.isNew()) {
             throw new IllegalArgumentException("Menu must have id");

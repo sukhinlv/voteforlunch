@@ -35,6 +35,9 @@ spring:
 
   output.ansi.enabled: always
 
+  # cache
+  cache.jcache.config: classpath:ehcache.xml
+
 # Logging
 logging:
   level:
