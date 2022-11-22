@@ -56,7 +56,7 @@ public class MenuService {
     }
 
     @Transactional
-    public Menu update(Menu menu) {
+    public Menu updateAndReturnWithProps(Menu menu) {
         if (menu.isNew()) {
             throw new IllegalArgumentException("Menu must have id");
         }
@@ -66,6 +66,7 @@ public class MenuService {
         }
 
         log.info("Update menu with id = {}", menu.getId());
-        return repository.save(menu);
+        long savedMenuId = Objects.requireNonNull(repository.save(menu).getId());
+        return findByIdWithProps(savedMenuId);
     }
 }
