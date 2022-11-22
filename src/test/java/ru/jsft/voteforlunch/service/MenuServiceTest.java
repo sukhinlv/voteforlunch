@@ -41,9 +41,9 @@ class MenuServiceTest {
     }
 
     @Nested
-    class GetMenus {
+    class FindMenus {
         @Test
-        void shouldGet() {
+        void shouldFind() {
             Menu menu = Instancio.create(Menu.class);
             when(repository.findByIdWithProps(1L)).thenReturn(Optional.of(menu));
 
@@ -51,7 +51,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldThrowWhenGetNotExisted() {
+        void shouldThrowWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
@@ -60,7 +60,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void getByDate() {
+        void shouldFindByDate() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -78,7 +78,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void getAll() {
+        void shouldFindAll() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -86,6 +86,20 @@ class MenuServiceTest {
             when(repository.findAll()).thenReturn(menuList);
 
             assertThat(underTest.findAll())
+                    .isNotNull()
+                    .usingRecursiveComparison()
+                    .isEqualTo(menuList);
+        }
+        @Test
+
+        void shouldFindAllWithRestaurants() {
+            Menu menu1 = Instancio.create(Menu.class);
+            Menu menu2 = Instancio.create(Menu.class);
+            Menu menu3 = Instancio.create(Menu.class);
+            List<Menu> menuList = List.of(menu1, menu2, menu3);
+            when(repository.findAllWithRestaurants()).thenReturn(menuList);
+
+            assertThat(underTest.findAllWithRestaurants())
                     .isNotNull()
                     .usingRecursiveComparison()
                     .isEqualTo(menuList);
@@ -157,6 +171,14 @@ class MenuServiceTest {
             assertThatThrownBy(() -> underTest.updateAndReturnWithProps(menu))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
+        }
+
+        @Test
+        void shouldThrowWhenUpdateWithNoId() {
+            Menu menu = new Menu();
+            assertThatThrownBy(() -> underTest.updateAndReturnWithProps(menu))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Menu must have id");
         }
     }
 }

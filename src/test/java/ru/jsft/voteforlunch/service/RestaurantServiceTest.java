@@ -41,9 +41,9 @@ class RestaurantServiceTest {
     }
 
     @Nested
-    class GetRestaurants {
+    class FindRestaurants {
         @Test
-        void shouldGet() {
+        void shouldFind() {
             Restaurant expectedRestaurant = Instancio.create(Restaurant.class);
             when(repository.findById(expectedRestaurant.getId())).thenReturn(Optional.of(expectedRestaurant));
 
@@ -55,7 +55,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void shouldThrowWhenGetNotExisted() {
+        void shouldThrowWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findById(1L))
@@ -64,7 +64,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void shouldGetAll() {
+        void shouldFindAll() {
             Restaurant restaurant1 = Instancio.create(Restaurant.class);
             restaurant1.setName("Zara");
             Restaurant restaurant2 = Instancio.create(Restaurant.class);

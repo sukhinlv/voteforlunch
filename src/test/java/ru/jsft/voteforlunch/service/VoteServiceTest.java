@@ -58,9 +58,9 @@ class VoteServiceTest {
     }
 
     @Nested
-    class GetVotes {
+    class FindVotes {
         @Test
-        void shouldGetAll() {
+        void shouldFindAll() {
             Vote vote1 = Instancio.create(Vote.class);
             Vote vote2 = Instancio.create(Vote.class);
             when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
@@ -69,7 +69,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldGet() {
+        void shouldFind() {
             Vote vote = Instancio.create(Vote.class);
             Long id = vote.getId();
             Long userId = vote.getUser().getId();
@@ -79,7 +79,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldGetAllForUser() {
+        void shouldFindAllForUser() {
             User user1 = Instancio.create(User.class);
             User user2 = Instancio.create(User.class);
             Vote vote1 = Instancio.create(Vote.class);

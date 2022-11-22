@@ -41,9 +41,9 @@ class MealServiceTest {
     }
 
     @Nested
-    class GetMeals {
+    class FindMeals {
         @Test
-        void shouldGet() {
+        void shouldFind() {
             Meal expectedMeal = Instancio.create(Meal.class);
             when(repository.findById(expectedMeal.getId())).thenReturn(Optional.of(expectedMeal));
 
@@ -55,7 +55,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldThrowWhenGetNotExisted() {
+        void shouldThrowWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findById(1L))
@@ -64,7 +64,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldGetAll() {
+        void shouldFindAll() {
             Meal meal1 = Instancio.create(Meal.class);
             meal1.setName("Zara");
             Meal meal2 = Instancio.create(Meal.class);
