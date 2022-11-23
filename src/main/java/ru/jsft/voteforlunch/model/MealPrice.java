@@ -15,7 +15,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @Entity
 @ToString
-public class MealPrice extends AbstractEntity {
+public class MealPrice extends AbstractEntity implements Comparable<MealPrice> {
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)
     private Meal meal;
@@ -30,4 +30,12 @@ public class MealPrice extends AbstractEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private Menu menu;
+
+    @Override
+    public int compareTo(MealPrice comparedMealPrice) {
+        if (meal == null || comparedMealPrice.getMeal() == null) {
+            return 0;
+        }
+        return comparedMealPrice.getMeal().getName().compareTo(meal.getName());
+    }
 }
