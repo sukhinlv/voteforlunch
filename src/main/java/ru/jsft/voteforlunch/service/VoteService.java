@@ -3,10 +3,12 @@ package ru.jsft.voteforlunch.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.repository.RestaurantRepository;
 import ru.jsft.voteforlunch.repository.UserRepository;
 import ru.jsft.voteforlunch.repository.VoteRepository;
@@ -58,7 +60,7 @@ public class VoteService {
     public Vote save(long restaurantId, long userId) {
         log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
         if (LocalTime.now(clock).isAfter(timeConstraint)) {
-            throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
+            throw new VoteTimeConstraintException(String.format("You can only vote until %s", timeConstraint));
         }
 
         Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
@@ -91,5 +93,11 @@ public class VoteService {
         }
         repository.deleteById(vote.getId());
         log.info("Vote deleted. userId={}", userId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<VoteDistribution> getVotesDistributionOnDate(LocalDate date) {
+        log.info("Get votes distribution on {}", date);
+        return repository.getVotesDistributionOnDate(date);
     }
 }

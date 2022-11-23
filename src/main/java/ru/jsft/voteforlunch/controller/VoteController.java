@@ -1,14 +1,17 @@
 package ru.jsft.voteforlunch.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jsft.voteforlunch.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.controller.mapper.VoteMapper;
 import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.service.VoteService;
 import ru.jsft.voteforlunch.web.security.SecurityUtil;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,7 +55,16 @@ public class VoteController {
         return ResponseEntity.ok(mapper.toDto(service.find(id, SecurityUtil.authenticatedUser.getId())));
     }
 
+    @GetMapping("/distribution")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VoteDistribution> getVotesDistributionOnDate(
+            @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        return service.getVotesDistributionOnDate(date);
+    }
+
     @PostMapping(path = "/{restaurantId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<VoteDto> save(@PathVariable long restaurantId) {
         Vote entity = service.save(restaurantId, SecurityUtil.authenticatedUser.getId());
         entity = service.find(entity.getId(), SecurityUtil.authenticatedUser.getId());

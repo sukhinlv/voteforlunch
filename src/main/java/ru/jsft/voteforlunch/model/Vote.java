@@ -20,6 +20,32 @@ import java.time.LocalTime;
 @Table(uniqueConstraints = {
         @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"user_id", "vote_date"})
 })
+@NamedNativeQuery(
+        name = "get_votes_distribution_on_date",
+        query =
+                "SELECT DISTINCT r.id AS restaurantId, r.name AS restaurantName, v.vote_count AS voteCount " +
+                        "FROM restaurant AS r " +
+                        "LEFT JOIN (" +
+                        "   SELECT restaurant_id, COUNT(id) AS vote_count  " +
+                        "   FROM vote " +
+                        "   WHERE vote_date = :distDate " +
+                        "   GROUP BY restaurant_id" +
+                        ") AS v " +
+                        "   ON r.id = v.restaurant_id " +
+                        "ORDER BY v.vote_count DESC",
+        resultSetMapping = "vote_distribution"
+)
+@SqlResultSetMapping(
+        name = "vote_distribution",
+        classes = @ConstructorResult(
+                targetClass = VoteDistribution.class,
+                columns = {
+                        @ColumnResult(name = "restaurantId", type = Long.class),
+                        @ColumnResult(name = "restaurantName", type = String.class),
+                        @ColumnResult(name = "voteCount", type = Long.class)
+                }
+        )
+)
 public class Vote extends AbstractEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

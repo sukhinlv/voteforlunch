@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.model.VoteDistribution;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,4 +28,7 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     Vote findByIdAndUserId(long id, long userId);
 
     Vote findByVoteDateAndUserId(LocalDate date, long userId);
+
+    @Query(name = "get_votes_distribution_on_date", nativeQuery = true)
+    List<VoteDistribution> getVotesDistributionOnDate(@Param("distDate") LocalDate distDate);
 }
