@@ -162,7 +162,7 @@ class VoteServiceTest {
 
             assertThatThrownBy(() -> underTest.save(1L, 1L))
                     .isInstanceOf(VoteTimeConstraintException.class)
-                    .hasMessageContaining(String.format("You can only change your vote until %s", timeConstraint));
+                    .hasMessageContaining(String.format("You can only vote until %s", timeConstraint));
         }
     }
 

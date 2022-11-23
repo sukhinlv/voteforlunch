@@ -65,6 +65,7 @@ public class MenuController {
 
     @PutMapping
     public ResponseEntity<MenuDto> update(@Valid @RequestBody MenuDto menuDto) {
-        return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithProps(mapper.toEntity(menuDto))));
+        Menu updatedEntity = service.update(mapper.toEntity(menuDto));
+        return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(updatedEntity.getId())));
     }
 }

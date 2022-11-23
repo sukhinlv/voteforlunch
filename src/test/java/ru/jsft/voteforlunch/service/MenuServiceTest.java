@@ -155,7 +155,7 @@ class MenuServiceTest {
 
             Menu updatedMenu = Instancio.create(Menu.class);
             updatedMenu.setId(menu.getId());
-            underTest.updateAndReturnWithProps(updatedMenu);
+            underTest.update(updatedMenu);
             then(repository).should().save(MenuCaptor.capture());
 
             updatedMenu.setId(menu.getId());
@@ -168,7 +168,7 @@ class MenuServiceTest {
 
             Menu menu = new Menu();
             menu.setId(1L);
-            assertThatThrownBy(() -> underTest.updateAndReturnWithProps(menu))
+            assertThatThrownBy(() -> underTest.update(menu))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
         }
@@ -176,7 +176,7 @@ class MenuServiceTest {
         @Test
         void shouldThrowWhenUpdateWithNoId() {
             Menu menu = new Menu();
-            assertThatThrownBy(() -> underTest.updateAndReturnWithProps(menu))
+            assertThatThrownBy(() -> underTest.update(menu))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("Menu must have id");
         }

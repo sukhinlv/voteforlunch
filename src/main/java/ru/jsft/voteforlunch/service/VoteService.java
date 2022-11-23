@@ -66,18 +66,13 @@ public class VoteService {
         Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
         if (vote == null) {
             vote = new Vote();
-            vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
             vote.setUser(userRepository.getReferenceById(userId));
             vote.setVoteDate(LocalDate.now(clock));
-            vote.setVoteTime(LocalTime.now(clock));
-            vote = repository.save(vote);
-            log.info("Vote saved. RestaurantID = {}, UserId = {}", restaurantId, userId);
-        } else {
-            vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
-            vote.setVoteTime(LocalTime.now(clock));
-            vote = repository.save(vote);
-            log.info("Vote updated. RestaurantID = {}, UserId = {}", restaurantId, userId);
         }
+        vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
+        vote.setVoteTime(LocalTime.now(clock));
+        vote = repository.save(vote);
+        log.info("Vote saved. RestaurantID = {}, UserId = {}", restaurantId, userId);
         return vote;
     }
 
