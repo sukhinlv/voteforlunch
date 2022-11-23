@@ -38,10 +38,9 @@ public class Menu extends AbstractEntity {
     @ToString.Exclude
     private SortedSet<MealPrice> mealPrice = new TreeSet<>();
 
-    public MealPrice addMealPrice(MealPrice mealPrice) {
+    public void addMealPrice(MealPrice mealPrice) {
         this.mealPrice.add(mealPrice);
         mealPrice.setMenu(this);
-        return mealPrice;
     }
 
     public void removeMealPrice(MealPrice mealPrice) {
