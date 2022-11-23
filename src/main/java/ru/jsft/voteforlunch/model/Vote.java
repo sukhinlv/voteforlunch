@@ -1,9 +1,6 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -46,15 +43,18 @@ import java.time.LocalTime;
                 }
         )
 )
+@ToString
 public class Vote extends AbstractEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private Restaurant restaurant;
 
     @NotNull

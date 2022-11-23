@@ -1,14 +1,12 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class VoteDistribution {
     private long restaurantId;
     private String restaurantName;

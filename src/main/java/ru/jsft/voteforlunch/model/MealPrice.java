@@ -1,9 +1,6 @@
 package ru.jsft.voteforlunch.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,6 +14,7 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @Entity
+@ToString
 public class MealPrice extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)
@@ -30,5 +28,6 @@ public class MealPrice extends AbstractEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private Menu menu;
 }
