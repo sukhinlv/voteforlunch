@@ -21,7 +21,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
-@ToString
+@ToString(callSuper = true)
 public class User extends AbstractEntity {
     @NotBlank(message = "User name must not be empty")
     @Column(name = "name", nullable = false)

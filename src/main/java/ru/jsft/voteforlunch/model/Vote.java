@@ -43,7 +43,7 @@ import java.time.LocalTime;
                 }
         )
 )
-@ToString
+@ToString(callSuper = true)
 public class Vote extends AbstractEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

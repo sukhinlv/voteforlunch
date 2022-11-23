@@ -14,7 +14,7 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @Entity
-@ToString
+@ToString(callSuper = true)
 public class MealPrice extends AbstractEntity implements Comparable<MealPrice> {
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)

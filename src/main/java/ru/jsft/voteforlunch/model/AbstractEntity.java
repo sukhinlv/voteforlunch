@@ -13,6 +13,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public abstract class AbstractEntity implements Persistable<Long> {
 
     @Id

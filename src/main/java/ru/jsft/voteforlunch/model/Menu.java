@@ -19,7 +19,7 @@ import java.util.TreeSet;
 @Table(uniqueConstraints = {
         @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
 })
-@ToString
+@ToString(callSuper = true)
 public class Menu extends AbstractEntity {
     @NotNull
     @Column(name = "date_of_menu", nullable = false)
