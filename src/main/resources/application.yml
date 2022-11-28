@@ -33,9 +33,10 @@ spring:
       setter: none
       is-getter: none
 
+  # Spring Boot color console logging
   output.ansi.enabled: always
 
-  # cache
+  # Cache
   cache.jcache.config: classpath:ehcache.xml
 
 # Logging

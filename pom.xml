@@ -122,7 +122,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- library for automating data setup in unit tests https://www.instancio.org/ -->
+        <!-- library for automating data setup for test classes https://www.instancio.org/ -->
         <dependency>
             <groupId>org.instancio</groupId>
             <artifactId>instancio-junit</artifactId>

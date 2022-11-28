@@ -1,10 +1,16 @@
 package ru.jsft.voteforlunch.web.security;
 
 import lombok.experimental.UtilityClass;
-import ru.jsft.voteforlunch.model.User;
 
 @UtilityClass
 public class SecurityUtil {
 
-    public static User authenticatedUser;
-}
+    private static long id = 1L;
+
+    public static long authUserId() {
+        return id;
+    }
+
+    public static void setAuthUserId(long id) {
+        SecurityUtil.id = id;
+    }}

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.*;
 import ru.jsft.voteforlunch.repository.*;
-import ru.jsft.voteforlunch.web.security.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -92,7 +91,7 @@ public class InitializeData {
             }
             voteRepository.saveAll(votes);
 
-            SecurityUtil.authenticatedUser = admin;
+//            SecurityUtil.authenticatedUser = admin;
         };
     }
 }
