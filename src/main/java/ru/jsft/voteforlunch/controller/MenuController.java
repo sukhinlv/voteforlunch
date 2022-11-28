@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
-    public static final String REST_URL = "api/v1/menus";
+    public static final String REST_URL = "/api/v1/menus";
 
     private final MenuService service;
     private final MenuMapper mapper;

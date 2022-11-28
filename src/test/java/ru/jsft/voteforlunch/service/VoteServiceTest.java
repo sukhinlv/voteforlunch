@@ -13,6 +13,7 @@ import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.repository.RestaurantRepository;
 import ru.jsft.voteforlunch.repository.UserRepository;
 import ru.jsft.voteforlunch.repository.VoteRepository;
@@ -206,5 +207,17 @@ class VoteServiceTest {
                     .isInstanceOf(VoteTimeConstraintException.class)
                     .hasMessageContaining(String.format("You can only change your vote until %s", timeConstraint));
         }
+    }
+
+    @Test
+    void shouldGetVotesDistributionOnDate() {
+        List<VoteDistribution> votesList = List.of(
+                new VoteDistribution(1L, "Restaurant One", 65),
+                new VoteDistribution(2L, "Restaurant Two", 35));
+        LocalDate date = LocalDate.of(2022, 12, 15);
+
+        when(voteRepository.getVotesDistributionOnDate(date)).thenReturn(votesList);
+
+        assertThat(underTest.getVotesDistributionOnDate(date)).isEqualTo(votesList);
     }
 }
