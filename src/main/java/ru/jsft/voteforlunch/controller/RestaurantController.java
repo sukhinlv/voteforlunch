@@ -1,22 +1,26 @@
 package ru.jsft.voteforlunch.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.controller.dto.RestaurantDto;
 import ru.jsft.voteforlunch.controller.mapper.RestaurantMapper;
+import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.service.RestaurantService;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/restaurants")
+@RequestMapping(value = RestaurantController.REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
+    public static final String REST_URL = "api/v1/restaurants";
 
     private final RestaurantService service;
-
     private final RestaurantMapper mapper;
 
     public RestaurantController(RestaurantService service, RestaurantMapper mapper) {
@@ -38,9 +42,13 @@ public class RestaurantController {
         return ResponseEntity.ok(mapper.toDto(service.findById(id)));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantDto> create(@Valid @RequestBody RestaurantDto restaurantDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.toEntity(restaurantDto))));
+        Restaurant created = service.create(mapper.toEntity(restaurantDto));
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(mapper.toDto(created));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -49,7 +57,7 @@ public class RestaurantController {
         service.delete(id);
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantDto> update(@PathVariable long id, @Valid @RequestBody RestaurantDto restaurantDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(restaurantDto))));
     }

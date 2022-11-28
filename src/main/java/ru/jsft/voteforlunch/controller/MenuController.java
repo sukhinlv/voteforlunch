@@ -1,10 +1,11 @@
 package ru.jsft.voteforlunch.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.controller.dto.MenuDto;
 import ru.jsft.voteforlunch.controller.dto.MenuListDto;
 import ru.jsft.voteforlunch.controller.mapper.MenuListMapper;
@@ -13,19 +14,18 @@ import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/menus")
-@Slf4j
+@RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
+    public static final String REST_URL = "api/v1/menus";
 
     private final MenuService service;
-
     private final MenuMapper mapper;
-
     private final MenuListMapper listMapper;
 
     public MenuController(MenuService service, MenuMapper mapper, MenuListMapper listMapper) {
@@ -52,9 +52,13 @@ public class MenuController {
         return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(id)));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuDto> create(@Valid @RequestBody MenuDto menuDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.toEntity(menuDto))));
+        Menu created = service.create(mapper.toEntity(menuDto));
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(mapper.toDto(created));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -63,9 +67,12 @@ public class MenuController {
         service.delete(id);
     }
 
-    @PutMapping
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuDto> update(@Valid @RequestBody MenuDto menuDto) {
         Menu updatedEntity = service.update(mapper.toEntity(menuDto));
+//        if (updatedEntity == null || updatedEntity.getId() == null) {
+//            return ResponseEntity.unprocessableEntity().body(menuDto);
+//        }
         return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(updatedEntity.getId())));
     }
 }
