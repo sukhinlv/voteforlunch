@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.jsft.voteforlunch.web.util.JsonUtil;
+import ru.jsft.voteforlunch.web.json.JsonUtil;
 
 import java.time.Clock;
 

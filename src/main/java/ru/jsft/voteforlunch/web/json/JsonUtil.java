@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.web.util;
+package ru.jsft.voteforlunch.web.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = VoteController.REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteController {
     public static final String REST_URL = "/api/v1/votes";
 

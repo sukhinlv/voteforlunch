@@ -1,12 +1,12 @@
-You have to add system variable %VOTEFORLUNCH_ROOT% pointing to application folder
-Mind slash must be "/", not Windows "\" (see example "h:/YandexDisk/JS/Projects/voteforlunch")
+### Intro
 
-Technical requirement:
+Hi! Here you can find demo app that was written like test task.
+
+### Technical requirement
+
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
 
-The task is:
-
-Build a voting system for deciding where to have lunch.
+The task is: Build a voting system for deciding where to have lunch.
 
 2 types of users: admin and regular users
 Admin can input a restaurant, and it's lunch menu of the day (2-5 items usually, just a dish name and price)
@@ -23,3 +23,9 @@ As a result, provide a link to GitHub repository. It should contain the code, RE
 P.S.: Make sure everything works with the latest version that is on github :)
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
+### Used technologies
+
+For simplicity, I use H2 in-memory database, that fills with some test data using InitializeData#commandLineRunner
+ORM framework is Spring Data JPA
+Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
+Application uses ehCache for caching. Due to the logic of application only MenuService use cache for menus. Because I think that it will be the narrowest place. 
