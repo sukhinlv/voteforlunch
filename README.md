@@ -2,6 +2,11 @@
 
 Hi! Here you can find demo app that was written like test task.
 
+You can tackle working app with such curl scripts:
+...
+
+or use Swagger link ...
+
 ### Technical requirement
 
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
@@ -31,3 +36,14 @@ Entities are mapped to DTOs using simple mapper classes without using Mapstruct 
 Application uses ehCache for caching. Due to the logic of application only MenuService use cache for menus. Because I think that it will be the narrowest place.
 
 Cached: menu, votes distribution
+
+no security implemented, just mock in SecurityUtil
+
+### Project structure
+
+### Actions required to run the application
+
+h2 db used, no actions needed
+you can set port in application.yml, ... parameter
+sample data populated in ru.jsft.voteforlanch.Config.InitializeData#commandLineRunner
+no security implemented
