@@ -45,7 +45,7 @@ public class MatcherFactory {
         }
 
         public ResultMatcher contentJson(T expected) {
-            return result -> assertMatch(JsonUtil.readValue(getContent(result), clazz), expected);
+            return result -> assertMatch(JsonUtil.jsonToObject(getContent(result), clazz), expected);
         }
 
         @SafeVarargs
@@ -54,11 +54,11 @@ public class MatcherFactory {
         }
 
         public ResultMatcher contentJson(Iterable<T> expected) {
-            return result -> assertMatch(JsonUtil.readValues(getContent(result), clazz), expected);
+            return result -> assertMatch(JsonUtil.jsonToObjects(getContent(result), clazz), expected);
         }
 
         public T readFromJson(ResultActions action) throws UnsupportedEncodingException {
-            return JsonUtil.readValue(getContent(action.andReturn()), clazz);
+            return JsonUtil.jsonToObject(getContent(action.andReturn()), clazz);
         }
 
         private static String getContent(MvcResult result) throws UnsupportedEncodingException {

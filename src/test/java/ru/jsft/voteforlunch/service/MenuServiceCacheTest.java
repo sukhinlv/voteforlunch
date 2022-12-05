@@ -42,6 +42,6 @@ public class MenuServiceCacheTest extends AbstractSpringBootTest {
     }
 
     private Optional<List<Menu>> getCachedMenusByDate(LocalDate date) {
-        return Optional.ofNullable(cacheManager.getCache("menus")).map(cache -> cache.get(date, ArrayList.class));
+        return Optional.ofNullable(cacheManager.getCache("menu")).map(cache -> cache.get(date, ArrayList.class));
     }
 }

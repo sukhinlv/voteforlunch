@@ -16,11 +16,11 @@ public class InitializeData {
 
     @Bean
     @Transactional
-    CommandLineRunner commandLineRunner(VoteRepository voteRepository,
-                                        UserRepository userRepository,
-                                        MenuRepository menuRepository,
-                                        RestaurantRepository restaurantRepository,
-                                        MealRepository mealRepository
+    CommandLineRunner fillAllTables(VoteRepository voteRepository,
+                                    UserRepository userRepository,
+                                    MenuRepository menuRepository,
+                                    RestaurantRepository restaurantRepository,
+                                    MealRepository mealRepository
     ) {
         return args -> {
             Meal tea = new Meal("Tea");

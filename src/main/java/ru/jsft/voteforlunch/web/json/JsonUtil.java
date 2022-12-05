@@ -15,7 +15,7 @@ public class JsonUtil {
         JsonUtil.mapper = mapper;
     }
 
-    public static <T> List<T> readValues(String json, Class<T> clazz) {
+    public static <T> List<T> jsonToObjects(String json, Class<T> clazz) {
         ObjectReader reader = mapper.readerFor(clazz);
         try {
             return reader.<T>readValues(json).readAll();
@@ -24,7 +24,7 @@ public class JsonUtil {
         }
     }
 
-    public static <T> T readValue(String json, Class<T> clazz) {
+    public static <T> T jsonToObject(String json, Class<T> clazz) {
         try {
             return mapper.readValue(json, clazz);
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class JsonUtil {
         }
     }
 
-    public static <T> String writeValue(T obj) {
+    public static <T> String objectToJson(T obj) {
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
