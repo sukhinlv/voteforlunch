@@ -39,10 +39,6 @@ spring:
   # Cache
   cache.jcache.config: classpath:ehcache.xml
 
-  # Profiles
-  profiles:
-    active: dev
-
 # Logging
 logging:
   level:

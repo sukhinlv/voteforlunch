@@ -28,7 +28,7 @@ public class AppConfig {
         return Clock.systemDefaultZone();
     }
 
-    @Profile("dev")
+    @Profile("!test")
     @Bean(initMethod = "start", destroyMethod = "stop")
     Server h2Server() throws SQLException {
         log.info("Start H2 TCP server");
