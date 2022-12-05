@@ -75,4 +75,11 @@ public class MenuService {
         log.info("Update menu with id = {}", menu.getId());
         return repository.save(menu);
     }
+
+    @Transactional
+    @CacheEvict({"menu", "menus"})
+    public Menu updateAndReturnWithDetails(Menu menu) {
+        Menu updatedMenu = update(menu);
+        return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));
+    }
 }

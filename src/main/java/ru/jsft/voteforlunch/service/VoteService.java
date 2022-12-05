@@ -77,6 +77,12 @@ public class VoteService {
     }
 
     @Transactional
+    public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
+        Vote savedVote = save(restaurantId, userId);
+        return find(savedVote.getId(), savedVote.getUser().getId());
+    }
+
+    @Transactional
     public void delete(long userId) {
         log.info("Try to delete vote of userId={}", userId);
         if (LocalTime.now(clock).isAfter(timeConstraint)) {

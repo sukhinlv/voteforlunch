@@ -69,10 +69,6 @@ public class MenuController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuDto> update(@Valid @RequestBody MenuDto menuDto) {
-        Menu updatedEntity = service.update(mapper.toEntity(menuDto));
-//        if (updatedEntity == null || updatedEntity.getId() == null) {
-//            return ResponseEntity.unprocessableEntity().body(menuDto);
-//        }
-        return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(updatedEntity.getId())));
+        return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithDetails(mapper.toEntity(menuDto))));
     }
 }

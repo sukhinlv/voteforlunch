@@ -68,11 +68,7 @@ public class VoteController {
 
     @PostMapping(path = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VoteDto> save(@PathVariable long restaurantId) {
-        Vote savedEntity = service.save(restaurantId, SecurityUtil.authUserId());
-//        if (savedEntity == null || savedEntity.getId() == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-        savedEntity = service.find(savedEntity.getId(), SecurityUtil.authUserId());
+        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, SecurityUtil.authUserId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(savedEntity.getId()).toUri();
