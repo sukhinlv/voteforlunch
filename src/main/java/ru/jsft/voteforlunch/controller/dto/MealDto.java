@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,5 +18,6 @@ import javax.validation.constraints.NotBlank;
 public class MealDto extends AbstractDto {
 
     @NotBlank(message = "The meal must have a name")
+    @NoHtml
     private String name;
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.util.CollectionUtils;
 import ru.jsft.voteforlunch.model.Role;
+import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class UserDto extends AbstractDto {
     @NotBlank(message = "User name must not be empty")
+    @NoHtml
     private String name;
 
     @NotBlank(message = "Password must not be empty")
@@ -28,6 +30,7 @@ public class UserDto extends AbstractDto {
 
     @Email(message = "Please enter valid e-mail")
     @NotBlank(message = "Email must not be empty")
+    @NoHtml
     private String email;
 
     private boolean enabled;
