@@ -28,4 +28,6 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 For simplicity, I use H2 in-memory database, that fills with some test data using InitializeData#commandLineRunner
 ORM framework is Spring Data JPA
 Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
-Application uses ehCache for caching. Due to the logic of application only MenuService use cache for menus. Because I think that it will be the narrowest place. 
+Application uses ehCache for caching. Due to the logic of application only MenuService use cache for menus. Because I think that it will be the narrowest place.
+
+Cached: menu, votes distribution

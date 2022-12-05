@@ -30,7 +30,7 @@ public class MenuService {
                 .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
     }
 
-    @Cacheable("menus")
+    @Cacheable("menu")
     public List<Menu> findByDateWithProps(LocalDate date) {
         return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
@@ -45,7 +45,7 @@ public class MenuService {
         return repository.findAllWithRestaurants();
     }
 
-    @CacheEvict({"menu", "menus"})
+    @CacheEvict({"menu"})
     public Menu create(Menu menu) {
         if (!menu.isNew()) {
             throw new IllegalArgumentException("Menu must be new");
@@ -55,14 +55,14 @@ public class MenuService {
         return repository.save(menu);
     }
 
-    @CacheEvict({"menu", "menus"})
+    @CacheEvict({"menu"})
     public void delete(long id) {
         log.info("Delete menu with id = {}", id);
         repository.deleteById(id);
     }
 
     @Transactional
-    @CacheEvict({"menu", "menus"})
+    @CacheEvict({"menu"})
     public Menu update(Menu menu) {
         if (menu.isNew()) {
             throw new IllegalArgumentException("Menu must have id");
@@ -77,7 +77,7 @@ public class MenuService {
     }
 
     @Transactional
-    @CacheEvict({"menu", "menus"})
+    @CacheEvict({"menu"})
     public Menu updateAndReturnWithDetails(Menu menu) {
         Menu updatedMenu = update(menu);
         return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));

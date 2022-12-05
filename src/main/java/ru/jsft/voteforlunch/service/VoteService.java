@@ -2,6 +2,8 @@ package ru.jsft.voteforlunch.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,7 @@ public class VoteService {
     }
 
     @Transactional
+    @CacheEvict("voteDistribution")
     public Vote save(long restaurantId, long userId) {
         log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
         if (LocalTime.now(clock).isAfter(timeConstraint)) {
@@ -77,12 +80,14 @@ public class VoteService {
     }
 
     @Transactional
+    @CacheEvict("voteDistribution")
     public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
         Vote savedVote = save(restaurantId, userId);
         return find(savedVote.getId(), savedVote.getUser().getId());
     }
 
     @Transactional
+    @CacheEvict("voteDistribution")
     public void delete(long userId) {
         log.info("Try to delete vote of userId={}", userId);
         if (LocalTime.now(clock).isAfter(timeConstraint)) {
@@ -97,6 +102,7 @@ public class VoteService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Cacheable("voteDistribution")
     public List<VoteDistribution> getVotesDistributionOnDate(LocalDate date) {
         log.info("Get votes distribution on {}", date);
         return repository.getVotesDistributionOnDate(date);
