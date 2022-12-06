@@ -42,10 +42,10 @@ public class InitializeData {
             User user = new User("user", "user", "user@gmail.com", true,
                     LocalDate.of(2022, 10, 20), Collections.singleton(Role.USER));
             // collection of users to create large amount of votes for run-time testing using curl
-            List<User> userList = new ArrayList<>(2000);
+            List<User> userList = new ArrayList<>(2002);
             userList.add(admin);
             userList.add(user);
-            for (int i = 0; i < 1998; i++) {
+            for (int i = 0; i < 2000; i++) {
                 userList.add(new User("user" + i, "user" + i, "user" + i + "@gmail.com", true,
                         LocalDate.of(2022, 10, 15), Collections.singleton(Role.USER)));
             }
