@@ -1,6 +1,6 @@
 package ru.jsft.voteforlunch.testdata;
 
-import ru.jsft.voteforlunch.controller.dto.RestaurantDto;
+import ru.jsft.voteforlunch.web.controller.dto.RestaurantDto;
 
 public class RestaurantTestData {
     public static RestaurantDto CHERRY_RESTAURANT = new RestaurantDto(1L, "Cherry");

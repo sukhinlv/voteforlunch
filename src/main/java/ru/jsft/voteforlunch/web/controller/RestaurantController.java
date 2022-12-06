@@ -1,14 +1,14 @@
-package ru.jsft.voteforlunch.controller;
+package ru.jsft.voteforlunch.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.controller.dto.RestaurantDto;
-import ru.jsft.voteforlunch.controller.mapper.RestaurantMapper;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.service.RestaurantService;
+import ru.jsft.voteforlunch.web.controller.dto.RestaurantDto;
+import ru.jsft.voteforlunch.web.controller.mapper.RestaurantMapper;
 
 import javax.validation.Valid;
 import java.net.URI;

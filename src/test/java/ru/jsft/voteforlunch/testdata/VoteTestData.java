@@ -1,8 +1,8 @@
 package ru.jsft.voteforlunch.testdata;
 
-import ru.jsft.voteforlunch.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.utils.MatcherFactory;
+import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

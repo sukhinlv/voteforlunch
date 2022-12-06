@@ -7,8 +7,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.util.NestedServletException;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
-import ru.jsft.voteforlunch.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.web.controller.VoteController;
+import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 
 import java.time.Clock;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.controller.dto;
+package ru.jsft.voteforlunch.web.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import ru.jsft.voteforlunch.model.Menu;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
 
 /**
  * A DTO for the {@link Menu} entity
@@ -15,14 +14,15 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuDto {
+public class MenuListDto {
     private Long id;
 
     @NotNull
     private LocalDate dateOfMenu;
 
     @NotNull
-    private RestaurantDto restaurant;
+    private Long restaurantId;
 
-    private Set<MealPriceDto> mealPrice;
+    @NotNull
+    private String restaurantName;
 }

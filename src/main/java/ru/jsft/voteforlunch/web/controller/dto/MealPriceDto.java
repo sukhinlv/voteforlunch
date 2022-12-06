@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.controller.dto;
+package ru.jsft.voteforlunch.web.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

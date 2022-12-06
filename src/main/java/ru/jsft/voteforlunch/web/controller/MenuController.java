@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.controller;
+package ru.jsft.voteforlunch.web.controller;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -6,12 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.controller.dto.MenuDto;
-import ru.jsft.voteforlunch.controller.dto.MenuListDto;
-import ru.jsft.voteforlunch.controller.mapper.MenuListMapper;
-import ru.jsft.voteforlunch.controller.mapper.MenuMapper;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
+import ru.jsft.voteforlunch.web.controller.dto.MenuDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuListDto;
+import ru.jsft.voteforlunch.web.controller.mapper.MenuListMapper;
+import ru.jsft.voteforlunch.web.controller.mapper.MenuMapper;
 
 import javax.validation.Valid;
 import java.net.URI;

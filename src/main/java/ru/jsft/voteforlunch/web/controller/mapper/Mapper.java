@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.controller.mapper;
+package ru.jsft.voteforlunch.web.controller.mapper;
 
 public interface Mapper<E, D> {
 

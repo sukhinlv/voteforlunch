@@ -1,8 +1,8 @@
-package ru.jsft.voteforlunch.controller.mapper;
+package ru.jsft.voteforlunch.web.controller.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.jsft.voteforlunch.controller.dto.UserDto;
 import ru.jsft.voteforlunch.model.User;
+import ru.jsft.voteforlunch.web.controller.dto.UserDto;
 
 @Component
 public class UserMapper implements Mapper<User, UserDto> {

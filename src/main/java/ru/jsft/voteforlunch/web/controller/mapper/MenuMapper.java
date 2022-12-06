@@ -1,10 +1,10 @@
-package ru.jsft.voteforlunch.controller.mapper;
+package ru.jsft.voteforlunch.web.controller.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.jsft.voteforlunch.controller.dto.MealPriceDto;
-import ru.jsft.voteforlunch.controller.dto.MenuDto;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.RestaurantService;
+import ru.jsft.voteforlunch.web.controller.dto.MealPriceDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuDto;
 
 import java.util.stream.Collectors;
 

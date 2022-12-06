@@ -1,14 +1,14 @@
-package ru.jsft.voteforlunch.controller;
+package ru.jsft.voteforlunch.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.controller.dto.UserDto;
-import ru.jsft.voteforlunch.controller.mapper.UserMapper;
-import ru.jsft.voteforlunch.model.User;
-import ru.jsft.voteforlunch.service.UserService;
+import ru.jsft.voteforlunch.model.Meal;
+import ru.jsft.voteforlunch.service.MealService;
+import ru.jsft.voteforlunch.web.controller.dto.MealDto;
+import ru.jsft.voteforlunch.web.controller.mapper.MealMapper;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -16,34 +16,34 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = UserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
-    public static final String REST_URL = "/api/v1/users";
+@RequestMapping(value = MealController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class MealController {
+    public static final String REST_URL = "/api/v1/meals";
 
-    private final UserService service;
-    private final UserMapper mapper;
+    private final MealService service;
+    private final MealMapper mapper;
 
-    public UserController(UserService service, UserMapper mapper) {
+    public MealController(MealService service, MealMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAll() {
+    public ResponseEntity<List<MealDto>> getAll() {
         return ResponseEntity.ok(service.findAllSorted().stream()
                 .map(mapper::toDto)
-                .sorted(Comparator.comparing(UserDto::getName))
+                .sorted(Comparator.comparing(MealDto::getName))
                 .toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> get(@PathVariable long id) {
+    public ResponseEntity<MealDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.findById(id)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
-        User created = service.create(mapper.toEntity(userDto));
+    public ResponseEntity<MealDto> create(@Valid @RequestBody MealDto mealDto) {
+        Meal created = service.create(mapper.toEntity(mealDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> update(@PathVariable long id, @Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(userDto))));
+    public ResponseEntity<MealDto> update(@PathVariable long id, @Valid @RequestBody MealDto mealDto) {
+        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(mealDto))));
     }
 }

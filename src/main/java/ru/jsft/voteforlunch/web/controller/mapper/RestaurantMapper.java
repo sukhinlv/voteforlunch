@@ -1,8 +1,8 @@
-package ru.jsft.voteforlunch.controller.mapper;
+package ru.jsft.voteforlunch.web.controller.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.jsft.voteforlunch.controller.dto.RestaurantDto;
 import ru.jsft.voteforlunch.model.Restaurant;
+import ru.jsft.voteforlunch.web.controller.dto.RestaurantDto;
 
 @Component
 public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {

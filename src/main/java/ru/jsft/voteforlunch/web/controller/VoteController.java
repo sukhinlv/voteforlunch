@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.controller;
+package ru.jsft.voteforlunch.web.controller;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -6,11 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.controller.dto.VoteDto;
-import ru.jsft.voteforlunch.controller.mapper.VoteMapper;
 import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.service.VoteService;
+import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
+import ru.jsft.voteforlunch.web.controller.mapper.VoteMapper;
 import ru.jsft.voteforlunch.web.security.SecurityUtil;
 
 import java.net.URI;
