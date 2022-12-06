@@ -3,7 +3,6 @@ package ru.jsft.voteforlunch.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.*;
 import ru.jsft.voteforlunch.repository.*;
@@ -17,7 +16,6 @@ public class InitializeData {
 
     @Bean
     @Transactional
-    @Profile("dev")
     CommandLineRunner fillAllTables(VoteRepository voteRepository,
                                     UserRepository userRepository,
                                     MenuRepository menuRepository,
@@ -36,11 +34,13 @@ public class InitializeData {
             Restaurant aishaRestaurant = new Restaurant("Aisha");
             restaurantRepository.saveAll(List.of(cherryRestaurant, aishaRestaurant));
 
-            List<User> userList = new ArrayList<>(2000);
+            // pre-defined users for testing purposes
             User admin = new User("admin", "admin", "admin@ya.ru", true,
                     LocalDate.of(2022, 10, 15), Collections.singleton(Role.ADMIN));
             User user = new User("user", "user", "user@gmail.com", true,
                     LocalDate.of(2022, 10, 20), Collections.singleton(Role.USER));
+            // collection of users to create large amount of votes for run-time testing using curl
+            List<User> userList = new ArrayList<>(2000);
             userList.add(admin);
             userList.add(user);
             for (int i = 0; i < 1998; i++) {
@@ -49,6 +49,7 @@ public class InitializeData {
             }
             userRepository.saveAll(userList);
 
+            // create two menus - one for yesterday and one for today
             LocalDate yesterday = LocalDate.now().minusDays(1);
             LocalDate today = LocalDate.now();
 
@@ -83,8 +84,14 @@ public class InitializeData {
             menuRepository.saveAll(List.of(menuForCherry1, menuForCherry2, menuForAisha1, menuForAisha2));
 
             List<Vote> votes = new ArrayList<>();
+            // this votes will be used for testing
+            votes.add(new Vote(admin, aishaRestaurant, yesterday, LocalTime.of(9, 30)));
+            votes.add(new Vote(user, aishaRestaurant, yesterday, LocalTime.of(10, 30)));
+            votes.add(new Vote(admin, cherryRestaurant, today, LocalTime.of(9, 30)));
+            votes.add(new Vote(user, aishaRestaurant, today, LocalTime.of(10, 30)));
+            // and this votes can be used for testing in run-time using curl
             Random rnd = new Random();
-            for (User usr : userList) {
+            for (User usr : userList.stream().skip(2L).toList()) {
                 votes.add(new Vote(
                         usr,
                         rnd.nextBoolean() ? aishaRestaurant : cherryRestaurant,

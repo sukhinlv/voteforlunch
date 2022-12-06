@@ -1,30 +1,24 @@
 package ru.jsft.voteforlunch.testdata;
 
-import ru.jsft.voteforlunch.model.User;
-import ru.jsft.voteforlunch.model.Vote;
+import ru.jsft.voteforlunch.controller.dto.VoteDto;
+import ru.jsft.voteforlunch.utils.MatcherFactory;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static ru.jsft.voteforlunch.testdata.RestaurantTestData.AISHA_RESTAURANT;
 import static ru.jsft.voteforlunch.testdata.RestaurantTestData.CHERRY_RESTAURANT;
-import static ru.jsft.voteforlunch.testdata.UserTestData.USER_LIST;
 
 public class VoteTestData {
-    public static List<Vote> VOTES = new ArrayList<>();
+    public static MatcherFactory.Matcher<VoteDto> VOTE_DTO_MATCHER = MatcherFactory.usingEqualsComparator(VoteDto.class);
+    public static List<VoteDto> VOTES = new ArrayList<>();
 
     static {
-        Random rnd = new Random();
-        for (
-                User usr : USER_LIST) {
-            VOTES.add(new Vote(
-                    usr,
-                    rnd.nextBoolean() ? AISHA_RESTAURANT : CHERRY_RESTAURANT,
-                    LocalDate.now(),
-                    LocalTime.of(rnd.nextInt(6, 11), rnd.nextInt(0, 60))));
-        }
+        VOTES.addAll(List.of(
+                new VoteDto(3L, CHERRY_RESTAURANT, LocalDate.now(), LocalTime.of(9, 30)),
+                new VoteDto(1L, AISHA_RESTAURANT, LocalDate.now().minusDays(1), LocalTime.of(9, 30))
+        ));
     }
 }

@@ -1,11 +1,16 @@
 package ru.jsft.voteforlunch.testdata;
 
-import ru.jsft.voteforlunch.model.Restaurant;
+import ru.jsft.voteforlunch.controller.dto.RestaurantDto;
 
 public class RestaurantTestData {
     public static long CHERRY_RESTAURANT_ID = 1L;
     public static long AISHA_RESTAURANT_ID = 1L;
 
-    public static Restaurant CHERRY_RESTAURANT = new Restaurant("Cherry");
-    public static Restaurant AISHA_RESTAURANT = new Restaurant("Aisha");
+    public static RestaurantDto CHERRY_RESTAURANT;
+    public static RestaurantDto AISHA_RESTAURANT;
+
+    static {
+        CHERRY_RESTAURANT = new RestaurantDto(1L, "Cherry");
+        AISHA_RESTAURANT = new RestaurantDto(2L, "Aisha");
+    }
 }
