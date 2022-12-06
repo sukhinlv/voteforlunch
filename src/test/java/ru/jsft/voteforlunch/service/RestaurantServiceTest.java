@@ -64,7 +64,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void shouldFindAll() {
+        void find_All() {
             Restaurant restaurant1 = Instancio.create(Restaurant.class);
             restaurant1.setName("Zara");
             Restaurant restaurant2 = Instancio.create(Restaurant.class);
@@ -78,7 +78,7 @@ class RestaurantServiceTest {
     @Nested
     class CreateRestaurant {
         @Test
-        void shouldCreate() {
+        void create() {
             Restaurant restaurant = Instancio.create(Restaurant.class);
             restaurant.setId(null);
 
@@ -91,7 +91,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void shouldThrowWhenCreateNotNew() {
+        void throw_When_Create_Not_New() {
             Restaurant restaurant = Instancio.create(Restaurant.class);
 
             assertThatThrownBy(() -> underTest.create(restaurant))
@@ -103,7 +103,7 @@ class RestaurantServiceTest {
     @Nested
     class DeleteRestaurant {
         @Test
-        void shouldDelete() {
+        void delete() {
             underTest.delete(1L);
             then(repository).should().deleteById(idCaptor.capture());
 
@@ -114,7 +114,7 @@ class RestaurantServiceTest {
     @Nested
     class UpdateRestaurant {
         @Test
-        void shouldUpdate() {
+        void update() {
             Restaurant restaurant = Instancio.create(Restaurant.class);
             when(repository.findById(restaurant.getId())).thenReturn(Optional.of(restaurant));
 
@@ -127,7 +127,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void shouldThrowWhenUpdateWrongId() {
+        void throw_When_Update_Wrong_Id() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, new Restaurant()))

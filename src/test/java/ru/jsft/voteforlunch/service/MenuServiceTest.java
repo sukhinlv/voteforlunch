@@ -43,7 +43,7 @@ class MenuServiceTest {
     @Nested
     class FindMenus {
         @Test
-        void shouldFind() {
+        void find() {
             Menu menu = Instancio.create(Menu.class);
             when(repository.findByIdWithProps(1L)).thenReturn(Optional.of(menu));
 
@@ -51,7 +51,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldThrowWhenFindNotExisted() {
+        void throw_When_Find_Not_Existed() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
@@ -60,7 +60,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldFindByDate() {
+        void find_By_Date() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -78,7 +78,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldFindAll() {
+        void find_All() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -92,7 +92,7 @@ class MenuServiceTest {
         }
         @Test
 
-        void shouldFindAllWithRestaurants() {
+        void find_All_With_Restaurants() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -109,7 +109,7 @@ class MenuServiceTest {
     @Nested
     class CreateMenu {
         @Test
-        void shouldCreate() {
+        void create() {
             Menu Menu = Instancio.create(Menu.class);
             Menu.setId(null);
 
@@ -124,7 +124,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldThrowWhenCreateNotNew() {
+        void throw_When_Create_Not_New() {
             Menu Menu = Instancio.create(Menu.class);
 
             assertThatThrownBy(() -> underTest.create(Menu))
@@ -136,7 +136,7 @@ class MenuServiceTest {
     @Nested
     class DeleteMenu {
         @Test
-        void shouldDelete() {
+        void delete() {
             underTest.delete(1L);
             then(repository).should().deleteById(idCaptor.capture());
 
@@ -147,7 +147,7 @@ class MenuServiceTest {
     @Nested
     class UpdateMenu {
         @Test
-        void shouldUpdate() {
+        void update() {
             Menu menu = Instancio.create(Menu.class);
             when(repository.existsById(menu.getId())).thenReturn(true);
             when(repository.save(menu)).thenReturn(menu);
@@ -163,7 +163,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldThrowWhenUpdateWrongId() {
+        void throw_When_Update_Wrong_Id() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             Menu menu = new Menu();
@@ -174,7 +174,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void shouldThrowWhenUpdateWithNoId() {
+        void throw_When_Update_With_No_Id() {
             Menu menu = new Menu();
             assertThatThrownBy(() -> underTest.update(menu))
                     .isInstanceOf(IllegalArgumentException.class)

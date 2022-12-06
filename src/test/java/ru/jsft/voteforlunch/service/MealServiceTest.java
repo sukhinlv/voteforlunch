@@ -43,7 +43,7 @@ class MealServiceTest {
     @Nested
     class FindMeals {
         @Test
-        void shouldFind() {
+        void find() {
             Meal expectedMeal = Instancio.create(Meal.class);
             when(repository.findById(expectedMeal.getId())).thenReturn(Optional.of(expectedMeal));
 
@@ -55,7 +55,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldThrowWhenFindNotExisted() {
+        void throw_When_Find_Not_Existed() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findById(1L))
@@ -64,7 +64,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldFindAll() {
+        void find_All() {
             Meal meal1 = Instancio.create(Meal.class);
             meal1.setName("Zara");
             Meal meal2 = Instancio.create(Meal.class);
@@ -78,7 +78,7 @@ class MealServiceTest {
     @Nested
     class CreateMeal {
         @Test
-        void shouldCreate() {
+        void create() {
             Meal meal = Instancio.create(Meal.class);
             meal.setId(null);
 
@@ -91,7 +91,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldThrowWhenCreateNotNew() {
+        void throw_When_Create_Not_New() {
             Meal meal = Instancio.create(Meal.class);
 
             assertThatThrownBy(() -> underTest.create(meal))
@@ -103,7 +103,7 @@ class MealServiceTest {
     @Nested
     class DeleteMeal {
         @Test
-        void shouldDelete() {
+        void delete() {
             underTest.delete(1L);
             then(repository).should().deleteById(idCaptor.capture());
 
@@ -114,7 +114,7 @@ class MealServiceTest {
     @Nested
     class UpdateMeal {
         @Test
-        void shouldUpdate() {
+        void update() {
             Meal meal = Instancio.create(Meal.class);
             when(repository.findById(meal.getId())).thenReturn(Optional.of(meal));
 
@@ -127,7 +127,7 @@ class MealServiceTest {
         }
 
         @Test
-        void shouldThrowWhenUpdateWrongId() {
+        void throw_When_Update_Wrong_Id() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, new Meal()))

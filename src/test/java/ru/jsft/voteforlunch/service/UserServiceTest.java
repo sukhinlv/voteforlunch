@@ -64,7 +64,7 @@ class UserServiceTest {
         }
 
         @Test
-        void shouldFindAll() {
+        void find_All() {
             User user1 = Instancio.create(User.class);
             user1.setName("Zara");
             User user2 = Instancio.create(User.class);
@@ -78,7 +78,7 @@ class UserServiceTest {
     @Nested
     class CreateUser {
         @Test
-        void shouldCreate() {
+        void create() {
             User user = Instancio.create(User.class);
             user.setId(null);
 
@@ -91,7 +91,7 @@ class UserServiceTest {
         }
 
         @Test
-        void shouldThrowWhenCreateNotNew() {
+        void throw_When_Create_Not_New() {
             User user = Instancio.create(User.class);
 
             assertThatThrownBy(() -> underTest.create(user))
@@ -103,7 +103,7 @@ class UserServiceTest {
     @Nested
     class DeleteUser {
         @Test
-        void shouldDelete() {
+        void delete() {
             underTest.delete(1L);
             then(repository).should().deleteById(idCaptor.capture());
 
@@ -114,7 +114,7 @@ class UserServiceTest {
     @Nested
     class UpdateUser {
         @Test
-        void shouldUpdate() {
+        void update() {
             User user = Instancio.create(User.class);
             when(repository.findById(user.getId())).thenReturn(Optional.of(user));
 
@@ -127,7 +127,7 @@ class UserServiceTest {
         }
 
         @Test
-        void shouldThrowWhenUpdateWrongId() {
+        void throw_When_Update_Wrong_Id() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, new User()))
