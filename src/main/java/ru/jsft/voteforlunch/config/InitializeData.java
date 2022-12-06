@@ -49,33 +49,33 @@ public class InitializeData {
             }
             userRepository.saveAll(userList);
 
-            // create two menus - one for yesterday and one for today
-            LocalDate yesterday = LocalDate.now().minusDays(1);
-            LocalDate today = LocalDate.now();
+            // create two menus
+            LocalDate nowMinusTwoDays = LocalDate.now().minusDays(2);
+            LocalDate nowMinusOneDay = LocalDate.now().minusDays(1);
 
             Menu menuForCherry1 = new Menu();
-            menuForCherry1.setDateOfMenu(yesterday);
+            menuForCherry1.setDateOfMenu(nowMinusTwoDays);
             menuForCherry1.setRestaurant(cherryRestaurant);
             menuForCherry1.setMealPrice(new TreeSet<>(Set.of(
                     new MealPrice(tea, 10, menuForCherry1),
                     new MealPrice(burger, 15, menuForCherry1)
             )));
             Menu menuForCherry2 = new Menu();
-            menuForCherry2.setDateOfMenu(today);
+            menuForCherry2.setDateOfMenu(nowMinusOneDay);
             menuForCherry2.setRestaurant(cherryRestaurant);
             menuForCherry2.setMealPrice(new TreeSet<>(Set.of(
                     new MealPrice(soup, 25, menuForCherry2),
                     new MealPrice(burger, 15, menuForCherry2)
             )));
             Menu menuForAisha1 = new Menu();
-            menuForAisha1.setDateOfMenu(yesterday);
+            menuForAisha1.setDateOfMenu(nowMinusTwoDays);
             menuForAisha1.setRestaurant(aishaRestaurant);
             menuForAisha1.setMealPrice(new TreeSet<>(Set.of(
                     new MealPrice(tea, 15, menuForAisha1),
                     new MealPrice(pasta, 25, menuForAisha1)
             )));
             Menu menuForAisha2 = new Menu();
-            menuForAisha2.setDateOfMenu(today);
+            menuForAisha2.setDateOfMenu(nowMinusOneDay);
             menuForAisha2.setRestaurant(aishaRestaurant);
             menuForAisha2.setMealPrice(new TreeSet<>(Set.of(
                     new MealPrice(sandwich, 25, menuForAisha2),
@@ -85,10 +85,10 @@ public class InitializeData {
 
             List<Vote> votes = new ArrayList<>();
             // this votes will be used for testing
-            votes.add(new Vote(admin, aishaRestaurant, yesterday, LocalTime.of(9, 30)));
-            votes.add(new Vote(user, aishaRestaurant, yesterday, LocalTime.of(10, 30)));
-            votes.add(new Vote(admin, cherryRestaurant, today, LocalTime.of(9, 30)));
-            votes.add(new Vote(user, aishaRestaurant, today, LocalTime.of(10, 30)));
+            votes.add(new Vote(admin, aishaRestaurant, nowMinusTwoDays, LocalTime.of(9, 30)));
+            votes.add(new Vote(user, aishaRestaurant, nowMinusTwoDays, LocalTime.of(10, 30)));
+            votes.add(new Vote(admin, cherryRestaurant, nowMinusOneDay, LocalTime.of(9, 30)));
+            votes.add(new Vote(user, aishaRestaurant, nowMinusOneDay, LocalTime.of(10, 30)));
             // and this votes can be used for testing in run-time using curl
             Random rnd = new Random();
             for (User usr : userList.stream().skip(2L).toList()) {

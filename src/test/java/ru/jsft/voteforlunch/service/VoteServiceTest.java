@@ -212,8 +212,8 @@ class VoteServiceTest {
     @Test
     void shouldGetVotesDistributionOnDate() {
         List<VoteDistribution> votesList = List.of(
-                new VoteDistribution(1L, "Restaurant One", 65),
-                new VoteDistribution(2L, "Restaurant Two", 35));
+                new VoteDistribution(1L, "Restaurant One", 65L),
+                new VoteDistribution(2L, "Restaurant Two", 35L));
         LocalDate date = LocalDate.of(2022, 12, 15);
 
         when(voteRepository.getVotesDistributionOnDate(date)).thenReturn(votesList);
