@@ -6,12 +6,14 @@
         <expiry>
             <ttl unit="minutes">60</ttl>
         </expiry>
+        <heap>500</heap>
     </cache-template>
 
     <cache-template name="singleNonExpiryCache">
         <expiry>
             <none/>
         </expiry>
+        <heap>1</heap>
     </cache-template>
 
     <cache alias="menu" uses-template="expiryCache"/>
