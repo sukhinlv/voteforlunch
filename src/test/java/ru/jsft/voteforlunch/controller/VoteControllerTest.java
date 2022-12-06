@@ -2,7 +2,6 @@ package ru.jsft.voteforlunch.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -13,7 +12,6 @@ import ru.jsft.voteforlunch.error.NotFoundException;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -31,9 +29,6 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Autowired
     private Clock clock;
-
-    @Value("${vote.time.constraint}")
-    private LocalTime timeConstraint;
 
     @Test
     void get_Votes_For_User() throws Exception {
@@ -55,7 +50,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     void get_Votes_Distribution() throws Exception {
         mockMvc.perform(get(REST_URL +
                         "/distribution?date=" +
-                        LocalDate.now().minusDays(2).format(DateTimeFormatter.ISO_DATE)))
+                        LocalDate.now(clock).minusDays(2).format(DateTimeFormatter.ISO_DATE)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_DISTRIBUTION_MATCHER.contentJson(VOTE_DISTRIBUTION));

@@ -5,8 +5,8 @@ import ru.jsft.voteforlunch.model.Menu;
 import java.time.LocalDate;
 
 public class MenuTestData {
-    public static LocalDate YESTERDAY = LocalDate.now().minusDays(1);
-    public static LocalDate TODAY = LocalDate.now();
+    public static LocalDate YESTERDAY = LocalDate.of(2022, 11, 14);
+    public static LocalDate TODAY = LocalDate.of(2022, 11, 15);
 
     public static Long MENU_FOR_CHERRY1_ID = 1L;
     public static Long MENU_FOR_CHERRY2_ID = 2L;

@@ -31,7 +31,13 @@ class VoteServiceTest {
             2022, 11, 15, 9, 30, 0, 0,
             ZoneId.of("GMT"));
 
-    private static final LocalTime timeConstraint = LocalTime.of(11, 0);
+    private static final LocalTime TIME_CONSTRAINT = LocalTime.of(11, 0);
+
+    public static final ZonedDateTime NOW_AFTER_TIME_CONSTRAINT = ZonedDateTime.of(
+            NOW.getYear(), NOW.getMonthValue(), NOW.getDayOfMonth(),
+            TIME_CONSTRAINT.getHour(), TIME_CONSTRAINT.getMinute(), TIME_CONSTRAINT.getSecond(),
+            TIME_CONSTRAINT.getNano() + 1,
+            NOW.getZone());
 
     private VoteService underTest;
 
@@ -46,7 +52,6 @@ class VoteServiceTest {
 
     @Captor
     ArgumentCaptor<Vote> voteCaptor;
-
     @Captor
     ArgumentCaptor<Long> idCaptor;
 
@@ -55,13 +60,13 @@ class VoteServiceTest {
         MockitoAnnotations.openMocks(this);
         when(clock.getZone()).thenReturn(NOW.getZone());
         when(clock.instant()).thenReturn(NOW.toInstant());
-        underTest = new VoteService(voteRepository, userRepository, restaurantRepository, clock, timeConstraint);
+        underTest = new VoteService(voteRepository, userRepository, restaurantRepository, clock, TIME_CONSTRAINT);
     }
 
     @Nested
     class FindVotes {
         @Test
-        void shouldFindAll() {
+        void find_All_Votes() {
             Vote vote1 = Instancio.create(Vote.class);
             Vote vote2 = Instancio.create(Vote.class);
             when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
@@ -70,7 +75,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldFind() {
+        void find_Votes() {
             Vote vote = Instancio.create(Vote.class);
             Long id = vote.getId();
             Long userId = vote.getUser().getId();
@@ -80,7 +85,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldFindAllForUser() {
+        void find_All_User_Votes() {
             User user1 = Instancio.create(User.class);
             User user2 = Instancio.create(User.class);
             Vote vote1 = Instancio.create(Vote.class);
@@ -98,7 +103,7 @@ class VoteServiceTest {
     @Nested
     class SaveVotes {
         @Test
-        void shouldSaveNewVote() {
+        void save_New_Vote() {
             User user = Instancio.create(User.class);
             Restaurant restaurant = Instancio.create(Restaurant.class);
 
@@ -121,7 +126,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldUpdateVote() {
+        void update_Vote() {
             User user = Instancio.create(User.class);
 
             Restaurant restaurant = Instancio.create(Restaurant.class);
@@ -153,24 +158,19 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldThrowWhenSaveWithTimeConstraintViolation() {
-            ZonedDateTime nowAfterTimeConstraint = ZonedDateTime.of(
-                    NOW.getYear(), NOW.getMonthValue(), NOW.getDayOfMonth(),
-                    timeConstraint.getHour(), timeConstraint.getMinute(), timeConstraint.getSecond(),
-                    timeConstraint.getNano() + 1,
-                    ZoneId.of("GMT"));
-            when(clock.instant()).thenReturn(nowAfterTimeConstraint.toInstant());
+        void throw_When_Save_With_Time_Constraint_Violation() {
+            when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
 
             assertThatThrownBy(() -> underTest.save(1L, 1L))
                     .isInstanceOf(VoteTimeConstraintException.class)
-                    .hasMessageContaining(String.format("You can only vote until %s", timeConstraint));
+                    .hasMessageContaining(String.format("You can only vote until %s", TIME_CONSTRAINT));
         }
     }
 
     @Nested
     class DeleteVotes {
         @Test
-        void shouldDelete() {
+        void delete() {
             long userId = 1L;
             Vote vote = Instancio.create(Vote.class);
             vote.setVoteDate(LocalDate.now(clock));
@@ -185,7 +185,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldThrowWhenDeleteButVoteIsAbsent() {
+        void throw_When_Delete_Absent_Vote() {
             long userId = 1L;
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(null);
 
@@ -195,22 +195,17 @@ class VoteServiceTest {
         }
 
         @Test
-        void shouldThrowWhenDeleteWithTimeConstraintViolation() {
-            ZonedDateTime nowAfterTimeConstraint = ZonedDateTime.of(
-                    NOW.getYear(), NOW.getMonthValue(), NOW.getDayOfMonth(),
-                    timeConstraint.getHour(), timeConstraint.getMinute(), timeConstraint.getSecond(),
-                    timeConstraint.getNano() + 1,
-                    ZoneId.of("GMT"));
-            when(clock.instant()).thenReturn(nowAfterTimeConstraint.toInstant());
+        void throw_When_Delete_With_Time_Constraint_Violation() {
+            when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
 
             assertThatThrownBy(() -> underTest.delete(1L))
                     .isInstanceOf(VoteTimeConstraintException.class)
-                    .hasMessageContaining(String.format("You can only change your vote until %s", timeConstraint));
+                    .hasMessageContaining(String.format("You can only change your vote until %s", TIME_CONSTRAINT));
         }
     }
 
     @Test
-    void shouldGetVotesDistributionOnDate() {
+    void get_Votes_Distribution_On_Date() {
         List<VoteDistribution> votesList = List.of(
                 new VoteDistribution(1L, "Restaurant One", 65L),
                 new VoteDistribution(2L, "Restaurant Two", 35L));

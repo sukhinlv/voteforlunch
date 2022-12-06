@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.*;
 import ru.jsft.voteforlunch.repository.*;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -20,7 +21,8 @@ public class InitializeData {
                                     UserRepository userRepository,
                                     MenuRepository menuRepository,
                                     RestaurantRepository restaurantRepository,
-                                    MealRepository mealRepository
+                                    MealRepository mealRepository,
+                                    Clock clock
     ) {
         return args -> {
             Meal tea = new Meal("Tea");
@@ -50,8 +52,8 @@ public class InitializeData {
             userRepository.saveAll(userList);
 
             // create two menus
-            LocalDate nowMinusTwoDays = LocalDate.now().minusDays(2);
-            LocalDate nowMinusOneDay = LocalDate.now().minusDays(1);
+            LocalDate nowMinusTwoDays = LocalDate.now(clock).minusDays(2);
+            LocalDate nowMinusOneDay = LocalDate.now(clock).minusDays(1);
 
             Menu menuForCherry1 = new Menu();
             menuForCherry1.setDateOfMenu(nowMinusTwoDays);
@@ -95,7 +97,7 @@ public class InitializeData {
                 votes.add(new Vote(
                         usr,
                         rnd.nextBoolean() ? aishaRestaurant : cherryRestaurant,
-                        LocalDate.now(),
+                        LocalDate.now(clock),
                         LocalTime.of(rnd.nextInt(6, 11), rnd.nextInt(0, 60))));
             }
             voteRepository.saveAll(votes);

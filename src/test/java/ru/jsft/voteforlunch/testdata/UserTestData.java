@@ -11,9 +11,6 @@ import java.util.List;
 public class UserTestData {
     public static List<User> USER_LIST = new ArrayList<>(2000);
 
-    public static long ADMIN_ID = 1L;
-    public static long USER_ID = 2L;
-
     public static User ADMIN = new User("admin", "admin", "admin@ya.ru", true,
             LocalDate.of(2022, 10, 15), Collections.singleton(Role.ADMIN));
     public static User USER = new User("user", "user", "user@gmail.com", true,
