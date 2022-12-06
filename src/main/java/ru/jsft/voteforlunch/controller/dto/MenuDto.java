@@ -2,7 +2,6 @@ package ru.jsft.voteforlunch.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.jsft.voteforlunch.model.Menu;
 
@@ -16,8 +15,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class MenuDto extends AbstractDto {
+public class MenuDto {
+    private Long id;
 
     @NotNull
     private LocalDate dateOfMenu;

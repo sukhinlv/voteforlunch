@@ -2,7 +2,6 @@ package ru.jsft.voteforlunch.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.jsft.voteforlunch.util.validation.NoHtml;
 
@@ -14,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class RestaurantDto extends AbstractDto {
+public class RestaurantDto {
+    private Long id;
 
     @NotBlank(message = "The restaurant must have a name")
     @NoHtml

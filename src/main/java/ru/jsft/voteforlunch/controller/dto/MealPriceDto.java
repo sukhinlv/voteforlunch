@@ -2,7 +2,6 @@ package ru.jsft.voteforlunch.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
@@ -14,8 +13,8 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class MealPriceDto extends AbstractDto {
+public class MealPriceDto {
+    private Long id;
 
     @NotNull
     private MealDto meal;

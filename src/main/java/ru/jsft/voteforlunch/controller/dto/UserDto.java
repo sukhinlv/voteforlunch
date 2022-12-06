@@ -18,8 +18,9 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserDto extends AbstractDto {
+public class UserDto {
+    private Long id;
+
     @NotBlank(message = "User name must not be empty")
     @NoHtml
     private String name;
