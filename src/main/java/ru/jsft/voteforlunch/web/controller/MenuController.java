@@ -14,6 +14,7 @@ import ru.jsft.voteforlunch.web.controller.mapper.MenuListMapper;
 import ru.jsft.voteforlunch.web.controller.mapper.MenuMapper;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -35,10 +36,19 @@ public class MenuController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MenuListDto>> getAll(
-            @RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<List<MenuListDto>> getAll() {
+        return getListOfMenuListDtos(service.findAllWithRestaurants());
+    }
 
-        List<Menu> resultList = (date == null) ? service.findAllWithRestaurants() : service.findByDateWithProps(date);
+    @GetMapping("/on-date")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<MenuListDto>> getMenusOnDate(
+            @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate date) {
+
+        return getListOfMenuListDtos(service.findAllByDateWithProps(date));
+    }
+
+    private ResponseEntity<List<MenuListDto>> getListOfMenuListDtos(List<Menu> resultList) {
         return ResponseEntity.ok(resultList.stream()
                 .map(listMapper::toDto)
                 .sorted(Comparator.comparing(MenuListDto::getDateOfMenu)

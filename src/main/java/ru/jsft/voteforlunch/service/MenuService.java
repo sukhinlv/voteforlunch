@@ -31,7 +31,7 @@ public class MenuService {
     }
 
     @Cacheable("menu")
-    public List<Menu> findByDateWithProps(LocalDate date) {
+    public List<Menu> findAllByDateWithProps(LocalDate date) {
         return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
 

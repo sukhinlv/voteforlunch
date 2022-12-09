@@ -71,7 +71,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu3);
             when(repository.findAllByDateOfMenuOrderByDateOfMenuDesc(dateOfMenu)).thenReturn(menuList);
 
-            assertThat(underTest.findByDateWithProps(dateOfMenu))
+            assertThat(underTest.findAllByDateWithProps(dateOfMenu))
                     .isNotNull()
                     .usingRecursiveComparison()
                     .isEqualTo(menuList);
