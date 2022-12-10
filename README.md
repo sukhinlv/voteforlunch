@@ -4,6 +4,24 @@
 
 Hi! Here you can find demo app that was written like test (and educational) task
 
+By default, application starts on port 8095. Just run it from Intellij Idea. You can connect to the DB console with http://localhost:8095/h2-console (username: sa, password is blank)
+
+
+### How it works
+
+- The user can view menu lists for a specific date.
+- The user can vote for a particular restaurant.
+- The user's vote will be counted for the current date.
+- It doesn't matter if the restaurant has a menu for that day or not.
+- The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote.
+- After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
+- The user can request the distribution of votes between restaurants for any date.
+
+Here are the curl commands that you can use to make requests as user:
+...
+
+The administrator has full access to all end-points. Link to Swagger: ...
+
 
 ### Technical requirement
 
@@ -42,27 +60,6 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 ![img.png](img.png)
 
 
-### Application info
-
-By default, application starts on port 8095. Just run it from Intellij Idea. You can connect to the DB console with http://localhost:8095/h2-console (username: sa, password is blank)
-
-
-### How it works
-
-- The user can view menu lists for a specific date.
-- The user can vote for a particular restaurant. 
-- The user's vote will be counted for the current date. 
-- It doesn't matter if the restaurant has a menu for that day or not.
-- The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote. 
-- After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
-- The user can request the distribution of votes between restaurants for any date.
-
-Here are the curl commands that you can use to make requests as user:
-...
-
-The administrator has full access to all end-points. Link to Swagger: ...
-
-
 ### Security
 
 Administrator _login admin@ya.ru_ password _admin_
@@ -70,7 +67,7 @@ Administrator _login admin@ya.ru_ password _admin_
 User login _user@ya.ru_ password _user_
 
 
-#### Password storage
+### Password storage
 
 For clarity, the credentials that are generated when the program starts are not encrypted.
 The program implements the following logic for working with users:
