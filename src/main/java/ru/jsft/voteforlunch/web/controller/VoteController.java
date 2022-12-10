@@ -33,7 +33,7 @@ public class VoteController {
 
     @GetMapping
     public ResponseEntity<List<VoteDto>> getAllForUser() {
-        return ResponseEntity.ok(service.findAllForUser(SecurityUtil.authUserId()).stream()
+        return ResponseEntity.ok(service.findAllForUser(SecurityUtil.authId()).stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(VoteDto::getVoteDate)
                         .thenComparing(VoteDto::getVoteTime)
@@ -44,7 +44,7 @@ public class VoteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> getVote(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.find(id, SecurityUtil.authUserId())));
+        return ResponseEntity.ok(mapper.toDto(service.find(id, SecurityUtil.authId())));
     }
 
     @GetMapping("/distribution")
@@ -57,7 +57,7 @@ public class VoteController {
 
     @PostMapping(path = "/{restaurantId}")
     public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId) {
-        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, SecurityUtil.authUserId());
+        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, SecurityUtil.authId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(savedEntity.getId()).toUri();
@@ -67,6 +67,6 @@ public class VoteController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteVote() {
-        service.delete(SecurityUtil.authUserId());
+        service.delete(SecurityUtil.authId());
     }
 }

@@ -66,10 +66,10 @@ class UserServiceTest {
         @Test
         void find_All() {
             User user1 = Instancio.create(User.class);
-            user1.setName("Zara");
+            user1.setEmail("Zara");
             User user2 = Instancio.create(User.class);
-            user2.setName("Aisha");
-            when(repository.findAll(Sort.by("name"))).thenReturn(List.of(user2, user1));
+            user2.setEmail("Aisha");
+            when(repository.findAll(Sort.by("email"))).thenReturn(List.of(user2, user1));
 
             assertThat(underTest.findAllSorted()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(user2, user1));
         }
@@ -130,7 +130,7 @@ class UserServiceTest {
         void throw_When_Update_Wrong_Id() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> underTest.update(1L, new User()))
+            assertThatThrownBy(() -> underTest.update(1L, Instancio.create(User.class)))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(String.format("User with id = %d not found", 1L));
         }

@@ -1,18 +1,18 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import ru.jsft.voteforlunch.model.Role;
 import ru.jsft.voteforlunch.util.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
@@ -21,26 +21,33 @@ import java.util.Set;
 public class UserDto {
     private Long id;
 
-    @NotBlank(message = "User name must not be empty")
+    @Size(max = 128)
     @NoHtml
-    private String name;
-
-    @NotBlank(message = "Password must not be empty")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
     @Email(message = "Please enter valid e-mail")
     @NotBlank(message = "Email must not be empty")
-    @NoHtml
     private String email;
+
+    @Size(max = 128)
+    @NoHtml
+    @NotBlank(message = "First name must not be empty")
+    private String firstName;
+
+    @Size(max = 128)
+    @NoHtml
+    @NotBlank(message = "Last name must not be empty")
+    private String lastName;
+
+    @Size(max = 256)
+    @NotBlank(message = "Password must not be empty")
+    private String password;
 
     private boolean enabled;
 
-    @Setter(AccessLevel.NONE)
-    private LocalDate registered;
+    private Set<Role> roles;
 
-    @NotNull
-    private Set<Role> roles = new LinkedHashSet<>();
+    public void setEmail(String email) {
+        this.email = StringUtils.hasText(email) ? email.toLowerCase() : null;
+    }
 
     public Set<Role> getRoles() {
         return roles;

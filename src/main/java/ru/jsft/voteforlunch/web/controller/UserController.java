@@ -12,7 +12,6 @@ import ru.jsft.voteforlunch.web.controller.mapper.UserMapper;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -30,10 +29,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
-        return ResponseEntity.ok(service.findAllSorted().stream()
-                .map(mapper::toDto)
-                .sorted(Comparator.comparing(UserDto::getName))
-                .toList());
+        return ResponseEntity.ok(service.findAllSorted().stream().map(mapper::toDto).toList());
     }
 
     @GetMapping("/{id}")

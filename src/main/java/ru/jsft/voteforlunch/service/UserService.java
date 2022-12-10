@@ -29,7 +29,7 @@ public class UserService {
 
     public List<User> findAllSorted() {
         log.info("Find all users");
-        return repository.findAll(Sort.by("name"));
+        return repository.findAll(Sort.by("email"));
     }
 
     public User create(User user) {

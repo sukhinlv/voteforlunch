@@ -20,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.jsft.voteforlunch.testdata.UserTestData.ADMIN;
 import static ru.jsft.voteforlunch.testdata.VoteTestData.*;
+import static ru.jsft.voteforlunch.utils.MockAuthorization.userHttpBasic;
 
 public class VoteControllerTest extends AbstractSpringBootTest {
     private static final String REST_URL = VoteController.REST_URL + '/';
@@ -33,7 +35,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Test
     void get_Votes_For_User() throws Exception {
-        mockMvc.perform(get(REST_URL))
+        mockMvc.perform(get(REST_URL).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_DTO_MATCHER.contentJson(VOTES));
@@ -41,7 +43,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Test
     void get_Vote() throws Exception {
-        mockMvc.perform(get(REST_URL + "/1"))
+        mockMvc.perform(get(REST_URL + "/1").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_DTO_MATCHER.contentJson(VOTE_1L));
@@ -51,7 +53,8 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     void get_Votes_Distribution() throws Exception {
         mockMvc.perform(get(REST_URL +
                         "/distribution?date=" +
-                        LocalDate.now(clock).minusDays(2).format(DateTimeFormatter.ISO_DATE)))
+                        LocalDate.now(clock).minusDays(2).format(DateTimeFormatter.ISO_DATE))
+                        .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_DISTRIBUTION_MATCHER.contentJson(VOTE_DISTRIBUTION));
@@ -59,7 +62,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Test
     void save_Vote() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post(REST_URL + "/1"))
+        ResultActions resultActions = mockMvc.perform(post(REST_URL + "/1").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
         VoteDto actual = VOTE_DTO_MATCHER.readFromJson(resultActions);
@@ -70,15 +73,15 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Test
     void delete_Vote() throws Exception {
-        mockMvc.perform(post(REST_URL + "/1"));
+        mockMvc.perform(post(REST_URL + "/1").with(userHttpBasic(ADMIN)));
 
-        mockMvc.perform(delete(REST_URL)).andExpect(status().isNoContent());
+        mockMvc.perform(delete(REST_URL).with(userHttpBasic(ADMIN))).andExpect(status().isNoContent());
     }
 
     @Test
     void throw_Vote_Not_Found() throws Exception {
         NestedServletException parentException = assertThrows(NestedServletException.class,
-                () -> mockMvc.perform(delete(REST_URL)));
+                () -> mockMvc.perform(delete(REST_URL).with(userHttpBasic(ADMIN))));
 
         Throwable cause = parentException.getCause();
         assertThat(cause)

@@ -8,23 +8,28 @@ import ru.jsft.voteforlunch.web.controller.dto.UserDto;
 public class UserMapper implements Mapper<User, UserDto> {
     @Override
     public User toEntity(UserDto dto) {
-        User user = new User();
+        User user = new User(
+                dto.getEmail(),
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getPassword(),
+                dto.isEnabled(),
+                dto.getRoles()
+        );
         user.setId(dto.getId());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setEnabled(dto.isEnabled());
-        user.setRoles(dto.getRoles());
         return user;
     }
 
     @Override
     public UserDto toDto(User entity) {
-        UserDto userDto = new UserDto();
-        userDto.setId(entity.getId());
-        userDto.setName(entity.getName());
-        userDto.setEmail(entity.getEmail());
-        userDto.setEnabled(entity.isEnabled());
-        userDto.setRoles(entity.getRoles());
-        return userDto;
+        return new UserDto(
+                entity.getId(),
+                entity.getEmail(),
+                entity.getFirstName(),
+                entity.getLastName(),
+                entity.getPassword(),
+                entity.isEnabled(),
+                entity.getRoles()
+        );
     }
 }
