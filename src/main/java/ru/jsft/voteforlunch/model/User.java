@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import ru.jsft.voteforlunch.util.validation.NoHtml;
+import ru.jsft.voteforlunch.validation.NoHtml;
 import ru.jsft.voteforlunch.web.security.PasswordDeserializer;
 
 import javax.persistence.*;

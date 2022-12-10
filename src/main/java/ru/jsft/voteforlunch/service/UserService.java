@@ -9,7 +9,6 @@ import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -48,14 +47,11 @@ public class UserService {
 
     @Transactional
     public User update(long id, User user) {
-        Optional<User> userOptional = repository.findById(id);
-
-        if (userOptional.isEmpty()) {
-            throw new NotFoundException(String.format("User with id = %d not found", id));
-        }
+        User storedUser = repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("User with id = %d not found", id)));
 
         log.info("Update user with id = {}", user.getId());
         user.setId(id);
+        user.setPassword(storedUser.getPassword()); // do not update the password, it must be updated in a separate way
         return repository.save(user);
     }
 }

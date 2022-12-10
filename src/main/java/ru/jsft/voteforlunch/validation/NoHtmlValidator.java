@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.util.validation;
+package ru.jsft.voteforlunch.validation;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;

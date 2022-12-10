@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.jsft.voteforlunch.model.Role;
-import ru.jsft.voteforlunch.util.validation.NoHtml;
+import ru.jsft.voteforlunch.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

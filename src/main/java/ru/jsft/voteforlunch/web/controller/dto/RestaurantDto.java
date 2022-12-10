@@ -3,7 +3,7 @@ package ru.jsft.voteforlunch.web.controller.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.jsft.voteforlunch.util.validation.NoHtml;
+import ru.jsft.voteforlunch.validation.NoHtml;
 
 import javax.validation.constraints.NotBlank;
 

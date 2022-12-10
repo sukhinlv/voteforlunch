@@ -1,7 +1,7 @@
 package ru.jsft.voteforlunch.model;
 
 import lombok.*;
-import ru.jsft.voteforlunch.util.validation.NoHtml;
+import ru.jsft.voteforlunch.validation.NoHtml;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

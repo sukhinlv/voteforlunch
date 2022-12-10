@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 @Configuration
 @EnableCaching
 @Slf4j
-public class AppConfig {
+public class ApplicationConfig {
 
     @Autowired
     void configureAndStoreObjectMapper(ObjectMapper objectMapper) {

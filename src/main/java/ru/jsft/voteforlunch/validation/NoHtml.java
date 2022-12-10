@@ -1,4 +1,4 @@
-package ru.jsft.voteforlunch.util.validation;
+package ru.jsft.voteforlunch.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

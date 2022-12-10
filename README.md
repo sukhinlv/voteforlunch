@@ -1,11 +1,8 @@
+# App in progress...
+
 ### Intro
 
-Hi! Here you can find demo app that was written like test task.
-
-You can tackle working app with such curl scripts:
-...
-
-or use Swagger link ...
+Hi! Here you can find demo app that was written like test (and educational) task
 
 ### Technical requirement
 
@@ -30,20 +27,51 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 ### Used technologies
 
-For simplicity, I use H2 in-memory database, that fills with some test data using InitializeData#commandLineRunner
-ORM framework is Spring Data JPA
-Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
-Application uses ehCache for caching. Due to the logic of application only MenuService use cache for menus. Because I think that it will be the narrowest place.
+- or simplicity, I am using an in-memory H2 database that is populated with some test data using InitializeData#commandLineRunner
+- ORM framework is Spring Data JPA
+- Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
+- The application uses ehCache for caching. According to the application logic, MenuService and VoteService#getVotesDistributionOnDate uses the cache. Cached: menu GET operations, votes distribution
 
-Cached: menu, votes distribution
+### Database structure
 
-no security implemented, just mock in SecurityUtil
+![img.png](img.png)
 
-### Project structure
+### Application info
 
-### Actions required to run the application
+By default, application starts on port 8095
+Just run it from Intellij Idea
+You can connect to the DB console with http://localhost:8095/h2-console (username: sa, password is blank)
 
-h2 db used, no actions needed
-you can set port in application.yml, ... parameter
-sample data populated in ru.jsft.voteforlanch.Config.InitializeData#commandLineRunner
-no security implemented
+### How it works
+
+- The user can view menu lists for a specific date.
+- The user can vote for a particular restaurant. The user's vote will be counted for the current date. 
+- The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote. After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
+- The user can request the distribution of votes between restaurants for any date.
+
+Here are the curl commands that you can use to make requests as user:
+...
+
+The administrator has full access to all end-points. Link to Swagger: ...
+
+### Security
+
+**Administrator** login: admin@ya.ru password: admin
+
+**User** login: user@ya.ru password: user
+
+#### Password storage
+
+For clarity, the credentials that are generated when the program starts are not encrypted.
+The program implements the following logic for working with users:
+- When creating a new user, his password is encrypted at the stage of converting UserDto to User
+- When converting User to UserDto for return to the frontend, the password is not transmitted
+- When updating the data of an already existing user in the database, the password does not change
+- To change the password, a separate functionality must be implemented but that is not implemented in this version of the program
+
+### TODO
+
+- use Mapstruct to implement mappers
+- use liquibase to automate database change process
+- add more test cases
+- try to refactor JsonUtil and SecurityUtil, so they will be in no-static style
