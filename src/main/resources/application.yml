@@ -2,7 +2,7 @@ spring:
   # Database
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:voteforlunch
+    url: "jdbc:h2:mem:voteforlunch;DB_CLOSE_DELAY=-1" # https://stackoverflow.com/a/52481318/20265936
     username: sa
     password:
   h2:
