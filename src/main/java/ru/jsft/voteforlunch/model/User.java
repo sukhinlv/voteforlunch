@@ -6,7 +6,7 @@ import lombok.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.jsft.voteforlunch.util.validation.NoHtml;
-import ru.jsft.voteforlunch.web.json.JsonDeserializers;
+import ru.jsft.voteforlunch.web.security.PasswordDeserializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -49,7 +49,7 @@ public class User extends AbstractEntity implements Serializable {
     @Size(max = 256)
     @NotBlank(message = "Password must not be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
+    @JsonDeserialize(using = PasswordDeserializer.class)
     private String password;
 
     private boolean enabled;

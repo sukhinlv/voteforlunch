@@ -22,8 +22,6 @@ import java.util.Optional;
 @Slf4j
 public class SecurityConfiguration {
 
-    public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
     private final UserRepository userRepository;
 
     public SecurityConfiguration(UserRepository userRepository) {
@@ -32,7 +30,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PASSWORD_ENCODER;
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
