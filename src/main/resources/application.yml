@@ -9,7 +9,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-
   # JPA properties
   jpa:
     hibernate:
@@ -33,7 +32,7 @@ spring:
       setter: none
       is-getter: none
 
-  # Spring Boot color console logging
+  # Spring Boot color console
   output.ansi.enabled: always
 
   # Cache
@@ -44,24 +43,12 @@ logging:
   level:
     root: WARN
     ru.jsft.voteforlunch: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
     org.springframework.orm.jpa: DEBUG
+    org.springframework.security: DEBUG
 
 # Server configuration
 server:
   port: 8095
-  servlet:
-    encoding:
-      charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
-      enabled: true # Enable http encoding support
-      force: true
-
-#  # Security configuration
-#  security:
-#    user:
-#      name: user
-#      password: user
-
 
 # Application-specific settings
 vote:
