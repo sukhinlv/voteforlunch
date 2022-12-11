@@ -4,7 +4,7 @@
 
 Hi! Here you can find demo app that was written like test (and educational) task
 
-By default, application starts on port 8095. Just run it from Intellij Idea. You can connect to the DB console with http://localhost:8095/h2-console (username: sa, password is blank)
+By default, application starts on port 8095. Just run it from Intellij Idea.
 
 
 ### How it works
@@ -16,6 +16,9 @@ By default, application starts on port 8095. Just run it from Intellij Idea. You
 - The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote.
 - After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
 - The user can request the distribution of votes between restaurants for any date.
+
+After application starts there will be 
+- ... (list of meals, menus, etc...)
 
 Here are the curl commands that you can use to make requests as user:
 ...
@@ -62,9 +65,11 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 ### Security
 
-Administrator _login admin@ya.ru_ password _admin_
+Users for tests:
+- Administrator _login admin@ya.ru_ password _admin_
+- User login _user@ya.ru_ password _user_
 
-User login _user@ya.ru_ password _user_
+Self-registration of users is not implemented
 
 
 ### Password storage

@@ -3,6 +3,7 @@ package ru.jsft.voteforlunch.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.jsft.voteforlunch.model.Role;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 import ru.jsft.voteforlunch.web.security.AuthorizedUser;
@@ -46,9 +48,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
-//                .antMatchers(HttpMethod.POST, "/api/profile").anonymous()
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/v*/votes").authenticated()
+                .antMatchers("/api/v*/users/profile").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/v*/menus").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/v*/meals").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/v*/restaurants").authenticated()
+                .antMatchers("/api/**").hasRole(Role.ADMIN.name())
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
