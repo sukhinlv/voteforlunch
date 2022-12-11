@@ -8,6 +8,7 @@ import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class UserService {
         return repository.findAll(Sort.by("email"));
     }
 
-    public User create(User user) {
+    public User create(@NotNull User user) {
         if (!user.isNew()) {
             throw new IllegalArgumentException("User must be new");
         }
@@ -52,6 +53,7 @@ public class UserService {
         log.info("Update user with id = {}", user.getId());
         user.setId(id);
         user.setPassword(storedUser.getPassword()); // do not update the password, it must be updated in a separate way
+        user.setRoles(storedUser.getRoles()); // do not update roles, it must be updated in a separate way
         return repository.save(user);
     }
 }

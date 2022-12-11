@@ -80,6 +80,7 @@ The program implements the following logic for working with users:
 - When converting User to UserDto for return to the frontend, the password is hidden
 - When updating the data of an already existing user in the database, the password does not change
 - To change the password, a separate functionality must be implemented but that is not implemented in this version of the program
+- To change roles, a separate functionality must be implemented but that is not implemented in this version of the program
 
 
 ### TODO

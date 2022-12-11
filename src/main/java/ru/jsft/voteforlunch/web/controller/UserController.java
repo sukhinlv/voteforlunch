@@ -3,12 +3,14 @@ package ru.jsft.voteforlunch.web.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.service.UserService;
 import ru.jsft.voteforlunch.web.controller.dto.UserDto;
 import ru.jsft.voteforlunch.web.controller.mapper.UserMapper;
+import ru.jsft.voteforlunch.web.security.AuthorizedUser;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -55,5 +57,15 @@ public class UserController {
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> update(@PathVariable long id, @Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(userDto))));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserDto> getProfile(@AuthenticationPrincipal AuthorizedUser user) {
+        return get(user.id());
+    }
+
+    @PostMapping(path = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> update(@AuthenticationPrincipal AuthorizedUser user, @Valid @RequestBody UserDto userDto) {
+        return update(user.id(), userDto);
     }
 }
