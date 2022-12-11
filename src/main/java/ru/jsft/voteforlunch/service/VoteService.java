@@ -50,7 +50,8 @@ public class VoteService {
 
     public Vote find(long id, long userId) {
         log.info("Find vote with id = {}, userId = {}", id, userId);
-        return repository.findByIdAndUserId(id, userId);
+        return repository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> (new NotFoundException(String.format("Vote with id = %d not found", id))));
     }
 
     public List<Vote> findAllForUser(long userId) {
@@ -66,12 +67,12 @@ public class VoteService {
             throw new VoteTimeConstraintException(String.format("You can only vote until %s", timeConstraint));
         }
 
-        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
-        if (vote == null) {
-            vote = new Vote();
-            vote.setUser(userRepository.getReferenceById(userId));
-            vote.setVoteDate(LocalDate.now(clock));
-        }
+        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId).orElseGet(() -> {
+            Vote newVote = new Vote();
+            newVote.setUser(userRepository.getReferenceById(userId));
+            newVote.setVoteDate(LocalDate.now(clock));
+            return newVote;
+        });
         vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
         vote.setVoteTime(LocalTime.now(clock));
         vote = repository.save(vote);
@@ -93,10 +94,10 @@ public class VoteService {
         if (LocalTime.now(clock).isAfter(timeConstraint)) {
             throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
         }
-        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId);
-        if (vote == null) {
-            throw new NotFoundException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock)));
-        }
+
+        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId)
+                .orElseThrow(() -> new NotFoundException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock))));
+
         repository.deleteById(vote.getId());
         log.info("Vote deleted. userId={}", userId);
     }

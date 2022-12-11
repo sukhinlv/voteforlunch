@@ -20,6 +20,7 @@ import ru.jsft.voteforlunch.repository.VoteRepository;
 
 import java.time.*;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -79,7 +80,7 @@ class VoteServiceTest {
             Vote vote = Instancio.create(Vote.class);
             Long id = vote.getId();
             Long userId = vote.getUser().getId();
-            when(voteRepository.findByIdAndUserId(id, userId)).thenReturn(vote);
+            when(voteRepository.findByIdAndUserId(id, userId)).thenReturn(Optional.of(vote));
 
             assertThat(underTest.find(id, userId)).usingRecursiveComparison().isEqualTo(vote);
         }
@@ -107,7 +108,7 @@ class VoteServiceTest {
             User user = Instancio.create(User.class);
             Restaurant restaurant = Instancio.create(Restaurant.class);
 
-            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(null);
+            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(Optional.empty());
             when(restaurantRepository.getReferenceById(restaurant.getId())).thenReturn(restaurant);
             when(userRepository.getReferenceById(user.getId())).thenReturn(user);
 
@@ -139,7 +140,7 @@ class VoteServiceTest {
 
             Restaurant updatedRestaurant = Instancio.create(Restaurant.class);
 
-            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(vote);
+            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(Optional.of(vote));
             when(restaurantRepository.getReferenceById(updatedRestaurant.getId())).thenReturn(updatedRestaurant);
 
             underTest.save(updatedRestaurant.getId(), user.getId());
@@ -176,7 +177,7 @@ class VoteServiceTest {
             vote.setVoteDate(LocalDate.now(clock));
             vote.setVoteTime(LocalTime.now(clock));
 
-            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(vote);
+            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.of(vote));
 
             underTest.delete(userId);
 
@@ -187,7 +188,7 @@ class VoteServiceTest {
         @Test
         void throw_When_Delete_Absent_Vote() {
             long userId = 1L;
-            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(null);
+            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.delete(userId))
                     .isInstanceOf(NotFoundException.class)

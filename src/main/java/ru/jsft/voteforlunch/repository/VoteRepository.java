@@ -11,6 +11,7 @@ import ru.jsft.voteforlunch.model.VoteDistribution;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
@@ -25,9 +26,9 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     List<Vote> findAllForUser(@Param("userId") long userId);
 
     @EntityGraph(attributePaths = {"restaurant", "user"})
-    Vote findByIdAndUserId(long id, long userId);
+    Optional<Vote> findByIdAndUserId(long id, long userId);
 
-    Vote findByVoteDateAndUserId(LocalDate date, long userId);
+    Optional<Vote> findByVoteDateAndUserId(LocalDate date, long userId);
 
     @Query(name = "get_votes_distribution_on_date", nativeQuery = true)
     List<VoteDistribution> getVotesDistributionOnDate(@Param("distDate") LocalDate distDate);
