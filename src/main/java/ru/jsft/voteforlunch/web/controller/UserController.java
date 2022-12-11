@@ -64,7 +64,7 @@ public class UserController {
         return get(user.id());
     }
 
-    @PostMapping(path = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> update(@AuthenticationPrincipal AuthorizedUser user, @Valid @RequestBody UserDto userDto) {
         return update(user.id(), userDto);
     }

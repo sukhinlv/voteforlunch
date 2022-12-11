@@ -1,9 +1,7 @@
 package ru.jsft.voteforlunch.controller;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.util.NestedServletException;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
@@ -11,7 +9,6 @@ import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.web.controller.VoteController;
 import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -26,12 +23,6 @@ import static ru.jsft.voteforlunch.utils.MockAuthorization.userHttpBasic;
 
 public class VoteControllerTest extends AbstractSpringBootTest {
     private static final String REST_URL = VoteController.REST_URL + '/';
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private Clock clock;
 
     @Test
     void get_Votes_For_User() throws Exception {
