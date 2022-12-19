@@ -30,7 +30,7 @@ public class UserTestData {
     }
 
     public static UserDto getNewDto() {
-        return new UserDto(null, "new@gmail.com", "newusername", "newsurname", "***", true, Collections.singleton(Role.USER));
+        return new UserDto(null, "new@gmail.com", "проверим и юникод тоже", "newsurname", "***", true, Collections.singleton(Role.USER));
     }
 
     public static UserDto getUpdatedDto() {
