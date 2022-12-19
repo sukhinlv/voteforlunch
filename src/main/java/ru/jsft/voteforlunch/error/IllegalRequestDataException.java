@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
-public class VoteTimeConstraintException extends ApplicationException {
+public class IllegalRequestDataException extends ApplicationException {
 
-    public VoteTimeConstraintException(String message) {
+    public IllegalRequestDataException(String message) {
         super(HttpStatus.UNPROCESSABLE_ENTITY, message, ErrorAttributeOptions.of(MESSAGE));
     }
 }
