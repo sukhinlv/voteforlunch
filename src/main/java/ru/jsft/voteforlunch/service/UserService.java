@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
 @Slf4j
@@ -23,8 +25,7 @@ public class UserService {
 
     public User findById(long id) {
         log.info("Find user with id = {}", id);
-        return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("User with id = %d not found", id))));
+        return checkEntityNotNull(repository.findById(id), id, User.class);
     }
 
     public List<User> findAllSorted() {
@@ -33,11 +34,8 @@ public class UserService {
     }
 
     public User create(@NotNull User user) {
-        if (!user.isNew()) {
-            throw new IllegalArgumentException("User must be new");
-        }
-
         log.info("Create user: {}", user);
+        checkNew(user);
         return repository.save(user);
     }
 
@@ -48,9 +46,8 @@ public class UserService {
 
     @Transactional
     public User update(long id, User user) {
-        User storedUser = repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("User with id = %d not found", id)));
-
         log.info("Update user with id = {}", user.getId());
+        User storedUser = checkEntityNotNull(repository.findById(id), id, User.class);
         user.setId(id);
         user.setPassword(storedUser.getPassword()); // do not update the password, it must be updated in a separate way
         user.setRoles(storedUser.getRoles()); // do not update roles, it must be updated in a separate way

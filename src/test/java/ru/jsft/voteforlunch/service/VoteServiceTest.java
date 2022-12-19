@@ -8,7 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.model.User;
@@ -191,7 +191,7 @@ class VoteServiceTest {
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.delete(userId))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock)));
         }
 

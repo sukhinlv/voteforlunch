@@ -9,7 +9,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Sort;
-import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 
@@ -59,7 +59,7 @@ class UserServiceTest {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findById(1L))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("User with id = %d not found", 1L));
         }
 
@@ -95,8 +95,8 @@ class UserServiceTest {
             User user = Instancio.create(User.class);
 
             assertThatThrownBy(() -> underTest.create(user))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("User must be new");
+                    .isInstanceOf(IllegalRequestDataException.class)
+                    .hasMessageContaining("User must be new (id = null)");
         }
     }
 
@@ -131,7 +131,7 @@ class UserServiceTest {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, Instancio.create(User.class)))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("User with id = %d not found", 1L));
         }
     }

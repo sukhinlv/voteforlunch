@@ -3,9 +3,7 @@ package ru.jsft.voteforlunch.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.util.NestedServletException;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
-import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.web.controller.VoteController;
 import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 
@@ -13,10 +11,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.jsft.voteforlunch.testdata.UserTestData.ADMIN;
 import static ru.jsft.voteforlunch.testdata.VoteTestData.*;
 import static ru.jsft.voteforlunch.utils.MockAuthorization.userHttpBasic;
@@ -71,12 +67,10 @@ public class VoteControllerTest extends AbstractSpringBootTest {
 
     @Test
     void throw_Vote_Not_Found() throws Exception {
-        NestedServletException parentException = assertThrows(NestedServletException.class,
-                () -> mockMvc.perform(delete(REST_URL).with(userHttpBasic(ADMIN))));
-
-        Throwable cause = parentException.getCause();
-        assertThat(cause)
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Vote of userId = 1 for date = 2022-11-15 not found");
+        mockMvc.perform(delete(REST_URL)
+                        .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message").value("Vote of userId = 1 for date = 2022-11-15 not found"));
     }
 }

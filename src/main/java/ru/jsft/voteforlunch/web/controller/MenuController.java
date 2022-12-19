@@ -77,8 +77,7 @@ public class MenuController {
         service.delete(id);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuDto> update(@Valid @RequestBody MenuDto menuDto) {
-        return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithDetails(mapper.toEntity(menuDto))));
-    }
-}
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MenuDto> update(@PathVariable long id, @Valid @RequestBody MenuDto menuDto) {
+        return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithDetails(id, mapper.toEntity(menuDto))));
+    }}

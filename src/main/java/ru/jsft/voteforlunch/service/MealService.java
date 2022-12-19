@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Meal;
 import ru.jsft.voteforlunch.repository.MealRepository;
 
 import java.util.List;
-import java.util.Optional;
+
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
 @Slf4j
@@ -23,8 +24,7 @@ public class MealService {
 
     public Meal findById(long id) {
         log.info("Find meal with id = {}", id);
-        return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Meal with id = %d not found", id))));
+        return checkEntityNotNull(repository.findById(id), id, Meal.class);
     }
 
     public List<Meal> findAllSorted() {
@@ -33,11 +33,8 @@ public class MealService {
     }
 
     public Meal create(Meal meal) {
-        if (!meal.isNew()) {
-            throw new IllegalArgumentException("Meal must be new");
-        }
-
         log.info("Create meal: {}", meal);
+        checkNew(meal);
         return repository.save(meal);
     }
 
@@ -48,13 +45,8 @@ public class MealService {
 
     @Transactional
     public Meal update(long id, Meal meal) {
-        Optional<Meal> mealOptional = repository.findById(id);
-
-        if (mealOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Meal with id = %d not found", id));
-        }
-
-        log.info("Update meal with id = {}", meal.getId());
+        log.info("Update meal with id = {}", id);
+        checkEntityNotNull(repository.findById(id), id, Meal.class);
         meal.setId(id);
         return repository.save(meal);
     }

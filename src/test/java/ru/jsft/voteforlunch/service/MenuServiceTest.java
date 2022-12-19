@@ -8,7 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.repository.MenuRepository;
 
@@ -55,7 +55,7 @@ class MenuServiceTest {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
         }
 
@@ -128,8 +128,8 @@ class MenuServiceTest {
             Menu Menu = Instancio.create(Menu.class);
 
             assertThatThrownBy(() -> underTest.create(Menu))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Menu must be new");
+                    .isInstanceOf(IllegalRequestDataException.class)
+                    .hasMessageContaining("Menu must be new (id = null)");
         }
     }
 
@@ -149,13 +149,13 @@ class MenuServiceTest {
         @Test
         void update() {
             Menu menu = Instancio.create(Menu.class);
-            when(repository.existsById(menu.getId())).thenReturn(true);
+            when(repository.findById(menu.getId())).thenReturn(Optional.of(menu));
             when(repository.save(menu)).thenReturn(menu);
             when(repository.findByIdWithProps(menu.getId())).thenReturn(Optional.of(menu));
 
             Menu updatedMenu = Instancio.create(Menu.class);
             updatedMenu.setId(menu.getId());
-            underTest.update(updatedMenu);
+            underTest.update(menu.getId(), updatedMenu);
             then(repository).should().save(MenuCaptor.capture());
 
             updatedMenu.setId(menu.getId());
@@ -168,17 +168,9 @@ class MenuServiceTest {
 
             Menu menu = new Menu();
             menu.setId(1L);
-            assertThatThrownBy(() -> underTest.update(menu))
-                    .isInstanceOf(NotFoundException.class)
+            assertThatThrownBy(() -> underTest.update(1L, menu))
+                    .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
-        }
-
-        @Test
-        void throw_When_Update_With_No_Id() {
-            Menu menu = new Menu();
-            assertThatThrownBy(() -> underTest.update(menu))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("Menu must have id");
         }
     }
 }

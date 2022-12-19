@@ -5,13 +5,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.repository.MenuRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
 @Slf4j
@@ -24,15 +26,16 @@ public class MenuService {
     }
 
     @Cacheable("menu")
-    public Menu findByIdWithProps(long id) {
-        log.info("Find menu (include properties) with id = {}", id);
-        return repository.findByIdWithProps(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Menu with id = %d not found", id))));
+    public List<Menu> findAllByDateWithProps(LocalDate date) {
+        log.info("Find all menus (including properties) on date = {}", date);
+        return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
     }
 
-    @Cacheable("menu")
-    public List<Menu> findAllByDateWithProps(LocalDate date) {
-        return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
+    @CacheEvict({"menu"})
+    public Menu create(Menu menu) {
+        log.info("Create menu: {}", menu);
+        checkNew(menu);
+        return repository.save(menu);
     }
 
     public List<Menu> findAll() {
@@ -45,14 +48,11 @@ public class MenuService {
         return repository.findAllWithRestaurants();
     }
 
+    @Transactional
     @CacheEvict({"menu"})
-    public Menu create(Menu menu) {
-        if (!menu.isNew()) {
-            throw new IllegalArgumentException("Menu must be new");
-        }
-
-        log.info("Create menu: {}", menu);
-        return repository.save(menu);
+    public Menu updateAndReturnWithDetails(long id, Menu menu) {
+        Menu updatedMenu = update(id, menu);
+        return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));
     }
 
     @CacheEvict({"menu"})
@@ -63,23 +63,16 @@ public class MenuService {
 
     @Transactional
     @CacheEvict({"menu"})
-    public Menu update(Menu menu) {
-        if (menu.isNew()) {
-            throw new IllegalArgumentException("Menu must have id");
-        }
-
-        if (!repository.existsById(Objects.requireNonNull(menu.getId()))) {
-            throw new NotFoundException(String.format("Menu with id = %d not found", menu.getId()));
-        }
-
+    public Menu update(long id, Menu menu) {
         log.info("Update menu with id = {}", menu.getId());
+        checkEntityNotNull(repository.findById(id), id, Menu.class);
+        menu.setId(id);
         return repository.save(menu);
     }
 
-    @Transactional
-    @CacheEvict({"menu"})
-    public Menu updateAndReturnWithDetails(Menu menu) {
-        Menu updatedMenu = update(menu);
-        return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));
+    @Cacheable("menu")
+    public Menu findByIdWithProps(long id) {
+        log.info("Find menu (including properties) with id = {}", id);
+        return checkEntityNotNull(repository.findByIdWithProps(id), id, Menu.class);
     }
 }

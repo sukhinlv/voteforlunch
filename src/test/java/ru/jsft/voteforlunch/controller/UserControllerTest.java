@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
-import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.service.UserService;
 import ru.jsft.voteforlunch.web.controller.UserController;
 import ru.jsft.voteforlunch.web.controller.dto.UserDto;
@@ -69,7 +69,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     void shouldDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + "/1").with(userHttpBasic(ADMIN))).andExpect(status().isNoContent());
 
-        assertThrows(NotFoundException.class, () -> userService.findById(1L));
+        assertThrows(IllegalRequestDataException.class, () -> userService.findById(1L));
     }
 
     @Test

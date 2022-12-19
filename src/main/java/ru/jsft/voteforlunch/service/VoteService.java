@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jsft.voteforlunch.error.NotFoundException;
+import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
 import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.model.VoteDistribution;
@@ -19,6 +19,8 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
 
 @Service
 @Slf4j
@@ -50,8 +52,7 @@ public class VoteService {
 
     public Vote find(long id, long userId) {
         log.info("Find vote with id = {}, userId = {}", id, userId);
-        return repository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> (new NotFoundException(String.format("Vote with id = %d not found", id))));
+        return checkEntityNotNull(repository.findByIdAndUserId(id, userId), id, Vote.class);
     }
 
     public List<Vote> findAllForUser(long userId) {
@@ -96,7 +97,7 @@ public class VoteService {
         }
 
         Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId)
-                .orElseThrow(() -> new NotFoundException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock))));
+                .orElseThrow(() -> new IllegalRequestDataException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock))));
 
         repository.deleteById(vote.getId());
         log.info("Vote deleted. userId={}", userId);

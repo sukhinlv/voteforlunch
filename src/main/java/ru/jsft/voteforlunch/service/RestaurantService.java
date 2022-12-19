@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jsft.voteforlunch.error.NotFoundException;
 import ru.jsft.voteforlunch.model.Restaurant;
 import ru.jsft.voteforlunch.repository.RestaurantRepository;
 
 import java.util.List;
-import java.util.Optional;
+
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
 @Slf4j
@@ -23,8 +24,7 @@ public class RestaurantService {
 
     public Restaurant findById(long id) {
         log.info("Find restaurant with id = {}", id);
-        return repository.findById(id)
-                .orElseThrow(() -> (new NotFoundException(String.format("Restaurant with id = %d not found", id))));
+        return checkEntityNotNull(repository.findById(id), id, Restaurant.class);
     }
 
     public List<Restaurant> findAll() {
@@ -33,11 +33,8 @@ public class RestaurantService {
     }
 
     public Restaurant create(Restaurant restaurant) {
-        if (!restaurant.isNew()) {
-            throw new IllegalArgumentException("Restaurant must be new");
-        }
-
         log.info("Create restaurant: {}", restaurant);
+        checkNew(restaurant);
         return repository.save(restaurant);
     }
 
@@ -48,13 +45,8 @@ public class RestaurantService {
 
     @Transactional
     public Restaurant update(long id, Restaurant restaurant) {
-        Optional<Restaurant> restaurantOptional = repository.findById(id);
-
-        if (restaurantOptional.isEmpty()) {
-            throw new NotFoundException(String.format("Restaurant with id = %d not found", id));
-        }
-
         log.info("Update restaurant with id = {}", restaurant.getId());
+        checkEntityNotNull(repository.findById(id), id, Restaurant.class);
         restaurant.setId(id);
         return repository.save(restaurant);
     }
