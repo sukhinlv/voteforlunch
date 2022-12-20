@@ -36,17 +36,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return createResponseEntity(request, ex.getOptions(), null, ex.getStatus());
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> ResponseEntity<T> createResponseEntity(WebRequest request, ErrorAttributeOptions options, String msg, HttpStatus status) {
-        Map<String, Object> body = errorAttributes.getErrorAttributes(request, options);
-        if (msg != null) {
-            body.put("message", msg);
-        }
-        body.put("status", status.value());
-        body.put("error", status.getReasonPhrase());
-        return (ResponseEntity<T>) ResponseEntity.status(status).body(body);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
@@ -70,17 +59,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleBindingErrors(ex.getBindingResult(), request);
     }
 
-    private ResponseEntity<Object> handleBindingErrors(BindingResult result, WebRequest request) {
-        String msg = result.getFieldErrors().stream()
-                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                .collect(Collectors.joining("\n"));
-        return createResponseEntity(request, ErrorAttributeOptions.defaults(), msg, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
     @NonNull
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
         return handleBindingErrors(ex.getBindingResult(), request);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> ResponseEntity<T> createResponseEntity(WebRequest request, ErrorAttributeOptions options, String msg, HttpStatus status) {
+        Map<String, Object> body = errorAttributes.getErrorAttributes(request, options);
+        if (msg != null) {
+            body.put("message", msg);
+        }
+        body.put("status", status.value());
+        body.put("error", status.getReasonPhrase());
+        return (ResponseEntity<T>) ResponseEntity.status(status).body(body);
+    }
+
+    private ResponseEntity<Object> handleBindingErrors(BindingResult result, WebRequest request) {
+        String msg = result.getFieldErrors().stream()
+                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                .collect(Collectors.joining("\n"));
+        return createResponseEntity(request, ErrorAttributeOptions.defaults(), msg, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
