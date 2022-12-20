@@ -51,7 +51,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void throw_When_Find_Not_Existed() {
+        void throwWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
@@ -60,7 +60,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void find_By_Date() {
+        void findByDate() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -78,7 +78,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void find_All() {
+        void findAll() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -92,7 +92,7 @@ class MenuServiceTest {
         }
         @Test
 
-        void find_All_With_Restaurants() {
+        void findAllWithRestaurants() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
             Menu menu3 = Instancio.create(Menu.class);
@@ -124,7 +124,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void throw_When_Create_Not_New() {
+        void throwWhenCreateNotNew() {
             Menu Menu = Instancio.create(Menu.class);
 
             assertThatThrownBy(() -> underTest.create(Menu))
@@ -163,7 +163,7 @@ class MenuServiceTest {
         }
 
         @Test
-        void throw_When_Update_Wrong_Id() {
+        void throwWhenUpdateWrongId() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             Menu menu = new Menu();

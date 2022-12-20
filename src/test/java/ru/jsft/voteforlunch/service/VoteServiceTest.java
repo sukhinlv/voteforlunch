@@ -64,10 +64,22 @@ class VoteServiceTest {
         underTest = new VoteService(voteRepository, userRepository, restaurantRepository, clock, TIME_CONSTRAINT);
     }
 
+    @Test
+    void getVotesDistributionOnDate() {
+        List<VoteDistribution> votesList = List.of(
+                new VoteDistribution(1L, "Restaurant One", 65L),
+                new VoteDistribution(2L, "Restaurant Two", 35L));
+        LocalDate date = LocalDate.of(2022, 12, 15);
+
+        when(voteRepository.getVotesDistributionOnDate(date)).thenReturn(votesList);
+
+        assertThat(underTest.getVotesDistributionOnDate(date)).isEqualTo(votesList);
+    }
+
     @Nested
     class FindVotes {
         @Test
-        void find_All_Votes() {
+        void findAllVotes() {
             Vote vote1 = Instancio.create(Vote.class);
             Vote vote2 = Instancio.create(Vote.class);
             when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
@@ -76,7 +88,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void find_Votes() {
+        void findVotes() {
             Vote vote = Instancio.create(Vote.class);
             Long id = vote.getId();
             Long userId = vote.getUser().getId();
@@ -86,7 +98,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void find_All_User_Votes() {
+        void findAllUserVotes() {
             User user1 = Instancio.create(User.class);
             User user2 = Instancio.create(User.class);
             Vote vote1 = Instancio.create(Vote.class);
@@ -104,7 +116,7 @@ class VoteServiceTest {
     @Nested
     class SaveVotes {
         @Test
-        void save_New_Vote() {
+        void saveNewVote() {
             User user = Instancio.create(User.class);
             Restaurant restaurant = Instancio.create(Restaurant.class);
 
@@ -127,7 +139,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void update_Vote() {
+        void updateVote() {
             User user = Instancio.create(User.class);
 
             Restaurant restaurant = Instancio.create(Restaurant.class);
@@ -159,7 +171,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void throw_When_Save_With_Time_Constraint_Violation() {
+        void throwWhenSaveWithTimeConstraintViolation() {
             when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
 
             assertThatThrownBy(() -> underTest.save(1L, 1L))
@@ -186,7 +198,7 @@ class VoteServiceTest {
         }
 
         @Test
-        void throw_When_Delete_Absent_Vote() {
+        void throwWhenDeleteAbsentVote() {
             long userId = 1L;
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.empty());
 
@@ -196,24 +208,12 @@ class VoteServiceTest {
         }
 
         @Test
-        void throw_When_Delete_With_Time_Constraint_Violation() {
+        void throwWhenDeleteWithTimeConstraintViolation() {
             when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
 
             assertThatThrownBy(() -> underTest.delete(1L))
                     .isInstanceOf(VoteTimeConstraintException.class)
                     .hasMessageContaining(String.format("You can only change your vote until %s", TIME_CONSTRAINT));
         }
-    }
-
-    @Test
-    void get_Votes_Distribution_On_Date() {
-        List<VoteDistribution> votesList = List.of(
-                new VoteDistribution(1L, "Restaurant One", 65L),
-                new VoteDistribution(2L, "Restaurant Two", 35L));
-        LocalDate date = LocalDate.of(2022, 12, 15);
-
-        when(voteRepository.getVotesDistributionOnDate(date)).thenReturn(votesList);
-
-        assertThat(underTest.getVotesDistributionOnDate(date)).isEqualTo(votesList);
     }
 }

@@ -64,7 +64,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void find_All() {
+        void findAll() {
             Restaurant restaurant1 = Instancio.create(Restaurant.class);
             restaurant1.setName("Zara");
             Restaurant restaurant2 = Instancio.create(Restaurant.class);
@@ -91,7 +91,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void throw_When_Create_Not_New() {
+        void throwWhenCreateNotNew() {
             Restaurant restaurant = Instancio.create(Restaurant.class);
 
             assertThatThrownBy(() -> underTest.create(restaurant))
@@ -127,7 +127,7 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void throw_When_Update_Wrong_Id() {
+        void throwWhenUpdateWrongId() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, new Restaurant()))

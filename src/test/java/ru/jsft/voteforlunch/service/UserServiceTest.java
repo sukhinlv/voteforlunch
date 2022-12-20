@@ -64,7 +64,7 @@ class UserServiceTest {
         }
 
         @Test
-        void find_All() {
+        void findAll() {
             User user1 = Instancio.create(User.class);
             user1.setEmail("Zara");
             User user2 = Instancio.create(User.class);
@@ -91,7 +91,7 @@ class UserServiceTest {
         }
 
         @Test
-        void throw_When_Create_Not_New() {
+        void throwWhenCreateNotNew() {
             User user = Instancio.create(User.class);
 
             assertThatThrownBy(() -> underTest.create(user))
@@ -127,7 +127,7 @@ class UserServiceTest {
         }
 
         @Test
-        void throw_When_Update_Wrong_Id() {
+        void throwWhenUpdateWrongId() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, Instancio.create(User.class)))

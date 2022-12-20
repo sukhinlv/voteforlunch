@@ -55,7 +55,7 @@ class MealServiceTest {
         }
 
         @Test
-        void throw_When_Find_Not_Existed() {
+        void throwWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.findById(1L))
@@ -64,7 +64,7 @@ class MealServiceTest {
         }
 
         @Test
-        void find_All() {
+        void findAll() {
             Meal meal1 = Instancio.create(Meal.class);
             meal1.setName("Zara");
             Meal meal2 = Instancio.create(Meal.class);
@@ -91,7 +91,7 @@ class MealServiceTest {
         }
 
         @Test
-        void throw_When_Create_Not_New() {
+        void throwWhenCreateNotNew() {
             Meal meal = Instancio.create(Meal.class);
 
             assertThatThrownBy(() -> underTest.create(meal))
@@ -127,7 +127,7 @@ class MealServiceTest {
         }
 
         @Test
-        void throw_When_Update_Wrong_Id() {
+        void throwWhenUpdateWrongId() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> underTest.update(1L, new Meal()))
