@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface NoHtml {
 
-    String message() default "{error.noHtml}";
+    String message() default "Invalid field value";
 
     Class<?>[] groups() default {};
 

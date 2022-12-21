@@ -11,6 +11,7 @@ import ru.jsft.voteforlunch.web.security.PasswordDeserializer;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,7 +19,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = @Index(name = "email_unique_idx", columnList = "email", unique = true))
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,11 +27,10 @@ import java.util.Set;
 @ToString(callSuper = true, exclude = {"password"})
 public class User extends AbstractEntity implements Serializable {
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     @Size(max = 128)
     @NoHtml
     @Email(message = "Please enter valid e-mail")
-    @NotBlank(message = "Email must not be empty")
     private String email;
 
     @Column(name = "first_name")
@@ -59,6 +59,7 @@ public class User extends AbstractEntity implements Serializable {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
+    @NotEmpty
     private Set<Role> roles;
 
     public void setEmail(String email) {

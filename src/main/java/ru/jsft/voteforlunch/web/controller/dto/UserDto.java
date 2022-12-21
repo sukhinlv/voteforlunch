@@ -10,6 +10,7 @@ import ru.jsft.voteforlunch.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -24,7 +25,6 @@ public class UserDto {
     @Size(max = 128)
     @NoHtml
     @Email(message = "Please enter valid e-mail")
-    @NotBlank(message = "Email must not be empty")
     private String email;
 
     @Size(max = 128)
@@ -43,6 +43,7 @@ public class UserDto {
 
     private boolean enabled;
 
+    @NotEmpty
     private Set<Role> roles;
 
     public void setEmail(String email) {
