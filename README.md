@@ -1,13 +1,14 @@
-# Vote for lunch - votes counter (app in progress...)
+# Vote for lunch - votes counter
 
 ### Intro
 
 Hi! Here you can find demo app that was written like test (and educational) task
 
-By default, application starts on port 8095. Just run it from Intellij Idea.
-
+By default, application starts on port 8095. This application is backend only and this is simple Spring Boot application, so you can run it just right out-of-the-box. 
 
 ### How it works
+
+Link to Swagger: http://localhost:8095/swagger-ui.html
 
 - The user can view menu lists for a specific date.
 - The user can vote for a particular restaurant.
@@ -16,14 +17,7 @@ By default, application starts on port 8095. Just run it from Intellij Idea.
 - The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote.
 - After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
 - The user can request the distribution of votes between restaurants for any date.
-
-After application starts there will be 
-- ... (list of meals, menus, etc...)
-
-Here are the curl commands that you can use to make requests as user:
-...
-
-The administrator has full access to all end-points. Link to Swagger: ...
+- The administrator has full access to all end-points.
 
 
 ### Technical requirement
@@ -50,7 +44,7 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 ### Used technologies
 
-**Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Ehcache / Spring Validation / Lombok / Spring Tests**
+**Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Ehcache / Spring Validation / Lombok / Spring Tests / Swagger**
 
 - For simplicity, I am using an in-memory H2 database that is populated with some test data using InitializeData#commandLineRunner
 - ORM framework is Spring Data JPA
@@ -87,5 +81,6 @@ The program implements the following logic for working with users:
 
 - use Mapstruct to implement mappers
 - use Liquibase to automate database change process
+- add change password functionality
+- add more login options like OAuth2
 - add more test cases
-- try to refactor JsonUtil and SecurityUtil, so they will be in no-static style

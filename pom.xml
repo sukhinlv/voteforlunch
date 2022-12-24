@@ -20,7 +20,8 @@
         <java.version>17</java.version>
 
         <!-- Swagger -->
-        <springdoc.version>1.6.12</springdoc.version>
+        <swagger-annotations.version>2.2.7</swagger-annotations.version>
+        <springdoc.version>1.6.14</springdoc.version>
 
         <!-- Object mapping -->
         <jackson-datatype-hibernate5.version>2.13.4</jackson-datatype-hibernate5.version>
@@ -99,16 +100,16 @@
         </dependency>
 
         <!--Swagger-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-ui</artifactId>-->
-        <!--            <version>${springdoc.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-security</artifactId>-->
-        <!--            <version>${springdoc.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
 
         <!-- Util -->
         <dependency>
