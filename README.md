@@ -1,26 +1,24 @@
 # Vote for lunch - votes counter
 
-### Intro
+## About
 
-Hi! Here you can find demo app that was written like test (and educational) task
+Here you can find voting app for the restaurant with the best menu for today
 
-By default, application starts on port 8095. This application is backend only and this is simple Spring Boot application, so you can run it just right out-of-the-box. 
 
-### How it works
+## Build and Deploy the Project
+
+> mvn clean install
+
+This is a Spring Boot project, so you can deploy it by simply using the main class: `VoteforlunchApplication.java`
+
+Once deployed, you can access the app at: http://localhost:8095
+
+Mind that this application is backend only. 
 
 Link to Swagger: http://localhost:8095/swagger-ui.html
 
-- The user can view menu lists for a specific date.
-- The user can vote for a particular restaurant.
-- The user's vote will be counted for the current date.
-- It doesn't matter if the restaurant has a menu for that day or not.
-- The user can vote from 00:00 until the time specified in the program settings (11:00). Or remove (withdraw) his vote.
-- After the specified time, it is no longer possible to vote differently for today or withdraw the vote.
-- The user can request the distribution of votes between restaurants for any date.
-- The administrator has full access to all end-points.
 
-
-### Technical requirement
+## Technical requirement
 
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
 
@@ -42,7 +40,19 @@ P.S.: Make sure everything works with the latest version that is on github :)
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
 
-### Used technologies
+## How it works
+
+- The user can view menu lists for a specific date.
+- The user can vote for a particular restaurant.
+- The user's vote will be counted for the current date.
+- It doesn't matter if the restaurant has a menu for that day or not.
+- The user can vote or remove (withdraw) his vote from 00:00 until the time specified in the program settings (11:00).
+- After the specified time, it is no longer possible to vote or withdraw the vote. Until next day and 00:00.
+- The user can request the distribution of votes between restaurants for any date.
+- The administrator has full access to all end-points.
+
+
+## Used technologies
 
 **Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Ehcache / Spring Validation / Lombok / Spring Tests / Swagger**
 
@@ -52,12 +62,12 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 - The application uses ehCache for caching. According to the application logic, MenuService and VoteService#getVotesDistributionOnDate uses the cache. Cached: menu GET operations, votes distribution
 
 
-### Database structure
+## Database structure
 
 ![img.png](img.png)
 
 
-### Security
+## Security
 
 Users for tests:
 - Administrator _login admin@ya.ru_ password _admin_
@@ -66,7 +76,7 @@ Users for tests:
 Self-registration of users is not implemented
 
 
-### Password storage
+## Password storage
 
 For clarity, the credentials that are generated when the program starts are not encrypted.
 The program implements the following logic for working with users:
@@ -77,10 +87,11 @@ The program implements the following logic for working with users:
 - To change roles, a separate functionality must be implemented but that is not implemented in this version of the program
 
 
-### TODO
+## TODO
 
 - use Mapstruct to implement mappers
 - use Liquibase to automate database change process
 - add change password functionality
 - add more login options like OAuth2
 - add more test cases
+...
