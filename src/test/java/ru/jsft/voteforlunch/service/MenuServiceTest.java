@@ -22,7 +22,6 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
 class MenuServiceTest {
-
     private MenuService underTest;
 
     @Mock

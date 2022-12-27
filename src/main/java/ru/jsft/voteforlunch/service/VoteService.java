@@ -25,7 +25,6 @@ import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull
 @Service
 @Slf4j
 public class VoteService {
-
     private final VoteRepository repository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;

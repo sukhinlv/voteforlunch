@@ -8,7 +8,6 @@ import ru.jsft.voteforlunch.model.User;
 @Getter
 @ToString(of = "user")
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
-
     private final User user;
 
     public AuthorizedUser(@NonNull User user) {

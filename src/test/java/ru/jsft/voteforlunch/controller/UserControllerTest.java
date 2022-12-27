@@ -27,7 +27,6 @@ import static ru.jsft.voteforlunch.testdata.UserTestData.*;
 import static ru.jsft.voteforlunch.utils.MockAuthorization.userHttpBasic;
 
 class UserControllerTest extends AbstractSpringBootTest {
-
     private static final String REST_URL = UserController.REST_URL + '/';
 
     private static final StringToListMatcher USER_CONSTRAINTS_MATCHER = new StringToListMatcher("\n", List.of(

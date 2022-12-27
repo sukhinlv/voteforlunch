@@ -16,7 +16,6 @@ import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 @Service
 @Slf4j
 public class UserService {
-
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {

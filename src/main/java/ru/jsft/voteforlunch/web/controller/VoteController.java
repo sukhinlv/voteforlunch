@@ -1,9 +1,11 @@
 package ru.jsft.voteforlunch.web.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.model.Vote;
@@ -11,7 +13,7 @@ import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.service.VoteService;
 import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.web.controller.mapper.VoteMapper;
-import ru.jsft.voteforlunch.web.security.SecurityUtil;
+import ru.jsft.voteforlunch.web.security.AuthorizedUser;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -32,8 +34,8 @@ public class VoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VoteDto>> getAllForUser() {
-        return ResponseEntity.ok(service.findAllForUser(SecurityUtil.authId()).stream()
+    public ResponseEntity<List<VoteDto>> getAllForUser(@Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+        return ResponseEntity.ok(service.findAllForUser(authUser.id()).stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(VoteDto::getVoteDate)
                         .thenComparing(VoteDto::getVoteTime)
@@ -43,8 +45,9 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteDto> getVote(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.find(id, SecurityUtil.authId())));
+    public ResponseEntity<VoteDto> getVote(@PathVariable long id,
+                                           @Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+        return ResponseEntity.ok(mapper.toDto(service.find(id, authUser.id())));
     }
 
     @GetMapping("/distribution")
@@ -56,8 +59,9 @@ public class VoteController {
     }
 
     @PostMapping(path = "/{restaurantId}")
-    public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId) {
-        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, SecurityUtil.authId());
+    public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId,
+                                                     @Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, authUser.id());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(savedEntity.getId()).toUri();
@@ -66,7 +70,7 @@ public class VoteController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVote() {
-        service.delete(SecurityUtil.authId());
+    public void deleteVote(@Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+        service.delete(authUser.id());
     }
 }

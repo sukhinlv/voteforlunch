@@ -15,7 +15,6 @@ import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 @Service
 @Slf4j
 public class RestaurantService {
-
     private final RestaurantRepository repository;
 
     public RestaurantService(RestaurantRepository repository) {

@@ -12,7 +12,6 @@ import java.io.IOException;
 
 @Component
 public class PasswordDeserializer extends JsonDeserializer<String> {
-
     private final PasswordEncoder passwordEncoder;
 
     public PasswordDeserializer(PasswordEncoder passwordEncoder) {
