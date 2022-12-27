@@ -17,5 +17,6 @@
     </cache-template>
 
     <cache alias="menu" uses-template="expiryCache"/>
+    <cache alias="menus" uses-template="expiryCache"/>
     <cache alias="voteDistribution" uses-template="expiryCache"/>
 </config>

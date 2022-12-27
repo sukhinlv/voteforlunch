@@ -25,7 +25,7 @@ public class MenuService {
         this.repository = repository;
     }
 
-    @Cacheable("menu")
+    @Cacheable("menus")
     public List<Menu> findAllByDateWithProps(LocalDate date) {
         log.info("Find all menus (including properties) on date = {}", date);
         return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
@@ -38,36 +38,38 @@ public class MenuService {
         return repository.save(menu);
     }
 
+    @Cacheable("menus")
     public List<Menu> findAll() {
         log.info("Find all menus");
         return repository.findAll();
     }
 
+    @Cacheable("menus")
     public List<Menu> findAllWithRestaurants() {
         log.info("Find all menus with restaurants");
         return repository.findAllWithRestaurants();
     }
 
     @Transactional
-    @CacheEvict({"menu"})
+    @CacheEvict({"menu", "menus"})
     public Menu updateAndReturnWithDetails(long id, Menu menu) {
         Menu updatedMenu = update(id, menu);
         return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));
     }
 
-    @CacheEvict({"menu"})
-    public void delete(long id) {
-        log.info("Delete menu with id = {}", id);
-        repository.deleteById(id);
-    }
-
     @Transactional
-    @CacheEvict({"menu"})
+    @CacheEvict({"menu", "menus"})
     public Menu update(long id, Menu menu) {
         log.info("Update menu with id = {}", menu.getId());
         checkEntityNotNull(repository.findById(id), id, Menu.class);
         menu.setId(id);
         return repository.save(menu);
+    }
+
+    @CacheEvict({"menu", "menus"})
+    public void delete(long id) {
+        log.info("Delete menu with id = {}", id);
+        repository.deleteById(id);
     }
 
     @Cacheable("menu")
