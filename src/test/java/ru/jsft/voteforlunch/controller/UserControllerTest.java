@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
 import ru.jsft.voteforlunch.error.IllegalRequestDataException;
+import ru.jsft.voteforlunch.model.Role;
 import ru.jsft.voteforlunch.service.UserService;
 import ru.jsft.voteforlunch.utils.StringToListMatcher;
 import ru.jsft.voteforlunch.web.controller.UserController;
@@ -16,6 +17,7 @@ import ru.jsft.voteforlunch.web.controller.mapper.UserMapper;
 import ru.jsft.voteforlunch.web.json.JsonUtil;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -134,8 +136,7 @@ class UserControllerTest extends AbstractSpringBootTest {
 
     @Test
     void shouldCreateUnprocessable() throws Exception {
-        UserDto newUserDto = new UserDto();
-        newUserDto.setEmail("mail");
+        UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
 
         mockMvc.perform(post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -149,8 +150,7 @@ class UserControllerTest extends AbstractSpringBootTest {
 
     @Test
     void shouldUpdateUnprocessable() throws Exception {
-        UserDto newUserDto = new UserDto();
-        newUserDto.setEmail("mail");
+        UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -164,8 +164,7 @@ class UserControllerTest extends AbstractSpringBootTest {
 
     @Test
     void shouldCreateDuplicate() throws Exception {
-        UserDto newUserDto = getNewDto();
-        newUserDto.setEmail(USER_DTO.getEmail());
+        UserDto newUserDto = getNewDto(USER_DTO.getEmail());
 
         mockMvc.perform(post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,8 +179,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void shouldUpdateDuplicate() throws Exception {
-        UserDto newUserDto = getUpdatedDto();
-        newUserDto.setEmail(ADMIN_DTO.getEmail());
+        UserDto newUserDto = getUpdatedDto(ADMIN_DTO.getEmail());
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -195,8 +193,10 @@ class UserControllerTest extends AbstractSpringBootTest {
 
     @Test
     void shouldNotProcessUnsafeHtml() throws Exception {
-        UserDto newUserDto = getNewDto();
-        newUserDto.setLastName("<script>alert xss /script>");
+        UserDto newUserDto = new UserDto(
+                "mail@mail.ru", "name",
+                "<script> Alert xss!!! /script>",
+                "password", true, Set.of(Role.USER));
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)

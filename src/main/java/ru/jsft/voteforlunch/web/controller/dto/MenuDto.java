@@ -1,8 +1,7 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 import ru.jsft.voteforlunch.model.Menu;
 
 import javax.validation.constraints.NotNull;
@@ -12,17 +11,12 @@ import java.util.Set;
 /**
  * A DTO for the {@link Menu} entity
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MenuDto {
-    private Long id;
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class MenuDto extends AbstractDto {
+    @NotNull LocalDate dateOfMenu;
 
-    @NotNull
-    private LocalDate dateOfMenu;
+    @NotNull RestaurantDto restaurant;
 
-    @NotNull
-    private RestaurantDto restaurant;
-
-    private Set<MealPriceDto> mealPrice;
+    Set<MealPriceDto> mealPrice;
 }

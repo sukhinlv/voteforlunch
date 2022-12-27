@@ -25,11 +25,12 @@ public class VoteMapper implements Mapper<Vote, VoteDto> {
 
     @Override
     public VoteDto toDto(Vote entity) {
-        VoteDto voteDto = new VoteDto();
+        VoteDto voteDto = new VoteDto(
+                restaurantMapper.toDto(entity.getRestaurant()),
+                entity.getVoteDate(),
+                entity.getVoteTime()
+        );
         voteDto.setId(entity.getId());
-        voteDto.setVoteDate(entity.getVoteDate());
-        voteDto.setVoteTime(entity.getVoteTime());
-        voteDto.setRestaurant(restaurantMapper.toDto(entity.getRestaurant()));
         return voteDto;
     }
 }

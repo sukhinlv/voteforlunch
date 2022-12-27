@@ -98,8 +98,6 @@ public class InitializeData {
                         LocalTime.of(rnd.nextInt(6, 11), rnd.nextInt(0, 60))));
             }
             voteRepository.saveAll(votes);
-
-//            SecurityUtil.authenticatedUser = admin;
         };
     }
 }

@@ -16,9 +16,7 @@ public class RestaurantMapper implements Mapper<Restaurant, RestaurantDto> {
 
     @Override
     public RestaurantDto toDto(Restaurant entity) {
-        RestaurantDto restaurantDto = new RestaurantDto();
-        restaurantDto.setId(entity.getId());
-        restaurantDto.setName(entity.getName());
+        RestaurantDto restaurantDto = new RestaurantDto(entity.getId(), entity.getName());
         return restaurantDto;
     }
 }

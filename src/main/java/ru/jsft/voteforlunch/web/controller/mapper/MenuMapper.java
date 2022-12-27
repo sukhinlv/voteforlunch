@@ -35,11 +35,11 @@ public class MenuMapper implements Mapper<Menu, MenuDto> {
 
     @Override
     public MenuDto toDto(Menu entity) {
-        MenuDto menuDto = new MenuDto();
+        MenuDto menuDto = new MenuDto(
+                entity.getDateOfMenu(),
+                restaurantMapper.toDto(entity.getRestaurant()),
+                entity.getMealPrice().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
         menuDto.setId(entity.getId());
-        menuDto.setDateOfMenu(entity.getDateOfMenu());
-        menuDto.setRestaurant(restaurantMapper.toDto(entity.getRestaurant()));
-        menuDto.setMealPrice(entity.getMealPrice().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
         return menuDto;
     }
 }

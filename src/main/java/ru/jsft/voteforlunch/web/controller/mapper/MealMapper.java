@@ -16,9 +16,8 @@ public class MealMapper implements Mapper<Meal, MealDto> {
 
     @Override
     public MealDto toDto(Meal entity) {
-        MealDto mealDto = new MealDto();
+        MealDto mealDto = new MealDto(entity.getName());
         mealDto.setId(entity.getId());
-        mealDto.setName(entity.getName());
         return mealDto;
     }
 }

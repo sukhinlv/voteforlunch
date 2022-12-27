@@ -1,8 +1,7 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 import ru.jsft.voteforlunch.validation.NoHtml;
 
 import javax.validation.constraints.NotBlank;
@@ -10,13 +9,17 @@ import javax.validation.constraints.NotBlank;
 /**
  * A DTO for the {@link ru.jsft.voteforlunch.model.Restaurant} entity
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class RestaurantDto {
-    private Long id;
-
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class RestaurantDto extends AbstractDto {
     @NotBlank(message = "The restaurant must have a name")
     @NoHtml
-    private String name;
+    String name;
+
+    // You should have such hand-made AllArgsConstructor while using @Value because otherwise there will be deserialization problem
+    // RestaurantDto used in VoteDto, so if such constructor is absent, "Cannot construct instance of..." error occurs
+    public RestaurantDto(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
 }

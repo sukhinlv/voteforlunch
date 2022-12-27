@@ -30,8 +30,7 @@ public class UserMapper implements Mapper<User, UserDto> {
 
     @Override
     public UserDto toDto(User entity) {
-        return new UserDto(
-                entity.getId(),
+        UserDto userDto = new UserDto(
                 entity.getEmail(),
                 entity.getFirstName(),
                 entity.getLastName(),
@@ -39,5 +38,7 @@ public class UserMapper implements Mapper<User, UserDto> {
                 entity.isEnabled(),
                 entity.getRoles()
         );
+        userDto.setId(entity.getId());
+        return userDto;
     }
 }
