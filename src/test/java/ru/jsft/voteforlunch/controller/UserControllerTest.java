@@ -44,7 +44,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     private UserMapper mapper;
 
     @Test
-    void shouldGetAll() throws Exception {
+    void getAllUsers() throws Exception {
         mockMvc.perform(get(REST_URL)
                         .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
@@ -53,7 +53,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldGet() throws Exception {
+    void getUser() throws Exception {
         mockMvc.perform(get(REST_URL + "/1")
                         .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
@@ -62,13 +62,13 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldGetAnauthorized() throws Exception {
+    void getAnauthorizedUser() throws Exception {
         mockMvc.perform(get(REST_URL + "/1"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void shouldCreate() throws Exception {
+    void createUser() throws Exception {
         UserDto newUser = getNewDto();
 
         ResultActions resultActions = mockMvc.perform(post(REST_URL)
@@ -85,14 +85,14 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldDelete() throws Exception {
+    void deleteUser() throws Exception {
         mockMvc.perform(delete(REST_URL + "/1").with(userHttpBasic(ADMIN))).andExpect(status().isNoContent());
 
         assertThrows(IllegalRequestDataException.class, () -> userService.findById(1L));
     }
 
     @Test
-    void shouldUpdate() throws Exception {
+    void updateUser() throws Exception {
         UserDto updatedUser = getUpdatedDto();
 
         ResultActions resultActions = mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
@@ -109,7 +109,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldGetProfile() throws Exception {
+    void getUserProfile() throws Exception {
         mockMvc.perform(get(REST_URL + "/profile")
                         .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
@@ -118,7 +118,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldUpdateProfile() throws Exception {
+    void updateUserProfile() throws Exception {
         UserDto updatedUser = getUpdatedDto();
 
         ResultActions resultActions = mockMvc.perform(put(REST_URL + "/profile")
@@ -135,7 +135,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldCreateUnprocessable() throws Exception {
+    void createUnprocessable() throws Exception {
         UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
 
         mockMvc.perform(post(REST_URL)
@@ -149,7 +149,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldUpdateUnprocessable() throws Exception {
+    void updateUnprocessable() throws Exception {
         UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
@@ -163,7 +163,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldCreateDuplicate() throws Exception {
+    void createDuplicate() throws Exception {
         UserDto newUserDto = getNewDto(USER_DTO.getEmail());
 
         mockMvc.perform(post(REST_URL)
@@ -178,7 +178,7 @@ class UserControllerTest extends AbstractSpringBootTest {
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
-    void shouldUpdateDuplicate() throws Exception {
+    void updateDuplicate() throws Exception {
         UserDto newUserDto = getUpdatedDto(ADMIN_DTO.getEmail());
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
@@ -192,7 +192,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void shouldNotProcessUnsafeHtml() throws Exception {
+    void notProcessUnsafeHtml() throws Exception {
         UserDto newUserDto = new UserDto(
                 "mail@mail.ru", "name",
                 "<script> Alert xss!!! /script>",

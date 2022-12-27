@@ -21,7 +21,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     private static final String REST_URL = VoteController.REST_URL + '/';
 
     @Test
-    void get_Votes_For_User() throws Exception {
+    void getVotesForUser() throws Exception {
         mockMvc.perform(get(REST_URL).with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -29,7 +29,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void get_Vote() throws Exception {
+    void getVote() throws Exception {
         mockMvc.perform(get(REST_URL + "/1").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -37,7 +37,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void get_Votes_Distribution() throws Exception {
+    void getVotesDistribution() throws Exception {
         mockMvc.perform(get(REST_URL +
                         "/distribution?date=" +
                         LocalDate.now(clock).minusDays(2).format(DateTimeFormatter.ISO_DATE))
@@ -48,7 +48,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void save_Vote() throws Exception {
+    void saveVote() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(REST_URL + "/1").with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -59,14 +59,14 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void delete_Vote() throws Exception {
+    void deleteVote() throws Exception {
         mockMvc.perform(post(REST_URL + "/1").with(userHttpBasic(ADMIN)));
 
         mockMvc.perform(delete(REST_URL).with(userHttpBasic(ADMIN))).andExpect(status().isNoContent());
     }
 
     @Test
-    void throw_Vote_Not_Found() throws Exception {
+    void throwVoteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL)
                         .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isUnprocessableEntity())
