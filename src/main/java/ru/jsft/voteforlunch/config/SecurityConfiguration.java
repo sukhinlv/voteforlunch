@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -43,16 +45,27 @@ public class SecurityConfiguration {
         };
     }
 
+    //  https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#configuring-websecurity
+    //  https://stackoverflow.com/a/61147599/548473
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web
+                .ignoring()
+                .requestMatchers("/h2-console/**")
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**");
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").anonymous()
                 .requestMatchers("/api/v1/votes/**", "/api/v1/users/profile/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/v1/menus/**", "/api/v1/meals/**", "/api/v1/restaurants/**").authenticated()
                 .requestMatchers("/api/**").hasRole(Role.ADMIN.name())
-                .anyRequest().denyAll()
+                .anyRequest().authenticated() // this setting is for H2 console only
                 .and().httpBasic()
-                .and().csrf().disable();
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
+                .headers().frameOptions().disable(); // this setting is for H2 console only
         return http.build();
     }
 }

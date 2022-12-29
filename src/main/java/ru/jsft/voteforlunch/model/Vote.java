@@ -14,9 +14,13 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"user_id", "vote_date"})
-})
+@Table(
+        indexes = {
+                @Index(name = "vote_date_restaurant_id_idx", columnList = "RESTAURANT_ID,VOTE_DATE"),
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"USER_ID", "VOTE_DATE"})
+        })
 @NamedNativeQuery(
         name = "get_votes_distribution_on_date",
         query =
