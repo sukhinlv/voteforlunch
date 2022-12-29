@@ -1,10 +1,10 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import ru.jsft.voteforlunch.model.Menu;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 

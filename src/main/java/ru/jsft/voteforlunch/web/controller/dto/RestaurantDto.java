@@ -1,10 +1,9 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import ru.jsft.voteforlunch.validation.NoHtml;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * A DTO for the {@link ru.jsft.voteforlunch.model.Restaurant} entity

@@ -1,10 +1,10 @@
 package ru.jsft.voteforlunch.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @MappedSuperclass

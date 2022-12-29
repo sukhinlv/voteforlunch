@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.User;
 import ru.jsft.voteforlunch.repository.UserRepository;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;

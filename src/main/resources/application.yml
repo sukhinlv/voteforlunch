@@ -36,7 +36,10 @@ spring:
   output.ansi.enabled: always
 
   # Cache
-  cache.jcache.config: classpath:ehcache.xml
+  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+  cache:
+    cache-names: menu,menus,voteDistribution
+    caffeine.spec: maximumSize=5000,expireAfterAccess=60m
 
 # Logging
 logging:

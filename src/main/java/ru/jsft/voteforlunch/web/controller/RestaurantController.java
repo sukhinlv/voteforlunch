@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.web.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import ru.jsft.voteforlunch.service.RestaurantService;
 import ru.jsft.voteforlunch.web.controller.dto.RestaurantDto;
 import ru.jsft.voteforlunch.web.controller.mapper.RestaurantMapper;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;

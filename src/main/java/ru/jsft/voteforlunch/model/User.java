@@ -2,17 +2,17 @@ package ru.jsft.voteforlunch.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.jsft.voteforlunch.validation.NoHtml;
 import ru.jsft.voteforlunch.web.security.PasswordDeserializer;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -59,7 +59,7 @@ public class User extends AbstractEntity implements Serializable {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @NotEmpty
+    @NotEmpty(message = "Roles must not be empty")
     private Set<Role> roles;
 
     public void setEmail(String email) {

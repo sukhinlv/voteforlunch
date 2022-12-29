@@ -1,11 +1,10 @@
 package ru.jsft.voteforlunch.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import ru.jsft.voteforlunch.validation.NoHtml;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @AllArgsConstructor

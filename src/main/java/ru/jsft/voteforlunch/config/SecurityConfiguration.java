@@ -22,7 +22,6 @@ import java.util.Optional;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfiguration {
-
     private final UserRepository userRepository;
 
     public SecurityConfiguration(UserRepository userRepository) {
@@ -46,11 +45,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").anonymous()
-                .antMatchers("/api/v1/votes/**", "/api/v1/users/profile/**").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/v1/menus/**", "/api/v1/meals/**", "/api/v1/restaurants/**").authenticated()
-                .antMatchers("/api/**").hasRole(Role.ADMIN.name())
+        http.authorizeHttpRequests()
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").anonymous()
+                .requestMatchers("/api/v1/votes/**", "/api/v1/users/profile/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/v1/menus/**", "/api/v1/meals/**", "/api/v1/restaurants/**").authenticated()
+                .requestMatchers("/api/**").hasRole(Role.ADMIN.name())
                 .anyRequest().denyAll()
                 .and().httpBasic()
                 .and().csrf().disable();

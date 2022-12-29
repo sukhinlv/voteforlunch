@@ -1,10 +1,9 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 /**
  * A DTO for the {@link ru.jsft.voteforlunch.model.MealPrice} entity

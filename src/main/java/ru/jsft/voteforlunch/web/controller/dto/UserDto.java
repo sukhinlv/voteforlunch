@@ -1,14 +1,14 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import ru.jsft.voteforlunch.model.Role;
 import ru.jsft.voteforlunch.validation.NoHtml;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Value
@@ -35,5 +35,6 @@ public class UserDto extends AbstractDto {
 
     boolean enabled;
 
-    @NotEmpty Set<Role> roles;
+    @NotEmpty(message = "Roles must not be empty")
+    Set<Role> roles;
 }

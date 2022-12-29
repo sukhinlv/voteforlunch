@@ -15,7 +15,9 @@ public class UserTestData {
 
     public static List<UserDto> USER_DTO_LIST = new ArrayList<>(2002);
 
-    public static User ADMIN = new User("admin@ya.ru", "admin", "admin", "admin", true, Collections.singleton(Role.ADMIN));
+    public static final String ADMIN_MAIL = "admin@ya.ru";
+    public static final String USER_MAIL = "user@ya.ru";
+    public static User ADMIN = new User(ADMIN_MAIL, "admin", "admin", "admin", true, Collections.singleton(Role.ADMIN));
     public static User USER = new User("user@ya.ru", "user", "user", "user", true, Collections.singleton(Role.USER));
     public static UserDto ADMIN_DTO = new UserDto(ADMIN.getEmail(), ADMIN.getFirstName(), ADMIN.getLastName(), "***", ADMIN.isEnabled(), ADMIN.getRoles());
     public static UserDto USER_DTO = new UserDto(USER.getEmail(), USER.getFirstName(), USER.getLastName(), "***", USER.isEnabled(), USER.getRoles());

@@ -1,5 +1,7 @@
 package ru.jsft.voteforlunch.web.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +15,6 @@ import ru.jsft.voteforlunch.web.controller.dto.MenuListDto;
 import ru.jsft.voteforlunch.web.controller.mapper.MenuListMapper;
 import ru.jsft.voteforlunch.web.controller.mapper.MenuMapper;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Comparator;
