@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.error.IllegalRequestDataException;
 import ru.jsft.voteforlunch.error.VoteTimeConstraintException;
@@ -102,7 +101,6 @@ public class VoteService {
         log.info("Vote deleted. userId={}", userId);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Cacheable("voteDistribution")
     public List<VoteDistribution> getVotesDistributionOnDate(LocalDate date) {
         log.info("Get votes distribution on {}", date);
