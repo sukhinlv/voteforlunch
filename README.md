@@ -54,12 +54,12 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 ## Used technologies
 
-**Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Ehcache / Spring Validation / Lombok / Spring Tests / Swagger**
+**Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Caffeine cache  / Spring Validation / Lombok / Spring Tests / Swagger**
 
 - For simplicity, I am using an in-memory H2 database that is populated with some test data using InitializeData#commandLineRunner
 - ORM framework is Spring Data JPA
 - Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
-- The application uses ehCache for caching. According to the application logic, MenuService and VoteService#getVotesDistributionOnDate uses the cache. Cached: menu GET operations, votes distribution
+- The application uses Caffeine for caching. According to the application logic, MenuService and VoteService#getVotesDistributionOnDate uses the cache. Cached: menu GET operations, votes distribution
 
 
 ## Database structure
@@ -70,16 +70,12 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 ## Security
 
 Users for tests:
-- Administrator _login admin@ya.ru_ password _admin_
+- Administrator login _admin@ya.ru_ password _admin_
 - User login _user@ya.ru_ password _user_
 
 Self-registration of users is not implemented
 
-
-## Password storage
-
-For clarity, the credentials that are generated when the program starts are not encrypted.
-The program implements the following logic for working with users:
+For clarity, the credentials that are generated when the program starts are not encrypted. The program implements the following logic for working with users:
 - When creating a new user, his password is encrypted at the stage of converting UserDto to User
 - When converting User to UserDto for return to the frontend, the password is hidden
 - When updating the data of an already existing user in the database, the password does not change
@@ -92,6 +88,6 @@ The program implements the following logic for working with users:
 - use Mapstruct to implement mappers
 - use Liquibase to automate database change process
 - add change password functionality
-- add more login options like OAuth2
+- add more login options like OAuth2 and JWT
 - add more test cases
 ...
