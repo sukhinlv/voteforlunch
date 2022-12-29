@@ -73,7 +73,7 @@ class VoteServiceTest {
 
         when(voteRepository.getVotesDistributionOnDate(date)).thenReturn(votesList);
 
-        assertThat(underTest.getVotesDistributionOnDate(date)).isEqualTo(votesList);
+        assertThat(underTest.getVotesDistributionOnDate(date)).usingRecursiveComparison().isEqualTo(votesList);
     }
 
     @Nested
@@ -84,7 +84,7 @@ class VoteServiceTest {
             Vote vote2 = Instancio.create(Vote.class);
             when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
 
-            assertThat(underTest.findAll()).isEqualTo(List.of(vote1, vote2));
+            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(List.of(vote1, vote2));
         }
 
         @Test
@@ -94,7 +94,7 @@ class VoteServiceTest {
             Long userId = vote.getUser().getId();
             when(voteRepository.findByIdAndUserId(id, userId)).thenReturn(Optional.of(vote));
 
-            assertThat(underTest.find(id, userId)).isEqualTo(vote);
+            assertThat(underTest.find(id, userId)).usingRecursiveComparison().isEqualTo(vote);
         }
 
         @Test
@@ -109,7 +109,7 @@ class VoteServiceTest {
             vote3.setUser(user1);
             when(voteRepository.findAllForUser(user1.getId())).thenReturn(List.of(vote1, vote3));
 
-            assertThat(underTest.findAllForUser(user1.getId())).isEqualTo(List.of(vote1, vote3));
+            assertThat(underTest.findAllForUser(user1.getId())).usingRecursiveComparison().isEqualTo(List.of(vote1, vote3));
         }
     }
 
@@ -133,9 +133,7 @@ class VoteServiceTest {
             vote.setUser(user);
             vote.setVoteDate(LocalDate.now(clock));
             vote.setVoteTime(LocalTime.now(clock));
-            assertThat(voteCaptor.getValue())
-                    .usingRecursiveComparison()
-                    .isEqualTo(vote);
+            assertThat(voteCaptor.getValue()).usingRecursiveComparison().isEqualTo(vote);
         }
 
         @Test
@@ -165,7 +163,7 @@ class VoteServiceTest {
             updatedVote.setUser(user);
             updatedVote.setVoteDate(LocalDate.now(clock));
             updatedVote.setVoteTime(LocalTime.now(clock));
-            assertThat(voteCaptor.getValue()).isEqualTo(updatedVote);
+            assertThat(voteCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedVote);
         }
 
         @Test

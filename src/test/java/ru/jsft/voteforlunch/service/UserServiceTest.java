@@ -48,7 +48,7 @@ class UserServiceTest {
 
             User actualUser = underTest.findById(expectedUser.getId());
 
-            assertThat(actualUser).isEqualTo(expectedUser);
+            assertThat(actualUser).usingRecursiveComparison().isEqualTo(expectedUser);
         }
 
         @Test
@@ -68,7 +68,7 @@ class UserServiceTest {
             user2.setEmail("Alex");
             when(repository.findAll(Sort.by("email"))).thenReturn(List.of(user2, user1));
 
-            assertThat(underTest.findAllSorted()).isEqualTo(List.of(user2, user1));
+            assertThat(underTest.findAllSorted()).usingRecursiveComparison().isEqualTo(List.of(user2, user1));
         }
     }
 
@@ -121,7 +121,7 @@ class UserServiceTest {
             then(repository).should().save(userCaptor.capture());
 
             updatedUser.setId(user.getId());
-            assertThat(userCaptor.getValue()).isEqualTo(updatedUser);
+            assertThat(userCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedUser);
         }
 
         @Test

@@ -46,7 +46,7 @@ class MenuServiceTest {
             Menu menu = Instancio.create(Menu.class);
             when(repository.findByIdWithProps(1L)).thenReturn(Optional.of(menu));
 
-            assertThat(underTest.findByIdWithProps(1L)).isEqualTo(menu);
+            assertThat(underTest.findByIdWithProps(1L)).usingRecursiveComparison().isEqualTo(menu);
         }
 
         @Test
@@ -70,7 +70,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu3);
             when(repository.findAllByDateOfMenuOrderByDateOfMenuDesc(dateOfMenu)).thenReturn(menuList);
 
-            assertThat(underTest.findAllByDateWithProps(dateOfMenu)).isEqualTo(menuList);
+            assertThat(underTest.findAllByDateWithProps(dateOfMenu)).usingRecursiveComparison().isEqualTo(menuList);
         }
 
         @Test
@@ -81,7 +81,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu2, menu3);
             when(repository.findAll()).thenReturn(menuList);
 
-            assertThat(underTest.findAll()).isEqualTo(menuList);
+            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(menuList);
         }
 
         @Test
@@ -92,7 +92,7 @@ class MenuServiceTest {
             List<Menu> menuList = List.of(menu1, menu2, menu3);
             when(repository.findAllWithRestaurants()).thenReturn(menuList);
 
-            assertThat(underTest.findAllWithRestaurants()).isEqualTo(menuList);
+            assertThat(underTest.findAllWithRestaurants()).usingRecursiveComparison().isEqualTo(menuList);
         }
     }
 
@@ -129,7 +129,7 @@ class MenuServiceTest {
             underTest.delete(1L);
             then(repository).should().deleteById(idCaptor.capture());
 
-            assertThat(idCaptor.getValue()).isNotNull().isEqualTo(1L);
+            assertThat(idCaptor.getValue()).isEqualTo(1L);
         }
     }
 
@@ -148,7 +148,7 @@ class MenuServiceTest {
             then(repository).should().save(MenuCaptor.capture());
 
             updatedMenu.setId(menu.getId());
-            assertThat(MenuCaptor.getValue()).isEqualTo(updatedMenu);
+            assertThat(MenuCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedMenu);
         }
 
         @Test

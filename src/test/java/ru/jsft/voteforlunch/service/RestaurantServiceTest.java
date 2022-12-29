@@ -48,7 +48,7 @@ class RestaurantServiceTest {
 
             Restaurant actualRestaurant = underTest.findById(expectedRestaurant.getId());
 
-            assertThat(actualRestaurant).isEqualTo(expectedRestaurant);
+            assertThat(actualRestaurant).usingRecursiveComparison().isEqualTo(expectedRestaurant);
         }
 
         @Test
@@ -68,7 +68,7 @@ class RestaurantServiceTest {
             restaurant2.setName("Aisha");
             when(repository.findAll(Sort.by("name"))).thenReturn(List.of(restaurant2, restaurant1));
 
-            assertThat(underTest.findAll()).isEqualTo(List.of(restaurant2, restaurant1));
+            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(List.of(restaurant2, restaurant1));
         }
     }
 
@@ -121,7 +121,7 @@ class RestaurantServiceTest {
             then(repository).should().save(restaurantCaptor.capture());
 
             updatedRestaurant.setId(restaurant.getId());
-            assertThat(restaurantCaptor.getValue()).isEqualTo(updatedRestaurant);
+            assertThat(restaurantCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedRestaurant);
         }
 
         @Test
