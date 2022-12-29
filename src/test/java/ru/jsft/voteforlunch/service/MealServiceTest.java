@@ -48,9 +48,7 @@ class MealServiceTest {
 
             Meal actualMeal = underTest.findById(expectedMeal.getId());
 
-            assertThat(actualMeal)
-                    .isNotNull()
-                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedMeal);
+            assertThat(actualMeal).isEqualTo(expectedMeal);
         }
 
         @Test
@@ -65,12 +63,12 @@ class MealServiceTest {
         @Test
         void findAll() {
             Meal meal1 = Instancio.create(Meal.class);
-            meal1.setName("Zara");
+            meal1.setName("Zebra pie");
             Meal meal2 = Instancio.create(Meal.class);
-            meal2.setName("Aisha");
+            meal2.setName("Apple pie");
             when(repository.findAll(Sort.by("name"))).thenReturn(List.of(meal2, meal1));
 
-            assertThat(underTest.findAllSorted()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(meal2, meal1));
+            assertThat(underTest.findAllSorted()).isEqualTo(List.of(meal2, meal1));
         }
     }
 
@@ -85,8 +83,9 @@ class MealServiceTest {
             then(repository).should().save(mealCaptor.capture());
 
             assertThat(mealCaptor.getValue())
-                    .isNotNull()
-                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(meal);
+                    .usingRecursiveComparison()
+                    .ignoringFields("id")
+                    .isEqualTo(meal);
         }
 
         @Test
@@ -122,7 +121,7 @@ class MealServiceTest {
             then(repository).should().save(mealCaptor.capture());
 
             updatedMeal.setId(meal.getId());
-            assertThat(mealCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedMeal);
+            assertThat(mealCaptor.getValue()).isEqualTo(updatedMeal);
         }
 
         @Test

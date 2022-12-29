@@ -48,9 +48,7 @@ class UserServiceTest {
 
             User actualUser = underTest.findById(expectedUser.getId());
 
-            assertThat(actualUser)
-                    .isNotNull()
-                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedUser);
+            assertThat(actualUser).isEqualTo(expectedUser);
         }
 
         @Test
@@ -65,12 +63,12 @@ class UserServiceTest {
         @Test
         void findAll() {
             User user1 = Instancio.create(User.class);
-            user1.setEmail("Zara");
+            user1.setEmail("Yuri");
             User user2 = Instancio.create(User.class);
-            user2.setEmail("Aisha");
+            user2.setEmail("Alex");
             when(repository.findAll(Sort.by("email"))).thenReturn(List.of(user2, user1));
 
-            assertThat(underTest.findAllSorted()).isNotNull().usingRecursiveComparison().isEqualTo(List.of(user2, user1));
+            assertThat(underTest.findAllSorted()).isEqualTo(List.of(user2, user1));
         }
     }
 
@@ -85,8 +83,9 @@ class UserServiceTest {
             then(repository).should().save(userCaptor.capture());
 
             assertThat(userCaptor.getValue())
-                    .isNotNull()
-                    .usingRecursiveComparison().ignoringFields("id").isEqualTo(user);
+                    .usingRecursiveComparison()
+                    .ignoringFields("id")
+                    .isEqualTo(user);
         }
 
         @Test
@@ -122,7 +121,7 @@ class UserServiceTest {
             then(repository).should().save(userCaptor.capture());
 
             updatedUser.setId(user.getId());
-            assertThat(userCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedUser);
+            assertThat(userCaptor.getValue()).isEqualTo(updatedUser);
         }
 
         @Test
