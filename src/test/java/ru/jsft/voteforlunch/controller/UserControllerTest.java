@@ -63,9 +63,15 @@ class UserControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void getAnauthorizedUser() throws Exception {
+    void getUnauthorized() throws Exception {
         mockMvc.perform(get(REST_URL + "/1"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getForbidden() throws Exception {
+        mockMvc.perform(get(REST_URL + "/1")).andExpect(status().isForbidden());
     }
 
     @Test

@@ -28,6 +28,12 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
+    void getUnauthorized() throws Exception {
+        mockMvc.perform(get(REST_URL + "/1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getVote() throws Exception {
         mockMvc.perform(get(REST_URL + "/1"))
