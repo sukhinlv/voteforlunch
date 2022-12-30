@@ -50,6 +50,9 @@ logging:
     org.springframework.orm.jpa: DEBUG
     org.springframework.security: DEBUG
 
+# Springdoc
+springdoc.swagger-ui.docExpansion: none
+
 # Server configuration
 server:
   port: 8095
@@ -60,5 +63,4 @@ server:
       force: true
 
 # Application-specific settings
-vote:
-  time.constraint: "11:00"  # the time after which the user can not change his vote
+vote.time.constraint: "11:00"  # the time after which the user can not change his vote

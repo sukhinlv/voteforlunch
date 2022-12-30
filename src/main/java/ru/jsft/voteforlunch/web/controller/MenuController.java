@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.MenuService;
-import ru.jsft.voteforlunch.web.controller.dto.MenuDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuListDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuRequestDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuResponseDto;
 import ru.jsft.voteforlunch.web.controller.mapper.MenuListMapper;
 import ru.jsft.voteforlunch.web.controller.mapper.MenuMapper;
 
@@ -58,12 +59,12 @@ public class MenuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MenuDto> get(@PathVariable long id) {
+    public ResponseEntity<MenuResponseDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(id)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuDto> create(@Valid @RequestBody MenuDto menuDto) {
+    public ResponseEntity<MenuResponseDto> create(@Valid @RequestBody MenuRequestDto menuDto) {
         Menu created = service.create(mapper.toEntity(menuDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -78,7 +79,7 @@ public class MenuController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuDto> update(@PathVariable long id, @Valid @RequestBody MenuDto menuDto) {
+    public ResponseEntity<MenuResponseDto> update(@PathVariable long id, @Valid @RequestBody MenuRequestDto menuDto) {
         return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithDetails(id, mapper.toEntity(menuDto))));
     }
 }

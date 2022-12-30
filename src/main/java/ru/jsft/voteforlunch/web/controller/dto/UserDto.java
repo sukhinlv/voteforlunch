@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,10 +32,12 @@ public class UserDto extends AbstractDto {
 
     @Size(max = 256)
     @NotBlank(message = "Password must not be empty")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     String password;
 
     boolean enabled;
 
     @NotEmpty(message = "Roles must not be empty")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     Set<Role> roles;
 }

@@ -3,11 +3,11 @@ package ru.jsft.voteforlunch.web.controller.mapper;
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.MealPrice;
 import ru.jsft.voteforlunch.service.MealService;
-import ru.jsft.voteforlunch.web.controller.dto.MealPriceDto;
+import ru.jsft.voteforlunch.web.controller.dto.MealPriceRequestDto;
+import ru.jsft.voteforlunch.web.controller.dto.MealPriceResponseDto;
 
 @Component
-public class MealPriceMapper implements Mapper<MealPrice, MealPriceDto> {
-
+public class MealPriceMapper implements RequestResponseMapper<MealPrice, MealPriceRequestDto, MealPriceResponseDto> {
     private final MealMapper mealMapper;
 
     private final MealService mealService;
@@ -18,17 +18,17 @@ public class MealPriceMapper implements Mapper<MealPrice, MealPriceDto> {
     }
 
     @Override
-    public MealPrice toEntity(MealPriceDto dto) {
+    public MealPrice toEntity(MealPriceRequestDto dto) {
         MealPrice mealPrice = new MealPrice();
         mealPrice.setId(dto.getId());
-        mealPrice.setMeal(mealService.findById(dto.getMeal().getId()));
+        mealPrice.setMeal(mealService.findById(dto.getMealId()));
         mealPrice.setPrice(dto.getPrice());
         return mealPrice;
     }
 
     @Override
-    public MealPriceDto toDto(MealPrice entity) {
-        MealPriceDto mealPriceDto = new MealPriceDto(mealMapper.toDto(entity.getMeal()), entity.getPrice());
+    public MealPriceResponseDto toDto(MealPrice entity) {
+        MealPriceResponseDto mealPriceDto = new MealPriceResponseDto(mealMapper.toDto(entity.getMeal()), entity.getPrice());
         mealPriceDto.setId(entity.getId());
         return mealPriceDto;
     }

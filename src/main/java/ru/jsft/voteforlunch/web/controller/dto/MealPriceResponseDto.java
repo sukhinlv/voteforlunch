@@ -10,7 +10,7 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class MealPriceDto extends AbstractDto {
+public class MealPriceResponseDto extends AbstractDto {
     @NotNull MealDto meal;
 
     @Positive int price;

@@ -3,13 +3,14 @@ package ru.jsft.voteforlunch.web.controller.mapper;
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.RestaurantService;
-import ru.jsft.voteforlunch.web.controller.dto.MealPriceDto;
-import ru.jsft.voteforlunch.web.controller.dto.MenuDto;
+import ru.jsft.voteforlunch.web.controller.dto.MealPriceRequestDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuRequestDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuResponseDto;
 
 import java.util.stream.Collectors;
 
 @Component
-public class MenuMapper implements Mapper<Menu, MenuDto> {
+public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, MenuResponseDto> {
 
     private final RestaurantMapper restaurantMapper;
     private final MealPriceMapper mealPriceMapper;
@@ -22,23 +23,23 @@ public class MenuMapper implements Mapper<Menu, MenuDto> {
     }
 
     @Override
-    public Menu toEntity(MenuDto dto) {
+    public Menu toEntity(MenuRequestDto dto) {
         Menu menu = new Menu();
         menu.setId(dto.getId());
         menu.setDateOfMenu(dto.getDateOfMenu());
-        menu.setRestaurant(restaurantService.findById(dto.getRestaurant().getId()));
-        for (MealPriceDto mealPriceDto : dto.getMealPrice()) {
+        menu.setRestaurant(restaurantService.findById(dto.getRestaurantId()));
+        for (MealPriceRequestDto mealPriceDto : dto.getMealPrices()) {
             menu.addMealPrice(mealPriceMapper.toEntity(mealPriceDto));
         }
         return menu;
     }
 
     @Override
-    public MenuDto toDto(Menu entity) {
-        MenuDto menuDto = new MenuDto(
+    public MenuResponseDto toDto(Menu entity) {
+        MenuResponseDto menuDto = new MenuResponseDto(
                 entity.getDateOfMenu(),
                 restaurantMapper.toDto(entity.getRestaurant()),
-                entity.getMealPrice().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
+                entity.getMealPrices().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
         menuDto.setId(entity.getId());
         return menuDto;
     }

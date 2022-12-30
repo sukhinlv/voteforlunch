@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.web.controller.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -13,10 +14,11 @@ import java.util.Set;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class MenuDto extends AbstractDto {
+public class MenuRequestDto extends AbstractDto {
     @NotNull LocalDate dateOfMenu;
 
-    @NotNull RestaurantDto restaurant;
+    long restaurantId;
 
-    Set<MealPriceDto> mealPrice;
+    @NotEmpty
+    Set<MealPriceRequestDto> mealPrices;
 }
