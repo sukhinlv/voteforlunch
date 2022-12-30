@@ -45,19 +45,21 @@ public class ApplicationConfig {
     }
 
     @Bean
-    @Profile("!test")
-    public Clock clock() {
-        return Clock.systemDefaultZone();
-    }
-
-    @Bean
     @Profile("test")
+    // this custom Clock bean used to ensure that when created in the test database, records have a specific date
     public Clock testClock(@Value("${vote.time.constraint}") LocalTime timeConstraint) {
         ZonedDateTime now = ZonedDateTime.of(
                 2022, 11, 15, timeConstraint.getHour() - 3, timeConstraint.getMinute(), 0, 0,
                 ZoneId.of("GMT"));
 
         return Clock.fixed(now.toInstant(), now.getZone());
+    }
+
+    @Bean
+    @Profile("!test")
+    // normal Clock bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 
     @Profile("!test")

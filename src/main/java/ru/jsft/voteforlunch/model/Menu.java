@@ -1,6 +1,7 @@
 package ru.jsft.voteforlunch.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -31,20 +32,20 @@ public class Menu extends AbstractEntity {
     @ToString.Exclude
     private Restaurant restaurant;
 
-    @NotNull
+    @NotEmpty
     @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @SortNatural
     @ToString.Exclude
-    private SortedSet<MealPrice> mealPrice = new TreeSet<>();
+    private SortedSet<MealPrice> mealPrices = new TreeSet<>();
 
     public void addMealPrice(MealPrice mealPrice) {
-        this.mealPrice.add(mealPrice);
+        this.mealPrices.add(mealPrice);
         mealPrice.setMenu(this);
     }
 
     public void removeMealPrice(MealPrice mealPrice) {
-        this.mealPrice.remove(mealPrice);
+        this.mealPrices.remove(mealPrice);
         mealPrice.setMenu(null);
     }
 }

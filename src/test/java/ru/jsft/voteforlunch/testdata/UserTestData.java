@@ -44,16 +44,7 @@ public class UserTestData {
     }
 
     public static UserDto getUpdatedDto() {
-        UserDto updatedDto = new UserDto(
-                USER_DTO.getEmail(),
-                USER_DTO.getFirstName(),
-                USER_DTO.getLastName(),
-                USER_DTO.getPassword(),
-                USER_DTO.isEnabled(),
-                USER_DTO.getRoles()
-        );
-        updatedDto.setId(USER_DTO.getId());
-        return updatedDto;
+        return getUpdatedDto(USER_DTO.getEmail());
     }
 
     public static UserDto getUpdatedDto(String email) {
