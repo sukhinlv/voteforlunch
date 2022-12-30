@@ -40,4 +40,14 @@ public class UserDto extends AbstractDto {
     @NotEmpty(message = "Roles must not be empty")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     Set<Role> roles;
+
+    public UserDto(Long id, String email, String firstName, String lastName, String password, boolean enabled, Set<Role> roles) {
+        super(id);
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.enabled = enabled;
+        this.roles = roles;
+    }
 }

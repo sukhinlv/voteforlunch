@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.repository;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,15 +16,15 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface MenuRepository extends JpaRepository<Menu, Long> {
+    @EntityGraph(attributePaths = "restaurant")
+    @Query("select m from Menu m where m.dateOfMenu = :date order by m.dateOfMenu desc, m.restaurant.name asc")
+    List<Menu> findAllWithRestaurantsOnDate(@NotNull @Param("date") LocalDate date);
 
     @EntityGraph(attributePaths = "restaurant")
-    List<Menu> findAllByDateOfMenuOrderByDateOfMenuDesc(LocalDate date);
-
-    @EntityGraph(attributePaths = "restaurant")
-    @Query("select m from Menu m order by m.dateOfMenu desc")
+    @Query("select m from Menu m order by m.dateOfMenu desc, m.restaurant.name asc")
     List<Menu> findAllWithRestaurants();
 
-    @EntityGraph(attributePaths = {"restaurant", "mealPrice", "mealPrice.meal"})
+    @EntityGraph(attributePaths = {"restaurant", "mealPrices", "mealPrices.meal"})
     @Query("select m from Menu m where m.id = :id")
-    Optional<Menu> findByIdWithProps(@Param("id") long id);
+    Optional<Menu> findByIdWithAllData(@Param("id") long id);
 }

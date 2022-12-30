@@ -19,8 +19,8 @@ public class UserTestData {
     public static final String USER_MAIL = "user@ya.ru";
     public static User ADMIN = new User(ADMIN_MAIL, "admin", "admin", "admin", true, Collections.singleton(Role.ADMIN));
     public static User USER = new User("user@ya.ru", "user", "user", "user", true, Collections.singleton(Role.USER));
-    public static UserDto ADMIN_DTO = new UserDto(ADMIN.getEmail(), ADMIN.getFirstName(), ADMIN.getLastName(), "***", ADMIN.isEnabled(), ADMIN.getRoles());
-    public static UserDto USER_DTO = new UserDto(USER.getEmail(), USER.getFirstName(), USER.getLastName(), "***", USER.isEnabled(), USER.getRoles());
+    public static UserDto ADMIN_DTO = new UserDto(1L, ADMIN.getEmail(), ADMIN.getFirstName(), ADMIN.getLastName(), "***", ADMIN.isEnabled(), ADMIN.getRoles());
+    public static UserDto USER_DTO = new UserDto(2L, USER.getEmail(), USER.getFirstName(), USER.getLastName(), "***", USER.isEnabled(), USER.getRoles());
 
     static {
         ADMIN_DTO.setId(1L);
@@ -28,7 +28,7 @@ public class UserTestData {
         USER_DTO_LIST.add(ADMIN_DTO);
         USER_DTO_LIST.add(USER_DTO);
         for (long i = 0; i < 2000; i++) {
-            UserDto dto = new UserDto("user" + i + "@gmail.com", "userName" + i, "userSurname" + i, "***", true, Collections.singleton(Role.USER));
+            UserDto dto = new UserDto(null, "user" + i + "@gmail.com", "userName" + i, "userSurname" + i, "***", true, Collections.singleton(Role.USER));
             dto.setId(i + 3);
             USER_DTO_LIST.add(dto);
         }
@@ -36,11 +36,13 @@ public class UserTestData {
     }
 
     public static UserDto getNewDto() {
-        return new UserDto("new@gmail.com", "проверим и юникод тоже", "newsurname", "***", true, Collections.singleton(Role.USER));
+        return new UserDto(null, "new@gmail.com", "проверим и юникод тоже", "newsurname",
+                "***", true, Collections.singleton(Role.USER));
     }
 
     public static UserDto getNewDto(String email) {
-        return new UserDto(email, "проверим и юникод тоже", "newsurname", "***", true, Collections.singleton(Role.USER));
+        return new UserDto(null, email, "проверим и юникод тоже", "newsurname",
+                "***", true, Collections.singleton(Role.USER));
     }
 
     public static UserDto getUpdatedDto() {
@@ -49,6 +51,7 @@ public class UserTestData {
 
     public static UserDto getUpdatedDto(String email) {
         UserDto updatedDto = new UserDto(
+                USER_DTO.getId(),
                 email,
                 USER_DTO.getFirstName(),
                 USER_DTO.getLastName(),

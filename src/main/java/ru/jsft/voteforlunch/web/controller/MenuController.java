@@ -18,7 +18,6 @@ import ru.jsft.voteforlunch.web.controller.mapper.MenuMapper;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -37,30 +36,21 @@ public class MenuController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MenuListDto>> getAll() {
-        return getListOfMenuListDtos(service.findAllWithRestaurants());
+    public ResponseEntity<List<MenuListDto>> getListOfMenus() {
+        return ResponseEntity.ok(service.findAllWithRestaurants().stream().map(listMapper::toDto).toList());
     }
 
     @GetMapping("/on-date")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<MenuListDto>> getMenusOnDate(
+    public ResponseEntity<List<MenuListDto>> getListOfMenusOnDate(
             @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate date) {
 
-        return getListOfMenuListDtos(service.findAllByDateWithProps(date));
-    }
-
-    private ResponseEntity<List<MenuListDto>> getListOfMenuListDtos(List<Menu> resultList) {
-        return ResponseEntity.ok(resultList.stream()
-                .map(listMapper::toDto)
-                .sorted(Comparator.comparing(MenuListDto::getDateOfMenu)
-                        .reversed()
-                        .thenComparing(MenuListDto::getRestaurantName))
-                .toList());
+        return ResponseEntity.ok(service.findAllWithRestaurants(date).stream().map(listMapper::toDto).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MenuResponseDto> get(@PathVariable long id) {
-        return ResponseEntity.ok(mapper.toDto(service.findByIdWithProps(id)));
+        return ResponseEntity.ok(mapper.toDto(service.findByIdWithAllData(id)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

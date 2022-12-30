@@ -36,11 +36,10 @@ public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, M
 
     @Override
     public MenuResponseDto toDto(Menu entity) {
-        MenuResponseDto menuDto = new MenuResponseDto(
+        return new MenuResponseDto(
+                entity.getId(),
                 entity.getDateOfMenu(),
                 restaurantMapper.toDto(entity.getRestaurant()),
                 entity.getMealPrices().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
-        menuDto.setId(entity.getId());
-        return menuDto;
     }
 }

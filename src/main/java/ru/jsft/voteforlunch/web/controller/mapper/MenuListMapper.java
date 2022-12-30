@@ -14,12 +14,11 @@ public class MenuListMapper implements Mapper<Menu, MenuListDto> {
 
     @Override
     public MenuListDto toDto(Menu entity) {
-        MenuListDto menuListDto = new MenuListDto(
+        return new MenuListDto(
+                entity.getId(),
                 entity.getDateOfMenu(),
                 entity.getRestaurant().getId(),
                 entity.getRestaurant().getName()
         );
-        menuListDto.setId(entity.getId());
-        return menuListDto;
     }
 }

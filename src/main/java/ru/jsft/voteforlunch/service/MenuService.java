@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,12 +25,6 @@ public class MenuService {
         this.repository = repository;
     }
 
-    @Cacheable("menus")
-    public List<Menu> findAllByDateWithProps(LocalDate date) {
-        log.info("Find all menus (including properties) on date = {}", date);
-        return repository.findAllByDateOfMenuOrderByDateOfMenuDesc(date);
-    }
-
     @CacheEvict({"menu"})
     public Menu create(Menu menu) {
         log.info("Create menu: {}", menu);
@@ -44,6 +39,12 @@ public class MenuService {
     }
 
     @Cacheable("menus")
+    public List<Menu> findAllWithRestaurants(@NotNull LocalDate date) {
+        log.info("Find all menus with restaurants on {}", date);
+        return repository.findAllWithRestaurantsOnDate(date);
+    }
+
+    @Cacheable("menus")
     public List<Menu> findAllWithRestaurants() {
         log.info("Find all menus with restaurants");
         return repository.findAllWithRestaurants();
@@ -53,7 +54,7 @@ public class MenuService {
     @CacheEvict({"menu", "menus"})
     public Menu updateAndReturnWithDetails(long id, Menu menu) {
         Menu updatedMenu = update(id, menu);
-        return findByIdWithProps(Objects.requireNonNull(updatedMenu.getId()));
+        return findByIdWithAllData(Objects.requireNonNull(updatedMenu.getId()));
     }
 
     @Transactional
@@ -72,8 +73,8 @@ public class MenuService {
     }
 
     @Cacheable("menu")
-    public Menu findByIdWithProps(long id) {
+    public Menu findByIdWithAllData(long id) {
         log.info("Find menu (including properties) with id = {}", id);
-        return checkEntityNotNull(repository.findByIdWithProps(id), id, Menu.class);
+        return checkEntityNotNull(repository.findByIdWithAllData(id), id, Menu.class);
     }
 }

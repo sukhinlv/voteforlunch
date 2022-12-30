@@ -15,8 +15,6 @@ public class RestaurantDto extends AbstractDto {
     @NoHtml
     String name;
 
-    // You should have such hand-made AllArgsConstructor while using @Value because otherwise there will be deserialization problem
-    // RestaurantDto used in VoteDto, so if such constructor is absent, "Cannot construct instance of..." error occurs
     public RestaurantDto(Long id, String name) {
         super(id);
         this.name = name;

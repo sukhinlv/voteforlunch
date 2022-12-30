@@ -39,7 +39,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
         mockMvc.perform(get(REST_URL + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_DTO_MATCHER.contentJson(VOTE_1L));
+                .andExpect(VOTE_DTO_MATCHER.contentJson(VOTE_AISHA_1L));
     }
 
     @Test

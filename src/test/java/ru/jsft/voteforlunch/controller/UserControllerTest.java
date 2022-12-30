@@ -142,7 +142,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createUnprocessable() throws Exception {
-        UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
+        UserDto newUserDto = new UserDto(null, "mail", "", "", "", true, Set.of());
 
         mockMvc.perform(post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +155,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateUnprocessable() throws Exception {
-        UserDto newUserDto = new UserDto("mail", "", "", "", true, Set.of());
+        UserDto newUserDto = new UserDto(null, "mail", "", "", "", true, Set.of());
 
         mockMvc.perform(put(REST_URL + "/" + USER_DTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -196,6 +196,7 @@ class UserControllerTest extends AbstractSpringBootTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void notProcessUnsafeHtml() throws Exception {
         UserDto newUserDto = new UserDto(
+                null,
                 "mail@mail.ru", "name",
                 "<script> Alert xss!!! /script>",
                 "password", true, Set.of(Role.USER));

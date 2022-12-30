@@ -15,15 +15,10 @@ public class VoteTestData {
     public static MatcherFactory.Matcher<VoteDto> VOTE_DTO_MATCHER = MatcherFactory.usingEqualsComparator(VoteDto.class);
     public static MatcherFactory.Matcher<VoteDistribution> VOTE_DISTRIBUTION_MATCHER = MatcherFactory.usingEqualsComparator(VoteDistribution.class);
 
-    public static VoteDto VOTE_1L = new VoteDto(AISHA_RESTAURANT, LocalDate.of(2022, 11, 13), LocalTime.of(9, 30));
-    public static VoteDto VOTE_3L = new VoteDto(CHERRY_RESTAURANT, LocalDate.of(2022, 11, 14), LocalTime.of(9, 30));
+    public static VoteDto VOTE_AISHA_1L = new VoteDto(1L, AISHA_RESTAURANT, LocalDate.of(2022, 11, 13), LocalTime.of(9, 30));
+    public static VoteDto VOTE_CHERRY_3L = new VoteDto(3L, CHERRY_RESTAURANT, LocalDate.of(2022, 11, 14), LocalTime.of(9, 30));
 
-    static {
-        VOTE_1L.setId(1L);
-        VOTE_3L.setId(3L);
-    }
-
-    public static List<VoteDto> VOTES = List.of(VOTE_3L, VOTE_1L);
+    public static List<VoteDto> VOTES = List.of(VOTE_CHERRY_3L, VOTE_AISHA_1L);
 
     public static List<VoteDistribution> VOTE_DISTRIBUTION = List.of(
             new VoteDistribution(2L, "Aisha", 2L),

@@ -18,4 +18,11 @@ public class VoteDto extends AbstractDto {
     @NotNull LocalDate voteDate;
 
     @NotNull LocalTime voteTime;
+
+    public VoteDto(Long id, RestaurantDto restaurant, LocalDate voteDate, LocalTime voteTime) {
+        super(id);
+        this.restaurant = restaurant;
+        this.voteDate = voteDate;
+        this.voteTime = voteTime;
+    }
 }

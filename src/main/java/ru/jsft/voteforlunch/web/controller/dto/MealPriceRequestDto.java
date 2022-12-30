@@ -2,6 +2,7 @@ package ru.jsft.voteforlunch.web.controller.dto;
 
 import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.Value;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Value;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class MealPriceRequestDto extends AbstractDto {
     long mealId;
 

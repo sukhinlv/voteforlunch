@@ -28,8 +28,6 @@ public class MealPriceMapper implements RequestResponseMapper<MealPrice, MealPri
 
     @Override
     public MealPriceResponseDto toDto(MealPrice entity) {
-        MealPriceResponseDto mealPriceDto = new MealPriceResponseDto(mealMapper.toDto(entity.getMeal()), entity.getPrice());
-        mealPriceDto.setId(entity.getId());
-        return mealPriceDto;
+        return new MealPriceResponseDto(entity.getId(), mealMapper.toDto(entity.getMeal()), entity.getPrice());
     }
 }

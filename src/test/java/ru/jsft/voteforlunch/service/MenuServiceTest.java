@@ -44,33 +44,18 @@ class MenuServiceTest {
         @Test
         void find() {
             Menu menu = Instancio.create(Menu.class);
-            when(repository.findByIdWithProps(1L)).thenReturn(Optional.of(menu));
+            when(repository.findByIdWithAllData(1L)).thenReturn(Optional.of(menu));
 
-            assertThat(underTest.findByIdWithProps(1L)).usingRecursiveComparison().isEqualTo(menu);
+            assertThat(underTest.findByIdWithAllData(1L)).usingRecursiveComparison().isEqualTo(menu);
         }
 
         @Test
         void throwWhenFindNotExisted() {
             when(repository.findById(1L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> underTest.findByIdWithProps(1L))
+            assertThatThrownBy(() -> underTest.findByIdWithAllData(1L))
                     .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
-        }
-
-        @Test
-        void findByDate() {
-            Menu menu1 = Instancio.create(Menu.class);
-            Menu menu2 = Instancio.create(Menu.class);
-            Menu menu3 = Instancio.create(Menu.class);
-            LocalDate dateOfMenu = LocalDate.of(2022, 10, 10);
-            menu1.setDateOfMenu(dateOfMenu);
-            menu2.setDateOfMenu(dateOfMenu.plusDays(1));
-            menu3.setDateOfMenu(dateOfMenu);
-            List<Menu> menuList = List.of(menu1, menu3);
-            when(repository.findAllByDateOfMenuOrderByDateOfMenuDesc(dateOfMenu)).thenReturn(menuList);
-
-            assertThat(underTest.findAllByDateWithProps(dateOfMenu)).usingRecursiveComparison().isEqualTo(menuList);
         }
 
         @Test
@@ -93,6 +78,21 @@ class MenuServiceTest {
             when(repository.findAllWithRestaurants()).thenReturn(menuList);
 
             assertThat(underTest.findAllWithRestaurants()).usingRecursiveComparison().isEqualTo(menuList);
+        }
+
+        @Test
+        void findAllWithRestaurantsOnDate() {
+            Menu menu1 = Instancio.create(Menu.class);
+            Menu menu2 = Instancio.create(Menu.class);
+            Menu menu3 = Instancio.create(Menu.class);
+            LocalDate dateOfMenu = LocalDate.of(2022, 10, 10);
+            menu1.setDateOfMenu(dateOfMenu);
+            menu2.setDateOfMenu(dateOfMenu.plusDays(1));
+            menu3.setDateOfMenu(dateOfMenu);
+            List<Menu> menuList = List.of(menu1, menu3);
+            when(repository.findAllWithRestaurantsOnDate(dateOfMenu)).thenReturn(menuList);
+
+            assertThat(underTest.findAllWithRestaurants(dateOfMenu)).usingRecursiveComparison().isEqualTo(menuList);
         }
     }
 
@@ -140,7 +140,7 @@ class MenuServiceTest {
             Menu menu = Instancio.create(Menu.class);
             when(repository.findById(menu.getId())).thenReturn(Optional.of(menu));
             when(repository.save(menu)).thenReturn(menu);
-            when(repository.findByIdWithProps(menu.getId())).thenReturn(Optional.of(menu));
+            when(repository.findByIdWithAllData(menu.getId())).thenReturn(Optional.of(menu));
 
             Menu updatedMenu = Instancio.create(Menu.class);
             updatedMenu.setId(menu.getId());

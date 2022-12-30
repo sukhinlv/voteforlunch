@@ -17,4 +17,9 @@ public class AbstractDto {
     public String toString() {
         return getClass().getSimpleName() + ":" + id;
     }
+
+/*
+* Mind that you have to add hand-made AllArgsConstructor to all inheritors that use @Value
+* because otherwise you can get deserialization error "Cannot construct instance of..."
+*/
 }
