@@ -19,7 +19,7 @@ public class MealPrice extends AbstractEntity implements Comparable<MealPrice> {
     private Meal meal;
 
     @NotNull
-    @Positive
+    @Positive(message = "Price must be positive")
     @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private Integer price;
 

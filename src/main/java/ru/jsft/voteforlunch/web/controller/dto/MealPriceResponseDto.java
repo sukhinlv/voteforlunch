@@ -15,7 +15,8 @@ import lombok.Value;
 public class MealPriceResponseDto extends AbstractDto {
     @NotNull MealDto meal;
 
-    @Positive int price;
+    @Positive(message = "Price must be positive")
+    int price;
 
     public MealPriceResponseDto(Long id, MealDto meal, int price) {
         super(id);

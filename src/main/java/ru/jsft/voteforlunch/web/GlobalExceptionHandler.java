@@ -1,6 +1,8 @@
 package ru.jsft.voteforlunch.web;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -43,24 +45,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, body, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
-    private String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
-    }
-
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<?> appException(ApplicationException ex, WebRequest request) {
         log.error("ApplicationException: {}", ex.getMessage());
         return createProblemDetailExceptionResponse(ex, ex.getStatusCode(), request);
-    }
-
-    private ResponseEntity<?> createProblemDetailExceptionResponse(Exception ex, HttpStatusCode statusCode, WebRequest request) {
-        return createProblemDetailExceptionResponse(ex, statusCode, request, null);
-    }
-
-    private ResponseEntity<?> createProblemDetailExceptionResponse(Exception ex, HttpStatusCode statusCode, WebRequest request, @Nullable String customMessage) {
-        String msg = customMessage != null ? customMessage : ex.getMessage();
-        ProblemDetail body = createProblemDetail(ex, statusCode, msg, null, null, request);
-        return handleExceptionInternal(ex, body, new HttpHeaders(), statusCode, request);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -75,6 +63,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return createProblemDetailExceptionResponse(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(WebRequest request, ConstraintViolationException ex) {
+        ProblemDetail body = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+        Map<String, String> invalidParams = new LinkedHashMap<>();
+        for (ConstraintViolation<?> constraintViolation : ex.getConstraintViolations()) {
+            invalidParams.put(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage());
+        }
+        body.setProperty("invalid_params", invalidParams);
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> conflict(WebRequest request, DataIntegrityViolationException ex) {
         log.error("DataIntegrityViolationException: {}", ex.getMessage());
@@ -82,6 +81,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ValidationUtils.getRootCause(ex).getMessage().toLowerCase().contains("email_unique_idx")) {
             msg = "User with this email already exists";
         }
+        if (ValidationUtils.getRootCause(ex).getMessage().toLowerCase().contains("uc_menu_date_of_menu")) {
+            msg = "Menu for this restaurant on this date already exists";
+        }
         return createProblemDetailExceptionResponse(ex, HttpStatus.CONFLICT, request, msg);
+    }
+
+    private ResponseEntity<?> createProblemDetailExceptionResponse(Exception ex, HttpStatusCode statusCode, WebRequest request) {
+        return createProblemDetailExceptionResponse(ex, statusCode, request, null);
+    }
+
+    private ResponseEntity<?> createProblemDetailExceptionResponse(Exception ex, HttpStatusCode statusCode, WebRequest request, @Nullable String customMessage) {
+        String msg = customMessage != null ? customMessage : ex.getMessage();
+        ProblemDetail body = createProblemDetail(ex, statusCode, msg, null, null, request);
+        return handleExceptionInternal(ex, body, new HttpHeaders(), statusCode, request);
+    }
+
+    private String getErrorMessage(ObjectError error) {
+        return messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
     }
 }

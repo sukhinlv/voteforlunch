@@ -5,19 +5,37 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.jsft.voteforlunch.AbstractSpringBootTest;
+import ru.jsft.voteforlunch.model.VoteDistribution;
+import ru.jsft.voteforlunch.utils.MatcherFactory;
 import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.jsft.voteforlunch.testdata.RestaurantTestData.AISHA_RESTAURANT;
+import static ru.jsft.voteforlunch.testdata.RestaurantTestData.CHERRY_RESTAURANT;
 import static ru.jsft.voteforlunch.testdata.UserTestData.ADMIN_MAIL;
-import static ru.jsft.voteforlunch.testdata.VoteTestData.*;
 import static ru.jsft.voteforlunch.web.controller.VoteController.REST_URL;
 
 public class VoteControllerTest extends AbstractSpringBootTest {
+    public static MatcherFactory.Matcher<VoteDto> VOTE_DTO_MATCHER = MatcherFactory.usingEqualsComparator(VoteDto.class);
+    public static MatcherFactory.Matcher<VoteDistribution> VOTE_DISTRIBUTION_MATCHER = MatcherFactory.usingEqualsComparator(VoteDistribution.class);
+
+    public static VoteDto VOTE_AISHA_1L = new VoteDto(1L, AISHA_RESTAURANT, LocalDate.of(2022, 11, 13), LocalTime.of(9, 30));
+    public static VoteDto VOTE_CHERRY_3L = new VoteDto(3L, CHERRY_RESTAURANT, LocalDate.of(2022, 11, 14), LocalTime.of(9, 30));
+
+    public static List<VoteDto> VOTES = List.of(VOTE_CHERRY_3L, VOTE_AISHA_1L);
+
+    public static List<VoteDistribution> VOTE_DISTRIBUTION = List.of(
+            new VoteDistribution(2L, "Aisha", 2L),
+            new VoteDistribution(1L, "Cherry", 0L)
+    );
+
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getVotesForUser() throws Exception {
