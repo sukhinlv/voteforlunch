@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -23,6 +24,7 @@ import ru.jsft.voteforlunch.validation.ValidationUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final MessageSource messageSource;
 
     @Override
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ProblemDetail body = ex.updateAndGetBody(this.messageSource, LocaleContextHolder.getLocale());
         Map<String, String> invalidParams = new LinkedHashMap<>();
@@ -52,18 +55,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
         return createProblemDetailExceptionResponse(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
     @ExceptionHandler(VoteTimeConstraintException.class)
-    public ResponseEntity<?> entityNotFoundException(WebRequest request, VoteTimeConstraintException ex) {
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<?> voteTimeConstraintException(WebRequest request, VoteTimeConstraintException ex) {
         log.error("VoteTimeConstraintException: {}", ex.getMessage());
         return createProblemDetailExceptionResponse(ex, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<Object> handleConstraintViolationException(WebRequest request, ConstraintViolationException ex) {
         ProblemDetail body = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
         Map<String, String> invalidParams = new LinkedHashMap<>();
@@ -75,6 +81,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<?> conflict(WebRequest request, DataIntegrityViolationException ex) {
         log.error("DataIntegrityViolationException: {}", ex.getMessage());
         String msg = null;
@@ -98,6 +105,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
+        return messageSource.getMessage(Objects.requireNonNull(error.getCode()), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
     }
 }

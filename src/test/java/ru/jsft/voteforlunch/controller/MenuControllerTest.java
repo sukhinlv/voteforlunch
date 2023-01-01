@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.controller;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,18 +49,6 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
     @Autowired
     private MenuMapper mapper;
-
-    @Test
-    void getUnauthorized() throws Exception {
-        mockMvc.perform(get(REST_URL + "/1"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getForbidden() throws Exception {
-        mockMvc.perform(delete(REST_URL + "/1")).andExpect(status().isForbidden());
-    }
 
     @Test
     @WithUserDetails(value = USER_MAIL)
@@ -157,100 +146,115 @@ public class MenuControllerTest extends AbstractSpringBootTest {
         assertThrows(IllegalRequestDataException.class, () -> menuService.findByIdWithAllData(2L));
     }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void createUnprocessableMenu() throws Exception {
-        MenuRequestDto menuRequestDto = new MenuRequestDto(null, -10, null);
+    @Nested
+    class ErrorCasesWithMenu {
+        @Test
+        void getUnauthorized() throws Exception {
+            mockMvc.perform(get(REST_URL + "/1"))
+                    .andExpect(status().isUnauthorized());
+        }
 
-        mockMvc.perform(post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(menuRequestDto)))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.invalid_params").value(MENU_CONSTRAINTS_MATCHER));
-    }
+        @Test
+        @WithUserDetails(value = USER_MAIL)
+        void getForbidden() throws Exception {
+            mockMvc.perform(delete(REST_URL + "/1")).andExpect(status().isForbidden());
+        }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void updateUnprocessableMenu() throws Exception {
-        MenuRequestDto menuRequestDto = new MenuRequestDto(null, -10, null);
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void createUnprocessableMenu() throws Exception {
+            MenuRequestDto menuRequestDto = new MenuRequestDto(null, -10, null);
 
-        mockMvc.perform(put(REST_URL + "/3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(menuRequestDto)))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.invalid_params").value(MENU_CONSTRAINTS_MATCHER));
-    }
+            mockMvc.perform(post(REST_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(menuRequestDto)))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.invalid_params").value(MENU_CONSTRAINTS_MATCHER));
+        }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void createDuplicateMenu() throws Exception {
-        mockMvc.perform(post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(new MenuRequestDto(
-                                MINUS_ONE_DAY,
-                                AISHA_RESTAURANT.getId(),
-                                Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
-    }
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void updateUnprocessableMenu() throws Exception {
+            MenuRequestDto menuRequestDto = new MenuRequestDto(null, -10, null);
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void updateDuplicateMenu() throws Exception {
-        mockMvc.perform(put(REST_URL + "/3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(new MenuRequestDto(
-                                MINUS_ONE_DAY,
-                                AISHA_RESTAURANT.getId(),
-                                Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
-    }
+            mockMvc.perform(put(REST_URL + "/3")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(menuRequestDto)))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.invalid_params").value(MENU_CONSTRAINTS_MATCHER));
+        }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void restaurantNotExist() throws Exception {
-        mockMvc.perform(post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(new MenuRequestDto(
-                                MINUS_ONE_DAY,
-                                100,
-                                Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.detail").value("Restaurant with id = 100 not found"));
-    }
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void createDuplicateMenu() throws Exception {
+            mockMvc.perform(post(REST_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(new MenuRequestDto(
+                                    MINUS_ONE_DAY,
+                                    AISHA_RESTAURANT.getId(),
+                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
+        }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void mealNotExist() throws Exception {
-        mockMvc.perform(post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(new MenuRequestDto(
-                                MINUS_ONE_DAY,
-                                CHERRY_RESTAURANT.getId(),
-                                Set.of(new MealPriceRequestDto(100, 10))))))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.detail").value("Meal with id = 100 not found"));
-    }
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void updateDuplicateMenu() throws Exception {
+            mockMvc.perform(put(REST_URL + "/3")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(new MenuRequestDto(
+                                    MINUS_ONE_DAY,
+                                    AISHA_RESTAURANT.getId(),
+                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
+        }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void wrongMealPrice() throws Exception {
-        Locale.setDefault(Locale.ENGLISH);
-        mockMvc.perform(post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.objectToJson(new MenuRequestDto(
-                                TODAY,
-                                AISHA_RESTAURANT.getId(),
-                                Set.of(new MealPriceRequestDto(TEA.getId(), 0))))))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.invalid_params").value(MEAL_PRICE_CONSTRAINTS_MATCHER));
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void restaurantNotExist() throws Exception {
+            mockMvc.perform(post(REST_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(new MenuRequestDto(
+                                    MINUS_ONE_DAY,
+                                    100,
+                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.detail").value("Restaurant with id = 100 not found"));
+        }
+
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void mealNotExist() throws Exception {
+            mockMvc.perform(post(REST_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(new MenuRequestDto(
+                                    MINUS_ONE_DAY,
+                                    CHERRY_RESTAURANT.getId(),
+                                    Set.of(new MealPriceRequestDto(100, 10))))))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.detail").value("Meal with id = 100 not found"));
+        }
+
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void wrongMealPrice() throws Exception {
+            Locale.setDefault(Locale.ENGLISH);
+            mockMvc.perform(post(REST_URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.objectToJson(new MenuRequestDto(
+                                    TODAY,
+                                    AISHA_RESTAURANT.getId(),
+                                    Set.of(new MealPriceRequestDto(TEA.getId(), 0))))))
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.invalid_params").value(MEAL_PRICE_CONSTRAINTS_MATCHER));
+        }
     }
 }

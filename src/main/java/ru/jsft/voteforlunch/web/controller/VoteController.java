@@ -1,6 +1,5 @@
 package ru.jsft.voteforlunch.web.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +33,7 @@ public class VoteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VoteDto>> getAllForUser(@Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+    public ResponseEntity<List<VoteDto>> getAllForUser(@AuthenticationPrincipal AuthorizedUser authUser) {
         return ResponseEntity.ok(service.findAllForUser(authUser.id()).stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(VoteDto::getVoteDate)
@@ -45,8 +44,7 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteDto> getVote(@PathVariable long id,
-                                           @Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+    public ResponseEntity<VoteDto> getVote(@PathVariable long id, @AuthenticationPrincipal AuthorizedUser authUser) {
         return ResponseEntity.ok(mapper.toDto(service.find(id, authUser.id())));
     }
 
@@ -59,8 +57,7 @@ public class VoteController {
     }
 
     @PostMapping(path = "/{restaurantId}")
-    public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId,
-                                                     @Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+    public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
         Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, authUser.id());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -70,7 +67,7 @@ public class VoteController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVote(@Parameter(hidden = true) @AuthenticationPrincipal AuthorizedUser authUser) {
+    public void deleteVote(@AuthenticationPrincipal AuthorizedUser authUser) {
         service.delete(authUser.id());
     }
 }

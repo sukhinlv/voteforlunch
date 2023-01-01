@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.controller;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -46,12 +47,6 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     }
 
     @Test
-    void getUnauthorized() throws Exception {
-        mockMvc.perform(get(REST_URL + "/1"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getVote() throws Exception {
         mockMvc.perform(get(REST_URL + "/1"))
@@ -91,12 +86,21 @@ public class VoteControllerTest extends AbstractSpringBootTest {
         mockMvc.perform(delete(REST_URL)).andExpect(status().isNoContent());
     }
 
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void throwVoteNotFound() throws Exception {
-        mockMvc.perform(delete(REST_URL))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                .andExpect(jsonPath("$.detail").value("Vote of userId = 1 for date = 2022-11-15 not found"));
+    @Nested
+    class ErrorCasesForVote {
+        @Test
+        void getUnauthorized() throws Exception {
+            mockMvc.perform(get(REST_URL + "/1"))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @Test
+        @WithUserDetails(value = ADMIN_MAIL)
+        void voteNotFound() throws Exception {
+            mockMvc.perform(delete(REST_URL))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                    .andExpect(jsonPath("$.detail").value("Vote of userId = 1 for date = 2022-11-15 not found"));
+        }
     }
 }
