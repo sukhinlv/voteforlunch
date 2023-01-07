@@ -51,7 +51,6 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web
                 .ignoring()
-                .requestMatchers("/h2-console/**")
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**");
     }
 
