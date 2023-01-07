@@ -79,15 +79,6 @@ class VoteServiceTest {
     @Nested
     class FindVotes {
         @Test
-        void findAllVotes() {
-            Vote vote1 = Instancio.create(Vote.class);
-            Vote vote2 = Instancio.create(Vote.class);
-            when(voteRepository.findAll()).thenReturn(List.of(vote1, vote2));
-
-            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(List.of(vote1, vote2));
-        }
-
-        @Test
         void findVotes() {
             Vote vote = Instancio.create(Vote.class);
             Long id = vote.getId();

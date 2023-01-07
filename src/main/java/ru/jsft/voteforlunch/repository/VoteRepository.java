@@ -17,15 +17,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-    @Query("select v from Vote v order by v.voteDate desc, v.voteTime desc")
-    @EntityGraph(attributePaths = {"restaurant", "user"})
-    List<Vote> findAll();
-
     @Query("select v from Vote v where v.user.id = :userId order by v.voteDate desc, v.voteTime desc")
-    @EntityGraph(attributePaths = {"restaurant", "user"})
+    @EntityGraph(attributePaths = {"restaurant"})
     List<Vote> findAllForUser(@Param("userId") long userId);
 
-    @EntityGraph(attributePaths = {"restaurant", "user"})
+    @EntityGraph(attributePaths = {"restaurant"})
     Optional<Vote> findByIdAndUserId(long id, long userId);
 
     Optional<Vote> findByVoteDateAndUserId(LocalDate date, long userId);

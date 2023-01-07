@@ -43,11 +43,6 @@ public class VoteService {
         this.timeConstraint = timeConstraint;
     }
 
-    public List<Vote>findAll() {
-        log.info("Find all votes");
-        return repository.findAll();
-    }
-
     public Vote find(long id, long userId) {
         log.info("Find vote with id = {}, userId = {}", id, userId);
         return checkEntityNotNull(repository.findByIdAndUserId(id, userId), id, Vote.class);
