@@ -59,7 +59,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers("/api/v1/votes/**", "/api/v1/users/profile/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/v1/menus/**", "/api/v1/meals/**", "/api/v1/restaurants/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/v1/menus/**", "/api/v1/restaurants/**").authenticated()
                 .requestMatchers("/api/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated() // this setting is for H2 console only
                 .and().httpBasic()
