@@ -6,10 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.SortNatural;
 
 import java.time.LocalDate;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 @NoArgsConstructor
@@ -35,9 +34,8 @@ public class Menu extends AbstractEntity {
     @NotEmpty
     @OneToMany(mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @SortNatural
     @ToString.Exclude
-    private SortedSet<MenuItem> menuItems = new TreeSet<>();
+    private Set<MenuItem> menuItems = new TreeSet<>();
 
     public void addMenuItem(MenuItem menuItem) {
         this.menuItems.add(menuItem);

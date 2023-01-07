@@ -11,8 +11,14 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
 @ToString(callSuper = true)
+@Entity
+@Table(
+        indexes = {
+                @Index(name = "menu_item_meal_id_idx", columnList = "MEAL_ID"),
+                @Index(name = "menu_item_menu_id_idx", columnList = "MENU_ID")
+        }
+)
 public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)
@@ -20,7 +26,7 @@ public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
 
     @NotNull
     @Positive(message = "Price must be positive")
-    @Column(name = "price", nullable = false, precision = 19, scale = 2)
+    @Column(name = "price", nullable = false)
     private Integer price;
 
     @NotNull
@@ -37,3 +43,5 @@ public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
         return comparedMenuItem.getMeal().getName().compareTo(meal.getName());
     }
 }
+
+
