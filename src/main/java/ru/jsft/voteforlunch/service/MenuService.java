@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
@@ -61,7 +61,7 @@ public class MenuService {
     @CacheEvict({"menu", "menus"})
     public Menu update(long id, Menu menu) {
         log.info("Update menu with id = {}", menu.getId());
-        checkEntityNotNull(repository.findById(id), id, Menu.class);
+        checkEntityWasFound(repository.findById(id), id, Menu.class);
         menu.setId(id);
         return repository.save(menu);
     }
@@ -75,6 +75,6 @@ public class MenuService {
     @Cacheable("menu")
     public Menu findByIdWithAllData(long id) {
         log.info("Find menu (including properties) with id = {}", id);
-        return checkEntityNotNull(repository.findByIdWithAllData(id), id, Menu.class);
+        return checkEntityWasFound(repository.findByIdWithAllData(id), id, Menu.class);
     }
 }

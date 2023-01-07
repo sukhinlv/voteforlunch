@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 
 @Service
 @Slf4j
@@ -45,7 +45,7 @@ public class VoteService {
 
     public Vote find(long id, long userId) {
         log.info("Find vote with id = {}, userId = {}", id, userId);
-        return checkEntityNotNull(repository.findByIdAndUserId(id, userId), id, Vote.class);
+        return checkEntityWasFound(repository.findByIdAndUserId(id, userId), id, Vote.class);
     }
 
     public List<Vote> findAllForUser(long userId) {

@@ -9,7 +9,7 @@ import ru.jsft.voteforlunch.repository.RestaurantRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
@@ -23,7 +23,7 @@ public class RestaurantService {
 
     public Restaurant findById(long id) {
         log.info("Find restaurant with id = {}", id);
-        return checkEntityNotNull(repository.findById(id), id, Restaurant.class);
+        return checkEntityWasFound(repository.findById(id), id, Restaurant.class);
     }
 
     public List<Restaurant> findAll() {
@@ -45,7 +45,7 @@ public class RestaurantService {
     @Transactional
     public Restaurant update(long id, Restaurant restaurant) {
         log.info("Update restaurant with id = {}", restaurant.getId());
-        checkEntityNotNull(repository.findById(id), id, Restaurant.class);
+        checkEntityWasFound(repository.findById(id), id, Restaurant.class);
         restaurant.setId(id);
         return repository.save(restaurant);
     }

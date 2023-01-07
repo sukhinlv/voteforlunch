@@ -10,7 +10,7 @@ import ru.jsft.voteforlunch.repository.UserRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
@@ -24,7 +24,7 @@ public class UserService {
 
     public User findById(long id) {
         log.info("Find user with id = {}", id);
-        return checkEntityNotNull(repository.findById(id), id, User.class);
+        return checkEntityWasFound(repository.findById(id), id, User.class);
     }
 
     public List<User> findAllSorted() {
@@ -46,7 +46,7 @@ public class UserService {
     @Transactional
     public User update(long id, User user) {
         log.info("Update user with id = {}", user.getId());
-        User storedUser = checkEntityNotNull(repository.findById(id), id, User.class);
+        User storedUser = checkEntityWasFound(repository.findById(id), id, User.class);
         user.setId(id);
         user.setPassword(storedUser.getPassword()); // do not update the password, it must be updated in a separate way
         user.setRoles(storedUser.getRoles()); // do not update roles, it must be updated in a separate way

@@ -1,5 +1,6 @@
 package ru.jsft.voteforlunch.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import ru.jsft.voteforlunch.repository.MealRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityNotNull;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
@@ -23,7 +24,7 @@ public class MealService {
 
     public Meal findById(long id) {
         log.info("Find meal with id = {}", id);
-        return checkEntityNotNull(repository.findById(id), id, Meal.class);
+        return checkEntityWasFound(repository.findById(id), id, Meal.class);
     }
 
     public List<Meal> findAllSorted() {
@@ -43,9 +44,9 @@ public class MealService {
     }
 
     @Transactional
-    public Meal update(long id, Meal meal) {
+    public Meal update(long id, @NotNull Meal meal) {
         log.info("Update meal with id = {}", id);
-        checkEntityNotNull(repository.findById(id), id, Meal.class);
+        checkEntityWasFound(repository.findById(id), id, Meal.class);
         meal.setId(id);
         return repository.save(meal);
     }

@@ -18,7 +18,7 @@ public class ValidationUtils {
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static <T> T checkEntityNotNull(@NonNull Optional<T> obj, long id, Class<T> clazz) {
+    public static <T> T checkEntityWasFound(@NonNull Optional<T> obj, long id, Class<T> clazz) {
         if (obj.isEmpty()) {
             throw new IllegalRequestDataException(String.format("%s with id = %d not found", clazz.getSimpleName(), id));
         }
