@@ -37,15 +37,15 @@ public class Menu extends AbstractEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @SortNatural
     @ToString.Exclude
-    private SortedSet<MealPrice> mealPrices = new TreeSet<>();
+    private SortedSet<MenuItem> menuItems = new TreeSet<>();
 
-    public void addMealPrice(MealPrice mealPrice) {
-        this.mealPrices.add(mealPrice);
-        mealPrice.setMenu(this);
+    public void addMenuItem(MenuItem menuItem) {
+        this.menuItems.add(menuItem);
+        menuItem.setMenu(this);
     }
 
-    public void removeMealPrice(MealPrice mealPrice) {
-        this.mealPrices.remove(mealPrice);
-        mealPrice.setMenu(null);
+    public void removeMenuItem(MenuItem menuItem) {
+        this.menuItems.remove(menuItem);
+        menuItem.setMenu(null);
     }
 }

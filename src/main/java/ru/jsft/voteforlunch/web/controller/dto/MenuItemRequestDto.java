@@ -4,14 +4,15 @@ import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
+import ru.jsft.voteforlunch.model.MenuItem;
 
 /**
- * A DTO for the {@link ru.jsft.voteforlunch.model.MealPrice} entity
+ * A DTO for the {@link MenuItem} entity
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class MealPriceRequestDto extends AbstractDto {
+public class MenuItemRequestDto extends AbstractDto {
     long mealId;
 
     @Positive int price;

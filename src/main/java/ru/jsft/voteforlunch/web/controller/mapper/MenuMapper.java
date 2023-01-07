@@ -3,7 +3,7 @@ package ru.jsft.voteforlunch.web.controller.mapper;
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.Menu;
 import ru.jsft.voteforlunch.service.RestaurantService;
-import ru.jsft.voteforlunch.web.controller.dto.MealPriceRequestDto;
+import ru.jsft.voteforlunch.web.controller.dto.MenuItemRequestDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuRequestDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuResponseDto;
 
@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, MenuResponseDto> {
 
     private final RestaurantMapper restaurantMapper;
-    private final MealPriceMapper mealPriceMapper;
+    private final MenuItemMapper menuItemMapper;
     private final RestaurantService restaurantService;
 
-    public MenuMapper(RestaurantMapper restaurantMapper, MealPriceMapper mealPriceMapper, RestaurantService restaurantService) {
+    public MenuMapper(RestaurantMapper restaurantMapper, MenuItemMapper menuItemMapper, RestaurantService restaurantService) {
         this.restaurantMapper = restaurantMapper;
-        this.mealPriceMapper = mealPriceMapper;
+        this.menuItemMapper = menuItemMapper;
         this.restaurantService = restaurantService;
     }
 
@@ -28,8 +28,8 @@ public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, M
         menu.setId(dto.getId());
         menu.setDateOfMenu(dto.getDateOfMenu());
         menu.setRestaurant(restaurantService.findById(dto.getRestaurantId()));
-        for (MealPriceRequestDto mealPriceDto : dto.getMealPrices()) {
-            menu.addMealPrice(mealPriceMapper.toEntity(mealPriceDto));
+        for (MenuItemRequestDto menuItemDto : dto.getMenuItems()) {
+            menu.addMenuItem(menuItemMapper.toEntity(menuItemDto));
         }
         return menu;
     }
@@ -40,6 +40,6 @@ public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, M
                 entity.getId(),
                 entity.getDateOfMenu(),
                 restaurantMapper.toDto(entity.getRestaurant()),
-                entity.getMealPrices().stream().map(mealPriceMapper::toDto).collect(Collectors.toSet()));
+                entity.getMenuItems().stream().map(menuItemMapper::toDto).collect(Collectors.toSet()));
     }
 }

@@ -22,5 +22,5 @@ public class MenuRequestDto extends AbstractDto {
     long restaurantId;
 
     @NotEmpty
-    Set<MealPriceRequestDto> mealPrices;
+    Set<MenuItemRequestDto> menuItems;
 }

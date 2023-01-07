@@ -24,7 +24,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("select m from Menu m order by m.dateOfMenu desc, m.restaurant.name asc")
     List<Menu> findAllWithRestaurants();
 
-    @EntityGraph(attributePaths = {"restaurant", "mealPrices", "mealPrices.meal"})
+    @EntityGraph(attributePaths = {"restaurant", "menuItems", "menuItems.meal"})
     @Query("select m from Menu m where m.id = :id")
     Optional<Menu> findByIdWithAllData(@Param("id") long id);
 }

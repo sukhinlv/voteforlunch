@@ -20,12 +20,12 @@ public class MenuResponseDto extends AbstractDto {
 
     @NotNull RestaurantDto restaurant;
 
-    Set<MealPriceResponseDto> mealPrices;
+    Set<MenuItemResponseDto> menuItems;
 
-    public MenuResponseDto(Long id, LocalDate dateOfMenu, RestaurantDto restaurant, Set<MealPriceResponseDto> mealPrices) {
+    public MenuResponseDto(Long id, LocalDate dateOfMenu, RestaurantDto restaurant, Set<MenuItemResponseDto> menuItems) {
         super(id);
         this.dateOfMenu = dateOfMenu;
         this.restaurant = restaurant;
-        this.mealPrices = mealPrices;
+        this.menuItems = menuItems;
     }
 }

@@ -13,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @Entity
 @ToString(callSuper = true)
-public class MealPrice extends AbstractEntity implements Comparable<MealPrice> {
+public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
     @ManyToOne
     @JoinColumn(name = "meal_id", nullable = false)
     private Meal meal;
@@ -30,10 +30,10 @@ public class MealPrice extends AbstractEntity implements Comparable<MealPrice> {
     private Menu menu;
 
     @Override
-    public int compareTo(MealPrice comparedMealPrice) {
-        if (meal == null || comparedMealPrice.getMeal() == null) {
+    public int compareTo(MenuItem comparedMenuItem) {
+        if (meal == null || comparedMenuItem.getMeal() == null) {
             return 0;
         }
-        return comparedMealPrice.getMeal().getName().compareTo(meal.getName());
+        return comparedMenuItem.getMeal().getName().compareTo(meal.getName());
     }
 }

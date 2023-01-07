@@ -32,7 +32,7 @@ import static ru.jsft.voteforlunch.web.controller.MenuController.REST_URL;
 public class MenuControllerTest extends AbstractSpringBootTest {
     private static final LinkedHashMapMatcher MENU_CONSTRAINTS_MATCHER = new LinkedHashMapMatcher(new LinkedHashMap<>(Map.of(
             "dateOfMenu", "must not be null",
-            "mealPrices", "must not be empty")));
+            "menuItems", "must not be empty")));
 
     private static final LinkedHashMapMatcher MEAL_PRICE_CONSTRAINTS_MATCHER = new LinkedHashMapMatcher(new LinkedHashMap<>(Map.of(
             "price", "Price must be positive")));
@@ -83,14 +83,14 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_RESPONSE_DTO_MATCHER.contentJson(new MenuResponseDto(1L, MINUS_TWO_DAYS, CHERRY_RESTAURANT,
-                        Set.of(new MealPriceResponseDto(1L, TEA, 10), new MealPriceResponseDto(2L, BURGER, 15)))));
+                        Set.of(new MenuItemResponseDto(1L, TEA, 10), new MenuItemResponseDto(2L, BURGER, 15)))));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createMenu() throws Exception {
         MenuRequestDto menuRequestDto = new MenuRequestDto(TODAY, CHERRY_RESTAURANT.getId(),
-                Set.of(new MealPriceRequestDto(TEA.getId(), 20), new MealPriceRequestDto(BURGER.getId(), 30)));
+                Set.of(new MenuItemRequestDto(TEA.getId(), 20), new MenuItemRequestDto(BURGER.getId(), 30)));
 
         ResultActions resultActions = mockMvc.perform(post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,13 +101,13 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
         assertThat(menuResponseDto.getId()).isNotNull();
         assertThat(menuResponseDto.getDateOfMenu()).isEqualTo(TODAY);
-        assertThat(menuResponseDto.getMealPrices().size()).isEqualTo(2);
-        assertThat(menuResponseDto.getMealPrices())
+        assertThat(menuResponseDto.getMenuItems().size()).isEqualTo(2);
+        assertThat(menuResponseDto.getMenuItems())
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(Set.of(
-                        new MealPriceResponseDto(null, TEA, 20),
-                        new MealPriceResponseDto(null, BURGER, 30)
+                        new MenuItemResponseDto(null, TEA, 20),
+                        new MenuItemResponseDto(null, BURGER, 30)
                 ));
         assertThat(menuResponseDto).isEqualTo(mapper.toDto(menuService.findByIdWithAllData(menuResponseDto.getId())));
     }
@@ -116,7 +116,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void updateMenu() throws Exception {
         MenuRequestDto updatedMenuRequestDto = new MenuRequestDto(TODAY.plusDays(1), AISHA_RESTAURANT.getId(),
-                Set.of(new MealPriceRequestDto(SOUP.getId(), 15), new MealPriceRequestDto(SANDWICH.getId(), 25)));
+                Set.of(new MenuItemRequestDto(SOUP.getId(), 15), new MenuItemRequestDto(SANDWICH.getId(), 25)));
 
         ResultActions resultActions = mockMvc.perform(put(REST_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,13 +127,13 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
         assertThat(menuResponseDto.getId()).isEqualTo(1L);
         assertThat(menuResponseDto.getDateOfMenu()).isEqualTo(TODAY.plusDays(1));
-        assertThat(menuResponseDto.getMealPrices().size()).isEqualTo(2);
-        assertThat(menuResponseDto.getMealPrices())
+        assertThat(menuResponseDto.getMenuItems().size()).isEqualTo(2);
+        assertThat(menuResponseDto.getMenuItems())
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(Set.of(
-                        new MealPriceResponseDto(null, SOUP, 15),
-                        new MealPriceResponseDto(null, SANDWICH, 25)
+                        new MenuItemResponseDto(null, SOUP, 15),
+                        new MenuItemResponseDto(null, SANDWICH, 25)
                 ));
         assertThat(menuResponseDto).isEqualTo(mapper.toDto(menuService.findByIdWithAllData(1L)));
     }
@@ -194,7 +194,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
                                     MINUS_ONE_DAY,
                                     AISHA_RESTAURANT.getId(),
-                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                                    Set.of(new MenuItemRequestDto(TEA.getId(), 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
@@ -208,7 +208,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
                                     MINUS_ONE_DAY,
                                     AISHA_RESTAURANT.getId(),
-                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                                    Set.of(new MenuItemRequestDto(TEA.getId(), 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.detail").value("Menu for this restaurant on this date already exists"));
@@ -222,7 +222,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
                                     MINUS_ONE_DAY,
                                     100,
-                                    Set.of(new MealPriceRequestDto(TEA.getId(), 10))))))
+                                    Set.of(new MenuItemRequestDto(TEA.getId(), 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
                     .andExpect(jsonPath("$.detail").value("Restaurant with id = 100 not found"));
@@ -236,7 +236,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
                                     MINUS_ONE_DAY,
                                     CHERRY_RESTAURANT.getId(),
-                                    Set.of(new MealPriceRequestDto(100, 10))))))
+                                    Set.of(new MenuItemRequestDto(100, 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
                     .andExpect(jsonPath("$.detail").value("Meal with id = 100 not found"));
@@ -244,14 +244,14 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
         @Test
         @WithUserDetails(value = ADMIN_MAIL)
-        void wrongMealPrice() throws Exception {
+        void wrongMenuItem() throws Exception {
             Locale.setDefault(Locale.ENGLISH);
             mockMvc.perform(post(REST_URL)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
                                     TODAY,
                                     AISHA_RESTAURANT.getId(),
-                                    Set.of(new MealPriceRequestDto(TEA.getId(), 0))))))
+                                    Set.of(new MenuItemRequestDto(TEA.getId(), 0))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
                     .andExpect(jsonPath("$.invalid_params").value(MEAL_PRICE_CONSTRAINTS_MATCHER));
