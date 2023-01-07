@@ -56,7 +56,7 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 
 **Spring Boot / Spring Data JPA / H2 database / Spring Security / Jackson / Caffeine cache  / Spring Validation / Lombok / Spring Tests / Swagger**
 
-- For simplicity, I am using an in-memory H2 database that is populated with some test data using InitializeData#commandLineRunner
+- For simplicity, I am using an in-memory H2 database that is populated with some test data using InitializeData component
 - ORM framework is Spring Data JPA
 - Entities are mapped to DTOs using simple mapper classes without using Mapstruct or other complex libraries
 - The application uses Caffeine for caching. According to the application logic, MenuService and VoteService#getVotesDistributionOnDate uses the cache. Cached: menu GET operations, votes distribution
