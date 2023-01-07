@@ -76,7 +76,6 @@ public class VoteService {
         return vote;
     }
 
-    @Transactional
     @CacheEvict("voteDistribution")
     public void delete(long userId) {
         log.info("Try to delete vote of userId={}", userId);
@@ -84,10 +83,10 @@ public class VoteService {
             throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
         }
 
-        Vote vote = repository.findByVoteDateAndUserId(LocalDate.now(clock), userId)
-                .orElseThrow(() -> new IllegalRequestDataException(String.format("Vote of userId = %s for date = %s not found", userId, LocalDate.now(clock))));
-
-        repository.deleteById(vote.getId());
+        LocalDate date = LocalDate.now(clock);
+        if (repository.deleteByVoteDateAndUserId(date, userId) == 0) {
+            throw new IllegalRequestDataException(String.format("Vote of userId = %s for date = %s not found", userId, date));
+        }
         log.info("Vote deleted. userId={}", userId);
     }
 

@@ -28,4 +28,6 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query(name = "get_votes_distribution_on_date", nativeQuery = true)
     List<VoteDistribution> getVotesDistributionOnDate(@Param("distDate") LocalDate distDate);
+
+    long deleteByVoteDateAndUserId(LocalDate voteDate, long userId);
 }

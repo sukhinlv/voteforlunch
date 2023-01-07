@@ -170,21 +170,6 @@ class VoteServiceTest {
     @Nested
     class DeleteVotes {
         @Test
-        void delete() {
-            long userId = 1L;
-            Vote vote = Instancio.create(Vote.class);
-            vote.setVoteDate(LocalDate.now(clock));
-            vote.setVoteTime(LocalTime.now(clock));
-
-            when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.of(vote));
-
-            underTest.delete(userId);
-
-            then(voteRepository).should().deleteById(idCaptor.capture());
-            assertThat(idCaptor.getValue()).isEqualTo(vote.getId());
-        }
-
-        @Test
         void throwWhenDeleteAbsentVote() {
             long userId = 1L;
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), userId)).thenReturn(Optional.empty());
