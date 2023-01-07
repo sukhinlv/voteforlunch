@@ -115,7 +115,7 @@ class VoteServiceTest {
             when(restaurantRepository.getReferenceById(restaurant.getId())).thenReturn(restaurant);
             when(userRepository.getReferenceById(user.getId())).thenReturn(user);
 
-            underTest.save(restaurant.getId(), user.getId());
+            underTest.saveAndReturnWithDetails(restaurant.getId(), user.getId());
 
             then(voteRepository).should().save(voteCaptor.capture());
 
@@ -144,7 +144,7 @@ class VoteServiceTest {
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(Optional.of(vote));
             when(restaurantRepository.getReferenceById(updatedRestaurant.getId())).thenReturn(updatedRestaurant);
 
-            underTest.save(updatedRestaurant.getId(), user.getId());
+            underTest.saveAndReturnWithDetails(updatedRestaurant.getId(), user.getId());
 
             then(voteRepository).should().save(voteCaptor.capture());
 
@@ -161,7 +161,7 @@ class VoteServiceTest {
         void throwWhenSaveWithTimeConstraintViolation() {
             when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
 
-            assertThatThrownBy(() -> underTest.save(1L, 1L))
+            assertThatThrownBy(() -> underTest.saveAndReturnWithDetails(1L, 1L))
                     .isInstanceOf(VoteTimeConstraintException.class)
                     .hasMessageContaining(String.format("You can only vote until %s", TIME_CONSTRAINT));
         }

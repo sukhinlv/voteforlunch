@@ -55,7 +55,7 @@ public class VoteService {
 
     @Transactional
     @CacheEvict("voteDistribution")
-    public Vote save(long restaurantId, long userId) {
+    public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
         log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
         LocalDate voteDate = LocalDate.now(clock);
         LocalTime voteTime = LocalTime.now(clock);
@@ -74,13 +74,6 @@ public class VoteService {
         vote = repository.save(vote);
         log.info("Vote saved. RestaurantID = {}, UserId = {}", restaurantId, userId);
         return vote;
-    }
-
-    @Transactional
-    @CacheEvict("voteDistribution")
-    public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
-        Vote savedVote = save(restaurantId, userId);
-        return find(savedVote.getId(), savedVote.getUser().getId());
     }
 
     @Transactional
