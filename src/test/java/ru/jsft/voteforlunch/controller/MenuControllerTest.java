@@ -52,20 +52,6 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void getListOfMenus() throws Exception {
-        mockMvc.perform(get(REST_URL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_LIST_DTO_MATCHER.contentJson(List.of(
-                        new MenuListDto(4L, MINUS_ONE_DAY, AISHA_RESTAURANT.getId(), AISHA_RESTAURANT.getName()),
-                        new MenuListDto(2L, MINUS_ONE_DAY, CHERRY_RESTAURANT.getId(), CHERRY_RESTAURANT.getName()),
-                        new MenuListDto(3L, MINUS_TWO_DAYS, AISHA_RESTAURANT.getId(), AISHA_RESTAURANT.getName()),
-                        new MenuListDto(1L, MINUS_TWO_DAYS, CHERRY_RESTAURANT.getId(), CHERRY_RESTAURANT.getName()))
-                ));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
     void getListOfMenusOnDate() throws Exception {
         mockMvc.perform(get(REST_URL + "/on-date?date=" + MINUS_TWO_DAYS))
                 .andExpect(status().isOk())

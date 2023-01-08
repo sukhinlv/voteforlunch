@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.jsft.voteforlunch.model.Menu;
@@ -35,11 +36,6 @@ public class MenuController {
         this.listMapper = listMapper;
     }
 
-    @GetMapping
-    public ResponseEntity<List<MenuListDto>> getListOfMenus() {
-        return ResponseEntity.ok(service.findAllWithRestaurants().stream().map(listMapper::toDto).toList());
-    }
-
     @GetMapping("/on-date")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<MenuListDto>> getListOfMenusOnDate(
@@ -54,6 +50,7 @@ public class MenuController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<MenuResponseDto> create(@Valid @RequestBody MenuRequestDto menuDto) {
         Menu created = service.create(mapper.toEntity(menuDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -69,6 +66,7 @@ public class MenuController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<MenuResponseDto> update(@PathVariable long id, @Valid @RequestBody MenuRequestDto menuDto) {
         return ResponseEntity.ok(mapper.toDto(service.updateAndReturnWithDetails(id, mapper.toEntity(menuDto))));
     }
