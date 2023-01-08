@@ -91,6 +91,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ValidationUtils.getRootCause(ex).getMessage().toLowerCase().contains("uc_menu_date_of_menu")) {
             msg = "Menu for this restaurant on this date already exists";
         }
+        if (ValidationUtils.getRootCause(ex).getMessage().toLowerCase().contains("foreign key(restaurant_id)")) {
+            msg = "Wrong id for restaurant";
+        }
         return createProblemDetailExceptionResponse(ex, HttpStatus.CONFLICT, request, msg);
     }
 

@@ -16,9 +16,13 @@ import java.util.TreeSet;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"date_of_menu", "restaurant_id"})
-})
+@Table(
+        indexes = {
+                @Index(name = "menu_restaurant_id_idx", columnList = "RESTAURANT_ID"),
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uc_menu_date_of_menu", columnNames = {"DATE_OF_MENU", "RESTAURANT_ID"})
+        })
 @ToString(callSuper = true)
 public class Menu extends AbstractEntity {
     @NotNull

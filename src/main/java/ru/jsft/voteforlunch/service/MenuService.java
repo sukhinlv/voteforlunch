@@ -13,8 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.*;
 
 @Service
 @Slf4j
@@ -61,7 +60,7 @@ public class MenuService {
     @CacheEvict({"menu", "menus"})
     public Menu update(long id, Menu menu) {
         log.info("Update menu with id = {}", menu.getId());
-        checkEntityWasFound(repository.findById(id), id, Menu.class);
+        checkEntityExist(repository.existsById(id), id, Menu.class);
         menu.setId(id);
         return repository.save(menu);
     }

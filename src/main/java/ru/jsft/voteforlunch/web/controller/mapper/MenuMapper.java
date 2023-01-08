@@ -2,7 +2,7 @@ package ru.jsft.voteforlunch.web.controller.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.Menu;
-import ru.jsft.voteforlunch.service.RestaurantService;
+import ru.jsft.voteforlunch.repository.RestaurantRepository;
 import ru.jsft.voteforlunch.web.controller.dto.MenuItemRequestDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuRequestDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuResponseDto;
@@ -14,12 +14,12 @@ public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, M
 
     private final RestaurantMapper restaurantMapper;
     private final MenuItemMapper menuItemMapper;
-    private final RestaurantService restaurantService;
+    private final RestaurantRepository restaurantRepository;
 
-    public MenuMapper(RestaurantMapper restaurantMapper, MenuItemMapper menuItemMapper, RestaurantService restaurantService) {
+    public MenuMapper(RestaurantMapper restaurantMapper, MenuItemMapper menuItemMapper, RestaurantRepository restaurantRepository) {
         this.restaurantMapper = restaurantMapper;
         this.menuItemMapper = menuItemMapper;
-        this.restaurantService = restaurantService;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class MenuMapper implements RequestResponseMapper<Menu, MenuRequestDto, M
         Menu menu = new Menu();
         menu.setId(dto.getId());
         menu.setDateOfMenu(dto.getDateOfMenu());
-        menu.setRestaurant(restaurantService.findById(dto.getRestaurantId()));
+        menu.setRestaurant(restaurantRepository.getReferenceById(dto.getRestaurantId()));
         for (MenuItemRequestDto menuItemDto : dto.getMenuItems()) {
             menu.addMenuItem(menuItemMapper.toEntity(menuItemDto));
         }

@@ -25,6 +25,12 @@ public class ValidationUtils {
         return obj.get();
     }
 
+    public static <T> void checkEntityExist(boolean exist, long id, Class<T> clazz) {
+        if (!exist) {
+            throw new IllegalRequestDataException(String.format("%s with id = %d not found", clazz.getSimpleName(), id));
+        }
+    }
+
     @NonNull
     public static Throwable getRootCause(@NonNull Throwable t) {
         // https://stackoverflow.com/a/65442410/548473

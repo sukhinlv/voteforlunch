@@ -109,11 +109,16 @@ class VoteServiceTest {
         @Test
         void saveNewVote() {
             User user = Instancio.create(User.class);
+            User userIdOnly = new User();
+            userIdOnly.setId(user.getId());
+
             Restaurant restaurant = Instancio.create(Restaurant.class);
+            Restaurant restaurantIdOnly = new Restaurant();
+            restaurantIdOnly.setId(restaurant.getId());
 
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(Optional.empty());
-            when(restaurantRepository.getReferenceById(restaurant.getId())).thenReturn(restaurant);
-            when(userRepository.getReferenceById(user.getId())).thenReturn(user);
+            when(restaurantRepository.getReferenceById(restaurant.getId())).thenReturn(restaurantIdOnly);
+            when(userRepository.getReferenceById(user.getId())).thenReturn(userIdOnly);
 
             underTest.saveAndReturnWithDetails(restaurant.getId(), user.getId());
 
@@ -124,7 +129,12 @@ class VoteServiceTest {
             vote.setUser(user);
             vote.setVoteDate(LocalDate.now(clock));
             vote.setVoteTime(LocalTime.now(clock));
-            assertThat(voteCaptor.getValue()).usingRecursiveComparison().isEqualTo(vote);
+            Vote voteCaptorValue = voteCaptor.getValue();
+            assertThat(voteCaptorValue.getId()).isEqualTo(vote.getId());
+            assertThat(voteCaptorValue.getVoteTime()).isEqualTo(vote.getVoteTime());
+            assertThat(voteCaptorValue.getVoteDate()).isEqualTo(vote.getVoteDate());
+            assertThat(voteCaptorValue.getUser().getId()).isEqualTo(vote.getUser().getId());
+            assertThat(voteCaptorValue.getRestaurant().getId()).isEqualTo(vote.getRestaurant().getId());
         }
 
         @Test
@@ -140,9 +150,11 @@ class VoteServiceTest {
             vote.setVoteTime(LocalTime.now(clock).minusMinutes(30));
 
             Restaurant updatedRestaurant = Instancio.create(Restaurant.class);
+            Restaurant updatedRestaurantIdOnly = new Restaurant();
+            updatedRestaurantIdOnly.setId(updatedRestaurant.getId());
 
             when(voteRepository.findByVoteDateAndUserId(LocalDate.now(clock), user.getId())).thenReturn(Optional.of(vote));
-            when(restaurantRepository.getReferenceById(updatedRestaurant.getId())).thenReturn(updatedRestaurant);
+            when(restaurantRepository.getReferenceById(updatedRestaurant.getId())).thenReturn(updatedRestaurantIdOnly);
 
             underTest.saveAndReturnWithDetails(updatedRestaurant.getId(), user.getId());
 
@@ -154,7 +166,12 @@ class VoteServiceTest {
             updatedVote.setUser(user);
             updatedVote.setVoteDate(LocalDate.now(clock));
             updatedVote.setVoteTime(LocalTime.now(clock));
-            assertThat(voteCaptor.getValue()).usingRecursiveComparison().isEqualTo(updatedVote);
+            Vote voteCaptorValue = voteCaptor.getValue();
+            assertThat(voteCaptorValue.getId()).isEqualTo(vote.getId());
+            assertThat(voteCaptorValue.getVoteTime()).isEqualTo(vote.getVoteTime());
+            assertThat(voteCaptorValue.getVoteDate()).isEqualTo(vote.getVoteDate());
+            assertThat(voteCaptorValue.getUser().getId()).isEqualTo(vote.getUser().getId());
+            assertThat(voteCaptorValue.getRestaurant().getId()).isEqualTo(vote.getRestaurant().getId());
         }
 
         @Test

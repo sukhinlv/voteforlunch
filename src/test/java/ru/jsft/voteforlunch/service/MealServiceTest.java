@@ -114,7 +114,7 @@ class MealServiceTest {
         @Test
         void update() {
             Meal meal = Instancio.create(Meal.class);
-            when(repository.findById(meal.getId())).thenReturn(Optional.of(meal));
+            when(repository.existsById(meal.getId())).thenReturn(true);
 
             Meal updatedMeal = Instancio.create(Meal.class);
             underTest.update(meal.getId(), updatedMeal);

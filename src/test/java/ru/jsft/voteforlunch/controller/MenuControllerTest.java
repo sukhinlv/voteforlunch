@@ -210,8 +210,8 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                                     100,
                                     Set.of(new MenuItemRequestDto(TEA.getId(), 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
-                    .andExpect(status().isUnprocessableEntity())
-                    .andExpect(jsonPath("$.detail").value("Restaurant with id = 100 not found"));
+                    .andExpect(status().isConflict())
+                    .andExpect(jsonPath("$.detail").value("Wrong id for restaurant"));
         }
 
         @Test
@@ -225,7 +225,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                                     Set.of(new MenuItemRequestDto(100, 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
-                    .andExpect(jsonPath("$.detail").value("Meal with id = 100 not found"));
+                    .andExpect(jsonPath("$.detail").value("Unable to find ru.jsft.voteforlunch.model.Meal with id 100"));
         }
 
         @Test

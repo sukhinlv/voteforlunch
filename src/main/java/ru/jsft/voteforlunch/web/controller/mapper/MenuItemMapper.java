@@ -2,7 +2,7 @@ package ru.jsft.voteforlunch.web.controller.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.jsft.voteforlunch.model.MenuItem;
-import ru.jsft.voteforlunch.service.MealService;
+import ru.jsft.voteforlunch.repository.MealRepository;
 import ru.jsft.voteforlunch.web.controller.dto.MenuItemRequestDto;
 import ru.jsft.voteforlunch.web.controller.dto.MenuItemResponseDto;
 
@@ -10,18 +10,18 @@ import ru.jsft.voteforlunch.web.controller.dto.MenuItemResponseDto;
 public class MenuItemMapper implements RequestResponseMapper<MenuItem, MenuItemRequestDto, MenuItemResponseDto> {
     private final MealMapper mealMapper;
 
-    private final MealService mealService;
+    private final MealRepository mealRepository;
 
-    public MenuItemMapper(MealMapper mealMapper, MealService mealService) {
+    public MenuItemMapper(MealMapper mealMapper, MealRepository mealRepository) {
         this.mealMapper = mealMapper;
-        this.mealService = mealService;
+        this.mealRepository = mealRepository;
     }
 
     @Override
     public MenuItem toEntity(MenuItemRequestDto dto) {
         MenuItem menuItem = new MenuItem();
         menuItem.setId(dto.getId());
-        menuItem.setMeal(mealService.findById(dto.getMealId()));
+        menuItem.setMeal(mealRepository.getReferenceById(dto.getMealId()));
         menuItem.setPrice(dto.getPrice());
         return menuItem;
     }

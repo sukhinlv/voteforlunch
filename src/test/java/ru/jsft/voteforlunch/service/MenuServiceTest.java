@@ -138,7 +138,7 @@ class MenuServiceTest {
         @Test
         void update() {
             Menu menu = Instancio.create(Menu.class);
-            when(repository.findById(menu.getId())).thenReturn(Optional.of(menu));
+            when(repository.existsById(menu.getId())).thenReturn(true);
             when(repository.save(menu)).thenReturn(menu);
             when(repository.findByIdWithAllData(menu.getId())).thenReturn(Optional.of(menu));
 

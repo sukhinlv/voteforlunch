@@ -10,8 +10,7 @@ import ru.jsft.voteforlunch.repository.MealRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.*;
 
 @Service
 @Slf4j
@@ -46,7 +45,7 @@ public class MealService {
     @Transactional
     public Meal update(long id, @NotNull Meal meal) {
         log.info("Update meal with id = {}", id);
-        checkEntityWasFound(repository.findById(id), id, Meal.class);
+        checkEntityExist(repository.existsById(id), id, Meal.class);
         meal.setId(id);
         return repository.save(meal);
     }

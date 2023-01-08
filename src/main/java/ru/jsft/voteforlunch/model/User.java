@@ -22,7 +22,7 @@ import java.util.Set;
 @Table(name = "users", indexes = @Index(name = "email_unique_idx", columnList = "email", unique = true))
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"password"})
 public class User extends AbstractEntity implements Serializable {

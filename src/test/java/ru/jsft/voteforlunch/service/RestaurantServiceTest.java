@@ -114,7 +114,7 @@ class RestaurantServiceTest {
         @Test
         void update() {
             Restaurant restaurant = Instancio.create(Restaurant.class);
-            when(repository.findById(restaurant.getId())).thenReturn(Optional.of(restaurant));
+            when(repository.existsById(restaurant.getId())).thenReturn(true);
 
             Restaurant updatedRestaurant = Instancio.create(Restaurant.class);
             underTest.update(restaurant.getId(), updatedRestaurant);
