@@ -16,7 +16,6 @@ import ru.jsft.voteforlunch.web.security.AuthorizedUser;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -36,9 +35,6 @@ public class VoteController {
     public ResponseEntity<List<VoteDto>> getAllForUser(@AuthenticationPrincipal AuthorizedUser authUser) {
         return ResponseEntity.ok(service.findAllForUser(authUser.id()).stream()
                 .map(mapper::toDto)
-                .sorted(Comparator.comparing(VoteDto::getVoteDate)
-                        .thenComparing(VoteDto::getVoteTime)
-                        .reversed())
                 .toList()
         );
     }

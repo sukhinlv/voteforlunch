@@ -12,7 +12,6 @@ import ru.jsft.voteforlunch.web.controller.dto.MealDto;
 import ru.jsft.voteforlunch.web.controller.mapper.MealMapper;
 
 import java.net.URI;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -32,7 +31,6 @@ public class MealController {
     public ResponseEntity<List<MealDto>> getAll() {
         return ResponseEntity.ok(service.findAllSorted().stream()
                 .map(mapper::toDto)
-                .sorted(Comparator.comparing(MealDto::getName))
                 .toList());
     }
 
