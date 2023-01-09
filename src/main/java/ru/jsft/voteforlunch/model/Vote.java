@@ -22,7 +22,7 @@ import java.time.LocalTime;
                 @UniqueConstraint(name = "uc_vote_user_id_vote_date", columnNames = {"USER_ID", "VOTE_DATE"})
         })
 @NamedNativeQuery(
-        name = "get_votes_distribution_on_date",
+        name = "get_votes_distribution_on_date_for_all_restaurants",
         query =
                 "SELECT DISTINCT r.id AS restaurantId, r.name AS restaurantName, v.vote_count AS voteCount " +
                         "FROM restaurant AS r " +
@@ -46,6 +46,19 @@ import java.time.LocalTime;
                         @ColumnResult(name = "voteCount", type = Long.class)
                 }
         )
+)
+@NamedQuery(
+        name = "get_votes_distribution_on_date",
+        query = """
+                select new ru.jsft.voteforlunch.model.VoteDistribution(
+                    v.restaurant.id,
+                    v.restaurant.name,
+                    count(v))
+                from Vote v
+                where v.voteDate = :distDate
+                group by v.restaurant.id, v.restaurant.name
+                order by count(v) desc
+                """
 )
 @ToString(callSuper = true)
 public class Vote extends AbstractEntity {
