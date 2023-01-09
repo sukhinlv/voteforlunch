@@ -4,14 +4,14 @@ import lombok.experimental.UtilityClass;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import ru.jsft.voteforlunch.error.IllegalRequestDataException;
-import ru.jsft.voteforlunch.model.AbstractEntity;
+import ru.jsft.voteforlunch.web.controller.dto.AbstractDto;
 
 import java.util.Optional;
 
 @UtilityClass
 public class ValidationUtils {
 
-    public static void checkNew(@NonNull AbstractEntity bean) {
+    public static void checkNew(@NonNull AbstractDto bean) {
         if (!bean.isNew()) {
             throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id = null)");
         }

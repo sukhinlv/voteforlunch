@@ -87,15 +87,6 @@ class DishServiceTest {
                     .ignoringFields("id")
                     .isEqualTo(dish);
         }
-
-        @Test
-        void throwWhenCreateNotNew() {
-            Dish dish = Instancio.create(Dish.class);
-
-            assertThatThrownBy(() -> underTest.create(dish))
-                    .isInstanceOf(IllegalRequestDataException.class)
-                    .hasMessageContaining("Dish must be new (id = null)");
-        }
     }
 
     @Nested

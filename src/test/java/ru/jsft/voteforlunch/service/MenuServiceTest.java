@@ -89,15 +89,6 @@ class MenuServiceTest {
                     .ignoringFields("id")
                     .isEqualTo(Menu);
         }
-
-        @Test
-        void throwWhenCreateNotNew() {
-            Menu Menu = Instancio.create(Menu.class);
-
-            assertThatThrownBy(() -> underTest.create(Menu))
-                    .isInstanceOf(IllegalRequestDataException.class)
-                    .hasMessageContaining("Menu must be new (id = null)");
-        }
     }
 
     @Nested

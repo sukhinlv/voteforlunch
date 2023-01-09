@@ -87,15 +87,6 @@ class UserServiceTest {
                     .ignoringFields("id")
                     .isEqualTo(user);
         }
-
-        @Test
-        void throwWhenCreateNotNew() {
-            User user = Instancio.create(User.class);
-
-            assertThatThrownBy(() -> underTest.create(user))
-                    .isInstanceOf(IllegalRequestDataException.class)
-                    .hasMessageContaining("User must be new (id = null)");
-        }
     }
 
     @Nested

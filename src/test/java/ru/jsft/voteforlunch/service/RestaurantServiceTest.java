@@ -87,15 +87,6 @@ class RestaurantServiceTest {
                     .ignoringFields("id")
                     .isEqualTo(restaurant);
         }
-
-        @Test
-        void throwWhenCreateNotNew() {
-            Restaurant restaurant = Instancio.create(Restaurant.class);
-
-            assertThatThrownBy(() -> underTest.create(restaurant))
-                    .isInstanceOf(IllegalRequestDataException.class)
-                    .hasMessageContaining("Restaurant must be new (id = null)");
-        }
     }
 
     @Nested

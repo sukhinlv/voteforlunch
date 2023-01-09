@@ -11,7 +11,8 @@ import ru.jsft.voteforlunch.repository.DishRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.*;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityExist;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 
 @Service
 @Slf4j
@@ -35,7 +36,6 @@ public class DishService {
     @CacheEvict(cacheNames = {"menu", "menus"}, allEntries = true)
     public Dish create(Dish dish) {
         log.info("Create dish: {}", dish);
-        checkNew(dish);
         return repository.save(dish);
     }
 

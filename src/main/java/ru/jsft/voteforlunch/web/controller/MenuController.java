@@ -21,6 +21,8 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
+
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
@@ -52,6 +54,7 @@ public class MenuController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<MenuResponseDto> create(@Valid @RequestBody MenuRequestDto menuDto) {
+        checkNew(menuDto);
         Menu created = service.create(mapper.toEntity(menuDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

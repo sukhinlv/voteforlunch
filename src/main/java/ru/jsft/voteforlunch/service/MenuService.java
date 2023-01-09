@@ -15,7 +15,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.*;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityExist;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 
 @Service
 @Slf4j
@@ -32,7 +33,6 @@ public class MenuService {
     )
     public Menu create(Menu menu) {
         log.info("Create menu: {}", menu);
-        checkNew(menu);
         return repository.save(menu);
     }
 

@@ -14,6 +14,8 @@ import ru.jsft.voteforlunch.web.controller.mapper.DishMapper;
 import java.net.URI;
 import java.util.List;
 
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
+
 @RestController
 @RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishController {
@@ -41,6 +43,7 @@ public class DishController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DishDto> create(@Valid @RequestBody DishDto dishDto) {
+        checkNew(dishDto);
         Dish created = service.create(mapper.toEntity(dishDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

@@ -13,6 +13,10 @@ public class AbstractDto {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     protected Long id;
 
+    public boolean isNew() {
+        return id == null;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;

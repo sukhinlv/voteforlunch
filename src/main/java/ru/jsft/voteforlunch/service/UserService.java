@@ -11,7 +11,6 @@ import ru.jsft.voteforlunch.repository.UserRepository;
 import java.util.List;
 
 import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
-import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
 
 @Service
 @Slf4j
@@ -34,7 +33,6 @@ public class UserService {
 
     public User create(@NotNull User user) {
         log.info("Create user: {}", user);
-        checkNew(user);
         return repository.save(user);
     }
 

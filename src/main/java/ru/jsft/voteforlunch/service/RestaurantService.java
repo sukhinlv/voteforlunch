@@ -9,7 +9,8 @@ import ru.jsft.voteforlunch.repository.RestaurantRepository;
 
 import java.util.List;
 
-import static ru.jsft.voteforlunch.validation.ValidationUtils.*;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityExist;
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkEntityWasFound;
 
 @Service
 @Slf4j
@@ -32,7 +33,6 @@ public class RestaurantService {
 
     public Restaurant create(Restaurant restaurant) {
         log.info("Create restaurant: {}", restaurant);
-        checkNew(restaurant);
         return repository.save(restaurant);
     }
 

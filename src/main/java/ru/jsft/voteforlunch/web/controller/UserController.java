@@ -16,6 +16,8 @@ import ru.jsft.voteforlunch.web.security.AuthorizedUser;
 import java.net.URI;
 import java.util.List;
 
+import static ru.jsft.voteforlunch.validation.ValidationUtils.checkNew;
+
 @RestController
 @RequestMapping(value = UserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
@@ -41,6 +43,7 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
+        checkNew(userDto);
         User created = service.create(mapper.toEntity(userDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
