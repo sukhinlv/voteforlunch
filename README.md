@@ -46,8 +46,8 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 - The user can vote for a particular restaurant.
 - The user's vote will be counted for the current date.
 - It doesn't matter if the restaurant has a menu for that day or not.
-- The user can vote or remove (withdraw) his vote from 00:00 until the time specified in the program settings (11:00).
-- After the specified time, it is no longer possible to vote or withdraw the vote. Until next day and 00:00.
+- The user can vote at any time.
+- The user can change or remove (withdraw) his vote from 00:00 until the time specified in the program settings (11:00).
 - The user can request the distribution of votes between restaurants for any date.
 - The administrator has full access to all end-points.
 

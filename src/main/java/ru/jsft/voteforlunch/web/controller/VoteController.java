@@ -52,8 +52,17 @@ public class VoteController {
         return service.getVotesDistributionOnDate(date);
     }
 
-    @PostMapping(path = "/{restaurantId}")
-    public ResponseEntity<VoteDto> voteForRestaurant(@PathVariable long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
+    @PostMapping
+    public ResponseEntity<VoteDto> vote(@RequestParam("restaurantId") long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
+        return processVote(restaurantId, authUser);
+    }
+
+    @PutMapping
+    public ResponseEntity<VoteDto> changeVote(@RequestParam("restaurantId") long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
+        return processVote(restaurantId, authUser);
+    }
+
+    private ResponseEntity<VoteDto> processVote(long restaurantId, AuthorizedUser authUser) {
         Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, authUser.id());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

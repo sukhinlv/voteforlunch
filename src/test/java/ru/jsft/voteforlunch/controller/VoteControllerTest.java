@@ -69,7 +69,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void saveVote() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post(REST_URL + "/1"))
+        ResultActions resultActions = mockMvc.perform(post(REST_URL).param("restaurantId", "1"))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
         VoteDto actual = VOTE_DTO_MATCHER.readFromJson(resultActions);
@@ -81,7 +81,7 @@ public class VoteControllerTest extends AbstractSpringBootTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteVote() throws Exception {
-        mockMvc.perform(post(REST_URL + "/1"));
+        mockMvc.perform(post(REST_URL).param("restaurantId", "1"));
 
         mockMvc.perform(delete(REST_URL)).andExpect(status().isNoContent());
     }

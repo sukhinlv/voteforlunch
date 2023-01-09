@@ -57,20 +57,21 @@ public class VoteService {
     @CacheEvict(key = "#result.voteDate", value = "voteDistribution")
     public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
         log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
-        LocalDate voteDate = LocalDate.now(clock);
-        LocalTime voteTime = LocalTime.now(clock);
-        if (voteTime.isAfter(timeConstraint)) {
-            throw new VoteTimeConstraintException(String.format("You can only vote until %s", timeConstraint));
-        }
-
-        Vote vote = repository.findByVoteDateAndUserId(voteDate, userId).orElseGet(() -> {
+        LocalDate votingDate = LocalDate.now(clock);
+        Vote vote = repository.findByVoteDateAndUserId(votingDate, userId).orElseGet(() -> {
             Vote newVote = new Vote();
             newVote.setUser(userRepository.getReferenceById(userId));
-            newVote.setVoteDate(voteDate);
+            newVote.setVoteDate(votingDate);
             return newVote;
         });
+
+        LocalTime votingTime = LocalTime.now(clock);
+        if (!vote.isNew() && votingTime.isAfter(timeConstraint)) {
+            throw new VoteTimeConstraintException(String.format("You can only change your vote until %s", timeConstraint));
+        }
+
         vote.setRestaurant(restaurantRepository.getReferenceById(restaurantId));
-        vote.setVoteTime(voteTime);
+        vote.setVoteTime(votingTime);
         vote = repository.save(vote);
         log.info("Vote saved. RestaurantID = {}, UserId = {}", restaurantId, userId);
         return vote;

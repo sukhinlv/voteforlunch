@@ -173,15 +173,6 @@ class VoteServiceTest {
             assertThat(voteCaptorValue.getUser().getId()).isEqualTo(vote.getUser().getId());
             assertThat(voteCaptorValue.getRestaurant().getId()).isEqualTo(vote.getRestaurant().getId());
         }
-
-        @Test
-        void throwWhenSaveWithTimeConstraintViolation() {
-            when(clock.instant()).thenReturn(NOW_AFTER_TIME_CONSTRAINT.toInstant());
-
-            assertThatThrownBy(() -> underTest.saveAndReturnWithDetails(1L, 1L))
-                    .isInstanceOf(VoteTimeConstraintException.class)
-                    .hasMessageContaining(String.format("You can only vote until %s", TIME_CONSTRAINT));
-        }
     }
 
     @Nested
