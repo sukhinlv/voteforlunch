@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.hibernate5.jakarta.Hibernate5JakartaModule
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +16,6 @@ import ru.jsft.voteforlunch.web.json.JsonUtil;
 
 import java.sql.SQLException;
 import java.time.Clock;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
@@ -42,17 +38,6 @@ public class ApplicationConfig {
     interface MixIn {
         @JsonAnyGetter
         Map<String, Object> getProperties();
-    }
-
-    @Bean
-    @Profile("test")
-    // this custom Clock bean used to ensure that when created in the test database, records have a specific date
-    public Clock testClock(@Value("${vote.time.constraint}") LocalTime timeConstraint) {
-        ZonedDateTime now = ZonedDateTime.of(
-                2022, 11, 15, timeConstraint.getHour() - 3, timeConstraint.getMinute(), 0, 0,
-                ZoneId.of("GMT"));
-
-        return Clock.fixed(now.toInstant(), now.getZone());
     }
 
     @Bean
