@@ -17,28 +17,28 @@ public class InitializeData implements CommandLineRunner {
     private final UserRepository userRepository;
     private final MenuRepository menuRepository;
     private final RestaurantRepository restaurantRepository;
-    private final MealRepository mealRepository;
+    private final DishRepository dishRepository;
     private final Clock clock;
 
     public InitializeData(VoteRepository voteRepository, UserRepository userRepository, MenuRepository menuRepository,
-                          RestaurantRepository restaurantRepository, MealRepository mealRepository, Clock clock) {
+                          RestaurantRepository restaurantRepository, DishRepository dishRepository, Clock clock) {
         this.voteRepository = voteRepository;
         this.userRepository = userRepository;
         this.menuRepository = menuRepository;
         this.restaurantRepository = restaurantRepository;
-        this.mealRepository = mealRepository;
+        this.dishRepository = dishRepository;
         this.clock = clock;
     }
 
     @Override
     @Transactional
     public void run(String... args) {
-        Meal tea = new Meal("Tea");
-        Meal burger = new Meal("Burger");
-        Meal soup = new Meal("Soup");
-        Meal pasta = new Meal("Pasta");
-        Meal sandwich = new Meal("Sandwich");
-        mealRepository.saveAll(List.of(tea, burger, soup, pasta, sandwich));
+        Dish tea = new Dish("Tea");
+        Dish burger = new Dish("Burger");
+        Dish soup = new Dish("Soup");
+        Dish pasta = new Dish("Pasta");
+        Dish sandwich = new Dish("Sandwich");
+        dishRepository.saveAll(List.of(tea, burger, soup, pasta, sandwich));
 
         Restaurant cherryRestaurant = new Restaurant("Cherry");
         Restaurant aishaRestaurant = new Restaurant("Aisha");

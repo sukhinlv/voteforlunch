@@ -22,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.jsft.voteforlunch.testdata.MealTestData.*;
+import static ru.jsft.voteforlunch.testdata.DishTestData.*;
 import static ru.jsft.voteforlunch.testdata.RestaurantTestData.AISHA_RESTAURANT;
 import static ru.jsft.voteforlunch.testdata.RestaurantTestData.CHERRY_RESTAURANT;
 import static ru.jsft.voteforlunch.testdata.UserTestData.ADMIN_MAIL;
@@ -34,7 +34,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
             "dateOfMenu", "must not be null",
             "menuItems", "must not be empty")));
 
-    private static final LinkedHashMapMatcher MEAL_PRICE_CONSTRAINTS_MATCHER = new LinkedHashMapMatcher(new LinkedHashMap<>(Map.of(
+    private static final LinkedHashMapMatcher DISH_PRICE_CONSTRAINTS_MATCHER = new LinkedHashMapMatcher(new LinkedHashMap<>(Map.of(
             "price", "Price must be positive")));
 
     public static MatcherFactory.Matcher<MenuListDto> MENU_LIST_DTO_MATCHER = MatcherFactory.usingEqualsComparator(MenuListDto.class);
@@ -216,7 +216,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
 
         @Test
         @WithUserDetails(value = ADMIN_MAIL)
-        void mealNotExist() throws Exception {
+        void dishNotExist() throws Exception {
             mockMvc.perform(post(REST_URL)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(JsonUtil.objectToJson(new MenuRequestDto(
@@ -225,7 +225,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                                     Set.of(new MenuItemRequestDto(100, 10))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
-                    .andExpect(jsonPath("$.detail").value("Unable to find ru.jsft.voteforlunch.model.Meal with id 100"));
+                    .andExpect(jsonPath("$.detail").value("Unable to find ru.jsft.voteforlunch.model.Dish with id 100"));
         }
 
         @Test
@@ -240,7 +240,7 @@ public class MenuControllerTest extends AbstractSpringBootTest {
                                     Set.of(new MenuItemRequestDto(TEA.getId(), 0))))))
                     .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(status().isUnprocessableEntity())
-                    .andExpect(jsonPath("$.invalid_params").value(MEAL_PRICE_CONSTRAINTS_MATCHER));
+                    .andExpect(jsonPath("$.invalid_params").value(DISH_PRICE_CONSTRAINTS_MATCHER));
         }
     }
 }

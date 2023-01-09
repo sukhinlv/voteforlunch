@@ -6,42 +6,42 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.model.Meal;
-import ru.jsft.voteforlunch.service.MealService;
-import ru.jsft.voteforlunch.web.controller.dto.MealDto;
-import ru.jsft.voteforlunch.web.controller.mapper.MealMapper;
+import ru.jsft.voteforlunch.model.Dish;
+import ru.jsft.voteforlunch.service.DishService;
+import ru.jsft.voteforlunch.web.controller.dto.DishDto;
+import ru.jsft.voteforlunch.web.controller.mapper.DishMapper;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = MealController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class MealController {
-    public static final String REST_URL = "/api/v1/meals";
+@RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class DishController {
+    public static final String REST_URL = "/api/v1/dishes";
 
-    private final MealService service;
-    private final MealMapper mapper;
+    private final DishService service;
+    private final DishMapper mapper;
 
-    public MealController(MealService service, MealMapper mapper) {
+    public DishController(DishService service, DishMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<MealDto>> getAll() {
+    public ResponseEntity<List<DishDto>> getAll() {
         return ResponseEntity.ok(service.findAllSorted().stream()
                 .map(mapper::toDto)
                 .toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MealDto> get(@PathVariable long id) {
+    public ResponseEntity<DishDto> get(@PathVariable long id) {
         return ResponseEntity.ok(mapper.toDto(service.findById(id)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MealDto> create(@Valid @RequestBody MealDto mealDto) {
-        Meal created = service.create(mapper.toEntity(mealDto));
+    public ResponseEntity<DishDto> create(@Valid @RequestBody DishDto dishDto) {
+        Dish created = service.create(mapper.toEntity(dishDto));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -55,7 +55,7 @@ public class MealController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MealDto> update(@PathVariable long id, @Valid @RequestBody MealDto mealDto) {
-        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(mealDto))));
+    public ResponseEntity<DishDto> update(@PathVariable long id, @Valid @RequestBody DishDto dishDto) {
+        return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.toEntity(dishDto))));
     }
 }

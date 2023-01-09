@@ -13,7 +13,7 @@ import ru.jsft.voteforlunch.model.MenuItem;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class MenuItemRequestDto extends AbstractDto {
-    long mealId;
+    long dishId;
 
     @Positive int price;
 }

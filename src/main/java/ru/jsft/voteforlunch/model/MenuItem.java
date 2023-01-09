@@ -15,14 +15,14 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(
         indexes = {
-                @Index(name = "menu_item_meal_id_idx", columnList = "MEAL_ID"),
+                @Index(name = "menu_item_dish_id_idx", columnList = "DISH_ID"),
                 @Index(name = "menu_item_menu_id_idx", columnList = "MENU_ID")
         }
 )
 public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
     @ManyToOne
-    @JoinColumn(name = "meal_id", nullable = false)
-    private Meal meal;
+    @JoinColumn(name = "dish_id", nullable = false)
+    private Dish dish;
 
     @NotNull
     @Positive(message = "Price must be positive")
@@ -37,10 +37,10 @@ public class MenuItem extends AbstractEntity implements Comparable<MenuItem> {
 
     @Override
     public int compareTo(MenuItem comparedMenuItem) {
-        if (meal == null || comparedMenuItem.getMeal() == null) {
+        if (dish == null || comparedMenuItem.getDish() == null) {
             return 0;
         }
-        return comparedMenuItem.getMeal().getName().compareTo(meal.getName());
+        return comparedMenuItem.getDish().getName().compareTo(dish.getName());
     }
 }
 

@@ -12,8 +12,8 @@ import ru.jsft.voteforlunch.validation.NoHtml;
 @Setter
 @Entity
 @ToString(callSuper = true)
-public class Meal extends AbstractEntity {
-    @NotBlank(message = "The meal must have a name")
+public class Dish extends AbstractEntity {
+    @NotBlank(message = "The dish must have a name")
     @Column(name = "name", nullable = false, unique = true)
     @NoHtml
     private String name;

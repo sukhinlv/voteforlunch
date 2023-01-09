@@ -7,17 +7,17 @@ import lombok.Value;
 import ru.jsft.voteforlunch.validation.NoHtml;
 
 /**
- * A DTO for the {@link ru.jsft.voteforlunch.model.Meal} entity
+ * A DTO for the {@link ru.jsft.voteforlunch.model.Dish} entity
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class MealDto extends AbstractDto {
-    @NotBlank(message = "The meal must have a name")
+public class DishDto extends AbstractDto {
+    @NotBlank(message = "The dish must have a name")
     @NoHtml
     String name;
 
-    public MealDto(Long id, String name) {
+    public DishDto(Long id, String name) {
         super(id);
         this.name = name;
     }
