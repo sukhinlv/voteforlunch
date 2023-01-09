@@ -3,7 +3,9 @@ package ru.jsft.voteforlunch.service;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jsft.voteforlunch.model.Menu;
@@ -24,54 +26,47 @@ public class MenuService {
         this.repository = repository;
     }
 
-    @CacheEvict({"menu"})
+    @Caching(
+            put = {@CachePut(key = "#result.id", value = "menu")},
+            evict = {@CacheEvict(key = "#result.dateOfMenu", value = "menus")}
+    )
     public Menu create(Menu menu) {
         log.info("Create menu: {}", menu);
         checkNew(menu);
         return repository.save(menu);
     }
 
-    @Cacheable("menus")
-    public List<Menu> findAll() {
-        log.info("Find all menus");
-        return repository.findAll();
-    }
-
-    @Cacheable("menus")
+    @Cacheable(key = "#date", value = "menus")
     public List<Menu> findAllWithRestaurants(@NotNull LocalDate date) {
         log.info("Find all menus with restaurants on {}", date);
         return repository.findAllWithRestaurantsOnDate(date);
     }
 
-    @Cacheable("menus")
-    public List<Menu> findAllWithRestaurants() {
-        log.info("Find all menus with restaurants");
-        return repository.findAllWithRestaurants();
-    }
-
     @Transactional
-    @CacheEvict({"menu", "menus"})
+    @Caching(
+            put = {@CachePut(key = "#result.id", value = "menu")},
+            evict = {@CacheEvict(key = "#result.dateOfMenu", value = "menus")}
+    )
     public Menu updateAndReturnWithDetails(long id, Menu menu) {
-        Menu updatedMenu = update(id, menu);
-        return findByIdWithAllData(Objects.requireNonNull(updatedMenu.getId()));
-    }
-
-    @Transactional
-    @CacheEvict({"menu", "menus"})
-    public Menu update(long id, Menu menu) {
         log.info("Update menu with id = {}", menu.getId());
         checkEntityExist(repository.existsById(id), id, Menu.class);
         menu.setId(id);
-        return repository.save(menu);
+        Menu updatedMenu = repository.save(menu);
+        return findByIdWithAllData(Objects.requireNonNull(updatedMenu.getId()));
     }
 
-    @CacheEvict({"menu", "menus"})
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id", value = "menu"),
+                    @CacheEvict(value = "menus", allEntries = true)
+            }
+    )
     public void delete(long id) {
         log.info("Delete menu with id = {}", id);
         repository.deleteById(id);
     }
 
-    @Cacheable("menu")
+    @Cacheable(key = "#id", value = "menu")
     public Menu findByIdWithAllData(long id) {
         log.info("Find menu (including properties) with id = {}", id);
         return checkEntityWasFound(repository.findByIdWithAllData(id), id, Menu.class);

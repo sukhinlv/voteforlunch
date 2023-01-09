@@ -59,28 +59,6 @@ class MenuServiceTest {
         }
 
         @Test
-        void findAll() {
-            Menu menu1 = Instancio.create(Menu.class);
-            Menu menu2 = Instancio.create(Menu.class);
-            Menu menu3 = Instancio.create(Menu.class);
-            List<Menu> menuList = List.of(menu1, menu2, menu3);
-            when(repository.findAll()).thenReturn(menuList);
-
-            assertThat(underTest.findAll()).usingRecursiveComparison().isEqualTo(menuList);
-        }
-
-        @Test
-        void findAllWithRestaurants() {
-            Menu menu1 = Instancio.create(Menu.class);
-            Menu menu2 = Instancio.create(Menu.class);
-            Menu menu3 = Instancio.create(Menu.class);
-            List<Menu> menuList = List.of(menu1, menu2, menu3);
-            when(repository.findAllWithRestaurants()).thenReturn(menuList);
-
-            assertThat(underTest.findAllWithRestaurants()).usingRecursiveComparison().isEqualTo(menuList);
-        }
-
-        @Test
         void findAllWithRestaurantsOnDate() {
             Menu menu1 = Instancio.create(Menu.class);
             Menu menu2 = Instancio.create(Menu.class);
@@ -144,7 +122,7 @@ class MenuServiceTest {
 
             Menu updatedMenu = Instancio.create(Menu.class);
             updatedMenu.setId(menu.getId());
-            underTest.update(menu.getId(), updatedMenu);
+            underTest.updateAndReturnWithDetails(menu.getId(), updatedMenu);
             then(repository).should().save(MenuCaptor.capture());
 
             updatedMenu.setId(menu.getId());
@@ -157,7 +135,7 @@ class MenuServiceTest {
 
             Menu menu = new Menu();
             menu.setId(1L);
-            assertThatThrownBy(() -> underTest.update(1L, menu))
+            assertThatThrownBy(() -> underTest.updateAndReturnWithDetails(1L, menu))
                     .isInstanceOf(IllegalRequestDataException.class)
                     .hasMessageContaining(String.format("Menu with id = %d not found", 1L));
         }

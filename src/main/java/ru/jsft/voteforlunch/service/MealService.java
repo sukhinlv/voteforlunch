@@ -2,6 +2,7 @@ package ru.jsft.voteforlunch.service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,18 +32,21 @@ public class MealService {
         return repository.findAll(Sort.by("name"));
     }
 
+    @CacheEvict(cacheNames = {"menu", "menus"}, allEntries = true)
     public Meal create(Meal meal) {
         log.info("Create meal: {}", meal);
         checkNew(meal);
         return repository.save(meal);
     }
 
+    @CacheEvict(cacheNames = {"menu", "menus"}, allEntries = true)
     public void delete(long id) {
         log.info("Delete meal with id = {}", id);
         repository.deleteById(id);
     }
 
     @Transactional
+    @CacheEvict(cacheNames = {"menu", "menus"}, allEntries = true)
     public Meal update(long id, @NotNull Meal meal) {
         log.info("Update meal with id = {}", id);
         checkEntityExist(repository.existsById(id), id, Meal.class);

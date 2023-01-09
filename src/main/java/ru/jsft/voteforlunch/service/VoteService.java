@@ -54,7 +54,7 @@ public class VoteService {
     }
 
     @Transactional
-    @CacheEvict("voteDistribution")
+    @CacheEvict(key = "#result.voteDate", value = "voteDistribution")
     public Vote saveAndReturnWithDetails(long restaurantId, long userId) {
         log.info("Try to save vote. RestaurantID = {}, UserId = {}", restaurantId, userId);
         LocalDate voteDate = LocalDate.now(clock);
@@ -76,7 +76,7 @@ public class VoteService {
         return vote;
     }
 
-    @CacheEvict("voteDistribution")
+    @CacheEvict(value = "voteDistribution", allEntries = true)
     public void delete(long userId) {
         log.info("Try to delete vote of userId={}", userId);
         if (LocalTime.now(clock).isAfter(timeConstraint)) {
@@ -90,7 +90,7 @@ public class VoteService {
         log.info("Vote deleted. userId={}", userId);
     }
 
-    @Cacheable("voteDistribution")
+    @Cacheable(key = "#date", value = "voteDistribution")
     public List<VoteDistribution> getVotesDistributionOnDate(LocalDate date) {
         log.info("Get votes distribution on {}", date);
         return repository.getVotesDistributionOnDate(date);
