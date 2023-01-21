@@ -5,16 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.jsft.voteforlunch.model.Vote;
 import ru.jsft.voteforlunch.model.VoteDistribution;
 import ru.jsft.voteforlunch.service.VoteService;
 import ru.jsft.voteforlunch.web.controller.dto.VoteDto;
 import ru.jsft.voteforlunch.web.controller.mapper.VoteMapper;
 import ru.jsft.voteforlunch.web.security.AuthorizedUser;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,21 +51,15 @@ public class VoteController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<VoteDto> vote(@RequestParam("restaurantId") long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
-        return processVote(restaurantId, authUser);
+        return ResponseEntity.ok(mapper.toDto(service.saveAndReturnWithDetails(restaurantId, authUser.id())));
     }
 
     @PutMapping
+    @Transactional
     public ResponseEntity<VoteDto> changeVote(@RequestParam("restaurantId") long restaurantId, @AuthenticationPrincipal AuthorizedUser authUser) {
-        return processVote(restaurantId, authUser);
-    }
-
-    private ResponseEntity<VoteDto> processVote(long restaurantId, AuthorizedUser authUser) {
-        Vote savedEntity = service.saveAndReturnWithDetails(restaurantId, authUser.id());
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(savedEntity.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(mapper.toDto(savedEntity));
+        return ResponseEntity.ok(mapper.toDto(service.saveAndReturnWithDetails(restaurantId, authUser.id())));
     }
 
     @DeleteMapping

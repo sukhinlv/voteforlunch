@@ -40,7 +40,7 @@ spring:
   # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
   cache:
     cache-names: menu,menus,voteDistribution
-    caffeine.spec: maximumSize=5000,expireAfterAccess=60m
+    caffeine.spec: maximumSize=5000,expireAfterAccess=5m
 
 # Logging
 logging:
@@ -55,7 +55,7 @@ springdoc.swagger-ui.docExpansion: none
 
 # Server configuration
 server:
-  port: 8095
+  port: 8080
   servlet:
     encoding:
       charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly

@@ -11,11 +11,11 @@ Here you can find voting app for the restaurant with the best menu for today
 
 This is a Spring Boot project, so you can deploy it by simply using the main class: `VoteforlunchApplication.java`
 
-Once deployed, you can access the app at: http://localhost:8095
+Once deployed, you can access the app at: http://localhost:8080
 
 Mind that this application is backend only. 
 
-Link to Swagger: http://localhost:8095/swagger-ui.html
+Link to Swagger: http://localhost:8080/swagger-ui.html
 
 
 ## Technical requirement
